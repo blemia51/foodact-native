@@ -25,6 +25,7 @@ import Header from "../components/Header";
 //import Nav from "../components/Nav";
 //import Location from "./src/components/Location";
 import Payment from "../components/Payment";
+import foodact_animated from '../assets/foodact_fadein.gif'
 
 import RenderItem from "../components/RenderItem";
 
@@ -294,7 +295,6 @@ export default function Home(props) {
     prixPaniers,
   ]);
 
-
   const paniersAndFournisseur =
     fournisseurs &&
     paniers &&
@@ -305,6 +305,7 @@ export default function Home(props) {
         paniers: paniers.find((data) => data.id === parseInt(key)),
       }))
     );
+    console.log('paniersAndFournisseur', paniersAndFournisseur)
 
   const paniersAndFournisseurAddPanierName =
     panierNames &&
@@ -339,6 +340,23 @@ export default function Home(props) {
   //console.log('paniersAndFournisseurAddPanierPrice',paniersAndFournisseurAddPanierPrice)
 
   const paniersAndFournisseurByCategorie = (id) => {
+    const date = new Date();
+    const soldOut =
+      paniersAndFournisseurAddPanierPrice &&
+      paniersAndFournisseurAddPanierPrice.reduce((acc, data) => {
+        if (
+          data &&
+          data.paniers &&
+          data.paniers.isActivated &&
+          data.paniers.categorie === `/api/categories/${id}` &&
+          (data.paniers.qte < 1 ||
+            Date.parse(data.paniers.DateExpirAffichage) - Date.parse(date) <= 0)
+        ) {
+          acc.push(data);
+        }
+        return acc;
+      }, []);
+
     return (
       paniersAndFournisseurAddPanierPrice &&
       paniersAndFournisseurAddPanierPrice
@@ -347,18 +365,18 @@ export default function Home(props) {
             cat &&
             cat.paniers &&
             cat.paniers.isActivated &&
-            cat.paniers.categorie === `/api/categories/${id}`
+            cat.paniers.categorie === `/api/categories/${id}` &&
+            Date.parse(cat.paniers.DateExpirAffichage) - Date.parse(date) > 0 &&
+            cat.paniers.qte > 0
         )
         .sort((a, b) => a.panierprix - b.panierprix)
         .sort(
           (a, b) =>
-            Date.parse(b.paniers.DateExpirAffichage) -
-            Date.parse(a.paniers.DateExpirAffichage)
+            Date.parse(a.paniers.DateExpirAffichage) -
+            Date.parse(b.paniers.DateExpirAffichage)
         )
+        .concat(soldOut)
     );
-    //console.log ('paniersAndFournisseurByCategorie', paniersAndFournisseur)
-    //console.log ('paniersAndFournisseurByCategorie', paniersAndFournisseurByCategorie)
-    //let DATAS = paniersAndFournisseurByCategorie
   };
 
   if (
@@ -371,8 +389,9 @@ export default function Home(props) {
     !state.panierNames
   ) {
     return (
-      <View style={{ flex: 1, justifyContent: "center" }}>
-        <ActivityIndicator size="large" color="lightgrey" />
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <Image source={foodact_animated} />
+        {/* <ActivityIndicator size="large" color="lightgrey" /> */}
       </View>
     );
   }
@@ -405,9 +424,15 @@ export default function Home(props) {
                   maxToRenderPerBatch={6}
                   initialNumToRender={2}
                   data={paniersAndFournisseurByCategorie(categorie.id)}
+                  //data={paniersAndFournisseurByCategorie(21)}
                   //renderItem={renderItem}
                   renderItem={({ item }) => (
-                    <RenderItem item={item} latitude={latitude} longitude={longitude} navigation={navigation} />
+                    <RenderItem
+                      item={item}
+                      latitude={latitude}
+                      longitude={longitude}
+                      navigation={navigation}
+                    />
                   )}
                   keyExtractor={(item) => item.paniers.id.toString()}
                 />

@@ -104,7 +104,7 @@ export default class ProductDetail extends PureComponent {
         <View style={styles.lineStyle} />
 
         <View style={styles.quantity} >
-          <TouchableOpacity onPress={() => {this.handelDecrease()} } >
+          <TouchableOpacity onPress={() => {this.handelDecrease()}} disabled={quantity === 1} >
             <FontAwesome
               style={styles.icon}
               name="minus-square"
@@ -113,7 +113,7 @@ export default class ProductDetail extends PureComponent {
             />
           </TouchableOpacity>
           <Text style={{fontSize: 24, fontWeight: 'bold'}}> {quantity} </Text>
-          <TouchableOpacity onPress={() => {this.handelIncrease()} } >
+          <TouchableOpacity onPress={() => {this.handelIncrease()}} disabled={quantity >= basket} >
             <FontAwesome 
               style={styles.icon} 
               name="plus-square" 

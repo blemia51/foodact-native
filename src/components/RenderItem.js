@@ -10,6 +10,8 @@ export default class RenderItem extends Component {
 
   render() {
     const date = new Date();
+    //let newDate = new Date(item.paniers.DateExpirAffichage)
+    //date.setDate(date.getDate() + 1) // tomorrow
     const { item, navigation, latitude, longitude } = this.props;
     //console.log('propsssssssss', this.props)
     return (
