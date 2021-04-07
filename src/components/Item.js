@@ -50,6 +50,7 @@ const Item = ({
           })
         }}
       >
+        <View style={{width: '100%'}}>
         <Image
           source={{
             uri: `https://foodact.maresa.ma/${slug}`,
@@ -65,6 +66,7 @@ const Item = ({
           resizeMode="cover"
           alt="food"
         />
+        </View>
         {!isTimeOut &&
           <Basket quantity={quantity} />
         }

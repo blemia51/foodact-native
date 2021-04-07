@@ -152,7 +152,7 @@ export default function Home(props) {
     try {
       let response = await fetch("https://foodact.maresa.ma/api/categories");
       let datas = await response.json();
-      const categories = datas
+      const categories = datas && datas
         .filter((data) => data.isActive && data.id !== 22)
         .sort((a, b) => a.orderCategory - b.orderCategory);
 
@@ -162,7 +162,7 @@ export default function Home(props) {
       }));
       //console.log('categories', categories);
     } catch (error) {
-      console.error(error);
+      console.error('connexion impossible', error);
     }
   };
 
@@ -170,7 +170,7 @@ export default function Home(props) {
     try {
       let response = await fetch("https://foodact.maresa.ma/api/fournisseurs");
       let datas = await response.json();
-      const fournisseurs = datas
+      const fournisseurs = datas && datas
         .filter(
           (data) =>
             data.ville === "/api/villes/10" &&
@@ -194,26 +194,29 @@ export default function Home(props) {
       }));
       //console.log("fournisseurs", fournisseurs);
     } catch (error) {
-      console.error(error);
+      console.error('connexion impossible', error);
     }
   };
 
   const getPaniers = async () => {
     try {
-      let response = await fetch("https://foodact.maresa.ma/api/paniers");
+      let response = await fetch("https://foodact.maresa.ma/api/paniers?is_activated=true&fournisseur.is_enabled=true");
       let datas = await response.json();
       const date = new Date();
       //console.log("date", Date.parse(date));
 
-      const paniers = datas.filter(
-        (data) => data.isActivated
+      
+      //.filter(
+        //(data) => data.isActivated
         //&& Date.parse(data.DateExpirAffichage) - Date.parse(date) >= 0
-      );
-      //.map((val) => val.fournisseur);
+      //);
+      // const paniersdate = datas
+      // .map((panier) => panier.DateExpirAffichage);
+      // console.log('date panier', paniersdate)
 
       setState((prevState) => ({
         ...prevState,
-        paniers: paniers,
+        paniers: datas,
       }));
 
       //console.log("paniers", paniers);
@@ -278,13 +281,6 @@ export default function Home(props) {
       panierNames,
     }));
     //console.log("state mis a jour", state);
-    if (latitude && longitude) {
-      const dist = getDistance(
-        { latitude: latitude, longitude: longitude },
-        { latitude: "49.2667842", longitude: "4.0510089" }
-      );
-      console.log("distance", `${dist} metres`);
-    }
   }, [
     latitude,
     longitude,
