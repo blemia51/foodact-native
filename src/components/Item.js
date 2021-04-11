@@ -92,7 +92,6 @@ const Item = ({
             </View>
           </View>
         </View>
-        {/* <Text style={{paddingHorizontal: 5, fontSize: 11}} >{shop}. 1.7km</Text> */}
       </TouchableOpacity>
     </View>
 )}

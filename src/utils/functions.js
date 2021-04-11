@@ -22,3 +22,25 @@ export async function registerForPushNotificationsAsync(existingStatus) {
     return null
   }
 }
+
+export const convertCollectDay = (data) => {
+  const collectDay = new Date(data).getDay();
+  switch (collectDay) {
+    case 0:
+      return "dimanche";
+    case 1:
+      return "lundi";
+    case 2:
+      return "mardi";
+    case 3:
+      return "mercredi";
+    case 4:
+      return "jeudi";
+    case 5:
+      return "vendredi";
+    case 6:
+      return "samedi";
+    default:
+      return ''
+  }
+};

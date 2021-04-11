@@ -1,13 +1,10 @@
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { View, Text, StyleSheet } from "react-native";
 //import { formatFullDate } from '../utils/dateUtils'
 import { EvilIcons } from "@expo/vector-icons";
 
-class CountDown extends Component {
-
-  
-
+class CountDown extends PureComponent {
 
   state = {
     days: 0,
@@ -19,31 +16,45 @@ class CountDown extends Component {
 
   updateClock = () => {
     const { date } = this.props;
-    const eventDate = Date.parse(date);
+    //console.log("Date props", date)
+    
+    //const eventDate = Date.parse(date);
+    const eventDate = date
+    //console.log("eventDate", eventDate)
     const remainingTime = eventDate - new Date();
 
     if (remainingTime < 1) {
-      this.setState({ timeUp: true });
+      this.setState(prevState => ({ ...prevState, timeUp: true }));
     } else {
       let days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
       let hours = Math.floor((remainingTime / (1000 * 60 * 60)) % 24);
       let minutes = Math.floor((remainingTime / (1000 * 60)) % 60);
       let seconds = Math.floor((remainingTime / 1000) % 60);
-      this.setState({
+      this.setState(prevState => ({
+        ...prevState,
         hours: hours > 9 ? hours : `0${hours}`,
         minutes: minutes > 9 ? minutes : `0${minutes}`,
         seconds: seconds > 9 ? seconds : `0${seconds}`,
         days,
-      });
+      }));
     }
   };
 
   componentDidMount() {
     this.updateClock();
     let intervalId = setInterval(this.updateClock, 1000);
-    this.setState({ intervalId: intervalId });
+    this.setState(prevState => ({ ...prevState, intervalId: intervalId }))
     //console.log(formatFullDate(new Date))
   }
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (this.state !== prevState) {
+  //     console.log('brrrrrrrrrrrrrrrrrrrrrrrrrr')
+  //     this.updateClock();
+  //   let intervalId = setInterval(this.updateClock, 1000);
+  //   this.setState(prevState => ({ ...prevState, intervalId: intervalId }))
+  //   }
+  // }
 
   componentWillUnmount() {
     clearInterval(this.state.intervalId);

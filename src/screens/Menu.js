@@ -88,9 +88,10 @@ export default function Menu({ navigation }) {
       <View style={styles.menuItems}>
         <TouchableOpacity
           style={styles.menuItems}
-          onPress={() => { }}
+          onPress={() => {
+            navigation.navigate('ModalAddAddress')
+          }}
         >
-
           <MaterialIcons name="location-on" color="lightgrey" size={30} />
           <Text style={styles.textItems}>Me Localiser</Text>
         </TouchableOpacity>

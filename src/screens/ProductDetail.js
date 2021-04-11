@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import { Text, StyleSheet, View, Image, TouchableOpacity } from 'react-native'
 
 import Button from '../components/Button';
@@ -10,7 +10,7 @@ import ProductOrder from '../screens/ProductOrder';
 import CountDown from '../components/CountDown';
 import { FontAwesome, EvilIcons } from '@expo/vector-icons';
 
-export default class ProductDetail extends PureComponent {
+export default class ProductDetail extends Component {
 
   state = {
     quantity: 1,
@@ -77,7 +77,7 @@ export default class ProductDetail extends PureComponent {
       adresse,
       distance
     } = route.params
-    console.log('route', route);
+    //console.log('route', route);
     return (
       <View style={styles.container}>
         <View style={styles.image}>

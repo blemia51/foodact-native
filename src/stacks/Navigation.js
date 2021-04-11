@@ -12,6 +12,7 @@ import SignIn from '../screens/SignIn'
 import SignUp from '../screens/SignUp'
 import Menu from '../screens/Menu'
 import FaqClient from '../screens/FaqClient'
+import ModalAddAddress from '../screens/ModalAddAddress'
 
 
 const Stack = createStackNavigator();
@@ -153,6 +154,21 @@ function MenuStackScreen() {
           }
         }}
       />
+      <MenuStack.Screen
+        name="ModalAddAddress"
+        component={ModalAddAddress}
+        options={{
+          //cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          title: '',
+          headerStyle: {
+            backgroundColor: '#16214b',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          }
+        }}
+      />
     </MenuStack.Navigator>
   );
 }
@@ -190,14 +206,14 @@ function Navigation() {
           name='Accueil'
           component={BottomTabsNavigation}
         />
-        {/* <BottomTabs.Screen
+        <BottomTabs.Screen
           name='Explorer'
           component={ProductCards}
         />
         <BottomTabs.Screen
           name='Favoris'
           component={ProductCards}
-        /> */}
+        />
         <BottomTabs.Screen
           name='Menu'
           component={MenuStackScreen}
