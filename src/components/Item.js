@@ -53,7 +53,7 @@ const Item = ({
         <View style={{width: '100%'}}>
         <Image
           source={{
-            uri: `https://foodact.maresa.ma/${slug}`,
+            uri: `http://foodact.maresa.ma/${slug}`,
           }}
           style={{
             width: 220,

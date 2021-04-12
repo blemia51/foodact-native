@@ -19,7 +19,8 @@ import * as Permissions from "expo-permissions";
 import * as Notifications from "expo-notifications";
 import * as Location from "expo-location";
 //import MapView from "react-native-maps";
-
+import { updateDate } from '../utils/functions'
+const jwtDecode = require('jwt-decode')
 
 //import Card from "../components/Card";
 import Header from "../components/Header";
@@ -29,6 +30,7 @@ import Payment from "../components/Payment";
 import foodact_animated from "../assets/foodact_fadein.gif";
 
 import RenderItem from "../components/RenderItem";
+import Favorites from '../components/Favorites'
 
 const initialState = {
   longitude: null,
@@ -42,7 +44,7 @@ const initialState = {
 };
 
 const token =
-  "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2MTgxNTk4NzQsImV4cCI6MTYxODQxOTA3NCwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6IkZvb2RhY3RBZG1pbiJ9.CzLe9c8ttWyp1UrLx5Y2rNNq6Mme2XeCWxM599af3rSOcN41zGkWuwB-oVRVt3PbQispwit0_c1P-cWvOtfrwQCINqdDpFEGDdr4zGds1EkcgGcFJkK1G1-34WWgbEtH1vY_AXFcp8d9iCHvO9yASiM_11yv4XcC0l7DbyVUCLkqs6wKoiTm992cKVRJ1TZbtA1iiM0Jsi5LfqW9l4SGdIhODY-zTqSQjLn-iAo2UdtHc6d90OHN1q3lokOWvIcZyzlOYSHNGXaOHQs0bGLYCpIEw8IzdLJ86jQZME_Yq8ysTOoL6RDiaS3zl40FNGvAq7OSrH80oiLtlz9f5vVcvCgJVRDg8tI1mdj0l55y8dHW4L5bpyk3w2eOdHFH0zDqqfpRYJSH_LSG5a21zKiizMfa23VEZaMvVcfJpJYmJ4uAgxeX2qnlVhItITOtV6hU-vZWBYbZIIK3cWOY4gH3cpj7ZsYtIQoQ15m0wepSozd73Mfq7SfJRGBS5_E9nVWRCpMJJiC4Q24BhSi-3-ZEPUq3memSQ_RXdotMJmlS7ErTv6d8P-Vc_l8ZaLI37j7rHxdpgtWDfWRvhzNetrGU02rabNpFLu_I2UPFkgIK_fVHibs5bi_Sr431FcW6N7YdYuZdmil9qEscWA2SIiq9XBY-6TMQrCbCXSN2pjAcAtw";
+  "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2MTgxNzU3NTEsImV4cCI6MTYxODQzNDk1MSwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6IkZvb2RhY3RBZG1pbiJ9.FrI2VGRKNl0v801Q-cTAj24fH2ODD40G3B3EpbGflClmoqf7z6_OnPEKV67PWu3qUTwP80sGBeBJYAqUJZ9SuUYdKdQaxW9JrMt_bAkaxUPowMbjmgm-rcMo85fTuG3fHlczw6IhYDGmMdxrro0pqLR6DWJc5vmVL_QzoYOnFB2A4Al9-oMQMJaLmDEinrrGrt-meyWq-BwbVHyK27usAWWI3XGrSkMP2QFEHUwbFIe6tRm-gRUqdlEBL_r2nThptonuOKwNOzPTcmdXGpjGd3Gv1oGoskRzQ7GrjGdBzQAAnUmwtsVnKEAP1_jKk6lw39uNAN4Xdq392FeOj8HFzQm8ucmRGqzFwCjB_t3vEgMpQocJNkfanQaaFVZSVq8Z4gBBjX8Ke1x5D2Etwf2D4HCYei_usQh4ryT2y_Bb3bvZOXwNxwSMFLdfDdJI4FwFW926H8vWBdQJaWl-p35FIeK5OGHvcbtTChjst6zxBo61QBQ6ZKfW2NhvFl2RTpPUOmVL_os6h0Uz2956eRJR-SubbH1DvM6bseYXjcOl1QkHH3g_89XapLjni9bAFWnCrLsTY_e0tf8wNel_3u32gKEFB5qMwlFfSlr0QduI-N267kpgeTS124b3wU-zCAqOJ-L0jO2uxzpDlbbkD375VDgcXHFZTuQMvNRbJFpkdYo";
 
 export default function Home(props) {
   const { navigation } = props;
@@ -156,12 +158,13 @@ export default function Home(props) {
 
   const loadProfie = async () => {
     const token = await AsyncStorage.getItem("token");
-    console.log("token storage", token);
+    const tokenDecoded = jwtDecode(token)
+    console.log("username", tokenDecoded.username);
   };
 
   const getCategories = async () => {
     try {
-      let response = await fetch("https://foodact.maresa.ma/api/categories", {
+      let response = await fetch("http://foodact.maresa.ma/api/categories", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -187,7 +190,7 @@ export default function Home(props) {
 
   const getFournisseurs = async () => {
     try {
-      let response = await fetch("https://foodact.maresa.ma/api/fournisseurs", {
+      let response = await fetch("http://foodact.maresa.ma/api/fournisseurs", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -229,7 +232,7 @@ export default function Home(props) {
   const getCreneaux = async () => {
     try {
       let response = await fetch(
-        "https://foodact.maresa.ma/api/expiration_creaneaus",
+        "http://foodact.maresa.ma/api/expiration_creaneaus",
         {
           method: "GET",
           headers: {
@@ -246,7 +249,7 @@ export default function Home(props) {
         creneaux: creneaux,
       }));
 
-      console.log("creneaux", creneaux);
+      //.log("creneaux", creneaux);
     } catch (error) {
       console.error(error);
     }
@@ -314,16 +317,14 @@ export default function Home(props) {
           marche: value.marcheDim,
         }
       }));
-
     //console.log("week creneaux", weekCreneaux);
     return weekCreneaux
-
   };
   
   const getPaniers = async () => {
     try {
       let response = await fetch(
-        "https://foodact.maresa.ma/api/paniers?is_activated=true&fournisseur.is_enabled=true",
+        "http://foodact.maresa.ma/api/paniers?is_activated=true&fournisseur.is_enabled=true",
         {
           method: "GET",
           headers: {
@@ -357,7 +358,7 @@ export default function Home(props) {
 
   const getPanierPrice = async () => {
     try {
-      let response = await fetch("https://foodact.maresa.ma/api/prix_paniers", {
+      let response = await fetch("http://foodact.maresa.ma/api/prix_paniers", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -380,7 +381,7 @@ export default function Home(props) {
 
   const getPanierName = async () => {
     try {
-      let response = await fetch("https://foodact.maresa.ma/api/panier_names", {
+      let response = await fetch("http://foodact.maresa.ma/api/panier_names", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -509,7 +510,8 @@ export default function Home(props) {
           //data.paniers.categorie === `/api/categories/21` &&
 
           (data.paniers.qte < 1 ||
-            Date.parse(data.paniers.DateExpirAffichage) - Date.parse(date) <= 0)
+            //Date.parse(data.paniers.DateExpirAffichage) - Date.parse(date) <= 0)
+            updateDate(data.paniers.DateExpirAffichage, data.creneaux) - Date.parse(date) <= 0)
         ) {
           acc.push(data);
         }
@@ -527,14 +529,17 @@ export default function Home(props) {
             cat.paniers.categorie === `/api/categories/${id}` &&
             //cat.paniers.categorie === `/api/categories/21` &&
 
-            Date.parse(cat.paniers.DateExpirAffichage) - Date.parse(date) > 0 &&
+            //Date.parse(cat.paniers.DateExpirAffichage) - Date.parse(date) > 0 &&
+            updateDate(cat.paniers.DateExpirAffichage, cat.creneaux) - Date.parse(date) > 0 &&
             cat.paniers.qte > 0
         )
         .sort((a, b) => a.panierprix - b.panierprix)
         .sort(
           (a, b) =>
-            Date.parse(a.paniers.DateExpirAffichage) -
-            Date.parse(b.paniers.DateExpirAffichage)
+            // Date.parse(a.paniers.DateExpirAffichage) -
+            // Date.parse(b.paniers.DateExpirAffichage)
+            updateDate(a.paniers.DateExpirAffichage, a.creneaux) - 
+            updateDate(b.paniers.DateExpirAffichage, b.creneaux)
         )
         .concat(soldOut)
     );
@@ -569,6 +574,7 @@ export default function Home(props) {
               <View key={categorie.id}>
                 <View style={styles.headerContainer}>
                   <Text style={styles.category}>{categorie.nom}</Text>
+
                   {/* <TouchableOpacity
                     onPress={() => {
                       navigation.navigate("ProductCards", {
@@ -578,6 +584,8 @@ export default function Home(props) {
                   >
                     <Text style={styles.link}>Tout voir</Text>
                   </TouchableOpacity> */}
+
+                <Favorites />
                 </View>
 
                 <FlatList
@@ -669,7 +677,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     flex: 1,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     alignItems: "center",
     paddingTop: 10,
     margin: 0,

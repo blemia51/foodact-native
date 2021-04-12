@@ -13,6 +13,7 @@ import SignUp from '../screens/SignUp'
 import Menu from '../screens/Menu'
 import FaqClient from '../screens/FaqClient'
 import ModalAddAddress from '../screens/ModalAddAddress'
+import MyFavorites from '../screens/MyFavorites'
 
 
 const Stack = createStackNavigator();
@@ -39,11 +40,11 @@ function BottomTabsNavigation() {
         }}
       />
       <Stack.Screen
-        name="ProductCards"
-        component={ProductCards}
+        name="MyFavorites"
+        component={MyFavorites}
         options={{
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-          title: 'FoodAct',
+          title: 'Mes Favoris',
           headerStyle: {
             backgroundColor: '#16214b',
           },
@@ -86,6 +87,30 @@ function BottomTabsNavigation() {
           }}
         />
     </Stack.Navigator>
+  )
+}
+
+const FavoritesStack = createStackNavigator()
+
+function FavoritesStackScreen() {
+  return (
+    <FavoritesStack.Navigator>
+      <MenuStack.Screen
+        name="MyFavorites" 
+        component={MyFavorites}
+        options={{
+          title: 'Mes Favoris',
+          headerStyle: {
+            backgroundColor: '#16214b',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          //headerShown: false,
+        }}
+      />
+    </FavoritesStack.Navigator>
   )
 }
 
@@ -206,13 +231,13 @@ function Navigation() {
           name='Accueil'
           component={BottomTabsNavigation}
         />
-        <BottomTabs.Screen
+        {/* <BottomTabs.Screen
           name='Explorer'
           component={ProductCards}
-        />
+        /> */}
         <BottomTabs.Screen
           name='Favoris'
-          component={ProductCards}
+          component={FavoritesStackScreen}
         />
         <BottomTabs.Screen
           name='Menu'

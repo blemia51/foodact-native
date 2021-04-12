@@ -20,7 +20,7 @@ export default class Favorites extends PureComponent {
     const { isFavorites } = this.state;
     return (
       <View>
-        <MaterialIcons name='favorite-border' color={isFavorites ? '#ff6600' : 'lightgrey'} size={24} />
+        <MaterialIcons name='favorite-border' color={isFavorites ? '#ff6600' : 'lightgrey'} size={28} />
       </View>
     )
   }

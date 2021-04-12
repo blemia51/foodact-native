@@ -83,7 +83,7 @@ export default class ProductDetail extends Component {
         <View style={styles.image}>
           <Image
             source={{
-              uri: `https://foodact.maresa.ma/${slug}`
+              uri: `http://foodact.maresa.ma/${slug}`
             }}
             style={{ height: "100%", width: "100%" }}
           />
