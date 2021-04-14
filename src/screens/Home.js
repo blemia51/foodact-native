@@ -41,6 +41,7 @@ const initialState = {
   panierNames: null,
   prixPaniers: null,
   creneaux: null,
+  isLogged: null
 };
 
 const token =
@@ -60,6 +61,7 @@ export default function Home(props) {
     panierNames,
     prixPaniers,
     creneaux,
+    isLogged
   } = state;
 
   const loadRessources = async () => {
@@ -139,8 +141,8 @@ export default function Home(props) {
         );
         return;
       }
-      const token = (await Notifications.getExpoPushTokenAsync()).data;
-      console.log(token);
+      const tokenNotificaion = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log('tokenNotificaion', tokenNotificaion);
       //this.setState({ expoPushToken: token });
     } else {
       alert("Must use physical device for Push Notifications");
@@ -156,18 +158,25 @@ export default function Home(props) {
     }
   };
 
+  
   const loadProfie = async () => {
     const token = await AsyncStorage.getItem("token");
     const tokenDecoded = jwtDecode(token)
-    console.log("username", tokenDecoded.username);
+    console.log("username", tokenDecoded);
+
+    setState((prevState) => ({
+      ...prevState,
+      islogged: true
+    }));
   };
+
 
   const getCategories = async () => {
     try {
       let response = await fetch("http://foodact.maresa.ma/api/categories", {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
+          ////Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
@@ -193,7 +202,7 @@ export default function Home(props) {
       let response = await fetch("http://foodact.maresa.ma/api/fournisseurs", {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
+          //Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
@@ -236,7 +245,7 @@ export default function Home(props) {
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
+            //Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
@@ -328,7 +337,7 @@ export default function Home(props) {
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
+            //Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
@@ -361,7 +370,7 @@ export default function Home(props) {
       let response = await fetch("http://foodact.maresa.ma/api/prix_paniers", {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
+          //Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
@@ -384,7 +393,7 @@ export default function Home(props) {
       let response = await fetch("http://foodact.maresa.ma/api/panier_names", {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
+          //Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
@@ -425,7 +434,6 @@ export default function Home(props) {
       prixPaniers,
       panierNames,
     }));
-    //console.log("state mis a jour", state);
   }, [
     latitude,
     longitude,
@@ -435,6 +443,8 @@ export default function Home(props) {
     panierNames,
     prixPaniers,
   ]);
+  
+
 
   const paniersAndFournisseur =
     fournisseurs &&
@@ -499,7 +509,7 @@ export default function Home(props) {
 
   const paniersAndFournisseurByCategorie = (id) => {
     const date = new Date();
-    const soldOut =
+    const soldOut = 
       paniersAndFournisseurAddPanierPrice &&
       paniersAndFournisseurAddPanierPrice.reduce((acc, data) => {
         if (
@@ -545,6 +555,13 @@ export default function Home(props) {
     );
   };
 
+  const handleAddFavorites = (id) => {
+    let favorites = []
+    if (favorites.indexOf(id) === -1) {
+      favorites.push(id)
+    }
+  }
+
   if (
     !latitude ||
     !longitude ||
@@ -573,19 +590,24 @@ export default function Home(props) {
             return (
               <View key={categorie.id}>
                 <View style={styles.headerContainer}>
-                  <Text style={styles.category}>{categorie.nom}</Text>
-
-                  {/* <TouchableOpacity
+                  <View style={styles.categoryContainer}>
+                    <Text style={styles.category}>{categorie.nom}</Text>
+                    <Favorites categorie={categorie.id} />
+                  </View>
+                  <TouchableOpacity
                     onPress={() => {
                       navigation.navigate("ProductCards", {
-                        //title: category.nom,
+                        title: categorie.nom,
+                        id: categorie.id,
+                        data: paniersAndFournisseurByCategorie(categorie.id),
+                        latitude: latitude,
+                        longitude: longitude
+                        
                       });
                     }}
                   >
-                    <Text style={styles.link}>Tout voir</Text>
-                  </TouchableOpacity> */}
-
-                <Favorites />
+                    <Text style={styles.link}>{`Tout voir >`} </Text>
+                  </TouchableOpacity>
                 </View>
 
                 <FlatList
@@ -677,10 +699,13 @@ const styles = StyleSheet.create({
   headerContainer: {
     flex: 1,
     flexDirection: "row",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
     alignItems: "center",
     paddingTop: 10,
     margin: 0,
+  },
+  categoryContainer: {
+    flexDirection: 'row'
   },
   field: {
     width: 300,

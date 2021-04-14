@@ -6,7 +6,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 
 
 import Home from '../screens/Home'
-import ProductCards from '../screens/ProductCard'
+import ProductCards from '../screens/ProductCards'
 import ProductDetail from '../screens/ProductDetail'
 import SignIn from '../screens/SignIn'
 import SignUp from '../screens/SignUp'
@@ -72,10 +72,11 @@ function BottomTabsNavigation() {
         }}
       />
       <Stack.Screen
-          name="SignIn"
-          component={SignIn}
+          name="ProductCards"
+          component={ProductCards}
           options={{
-            title: 'FoodAct',
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            title: '',
             headerStyle: {
               backgroundColor: '#16214b',
             },

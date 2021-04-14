@@ -6,22 +6,40 @@ import {
   Image,
   Text,
   TouchableOpacity,
+  Switch
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 //import CheckBox from '@react-native-community/checkbox';
 import Input from "../components/Input";
 import Button from "../components/Button";
+import { isEnabled } from "react-native/Libraries/Performance/Systrace";
 
 class SignIn extends React.Component {
   state = {
-    username: "",
-    password: "",
-    //isFormValid: false,
+    login: {
+      username: "",
+      password: "",
+    },
+    isFormValid: false,
+    isEnabledRemeberMe: false,
+    isEnabledCgu: false
   };
 
+
+  toggleSwitchRememberMe = () => { 
+    const { isEnabledRemeberMe } = this.state
+    this.setState(() => ({isEnabledRemeberMe: !isEnabledRemeberMe}))
+  }
+
+  toggleSwitchCgu = () => { 
+    const { isEnabledCgu } = this.state
+    this.setState(() => ({isEnabledCgu: !isEnabledCgu}))
+  }
+
+
   checkFormValidity = () => {
-    const { username, password, isFormValid } = this.state;
+    const { login: { username, password }, isFormValid } = this.state;
     
     let isValid = [username, password].every((value) => value.length > 0);
     const emailRegex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
@@ -42,7 +60,7 @@ class SignIn extends React.Component {
         headers: new Headers({
           "Content-Type": "application/json",
         }),
-        body: JSON.stringify(this.state),
+        body: JSON.stringify(this.state.login),
       });
 
       let datas = await response.json();
@@ -58,16 +76,17 @@ class SignIn extends React.Component {
   };
 
   onChangeText = (key, val) => {
+    const { login } = this.state
     //this.setState(() => ({ [key]: val.trim() }), this.checkFormValidity)
     this.setState(
-      () => ({ [key]: val.trim() }),
-      () => console.log("testtttt", this.state)
-    );
+      () => ({ login: { ...login, [key]: val.trim() } }), this.checkFormValidity)
   };
+
+  
 
   render() {
     const { navigation } = this.props;
-    const { username, password, isFormValid } = this.state;
+    const { login: { username, password }, isFormValid, isEnabledRemeberMe, isEnabledCgu } = this.state;
     console.log("state", this.state);
     return (
       <ScrollView style={styles.container}>
@@ -102,6 +121,13 @@ class SignIn extends React.Component {
                 tintColors={{ true: '#ff6600', false: 'lightgrey'}}
                 style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
               /> */}
+              <Switch
+                trackColor={{ false: "#767577", true: "#ffce00" }}
+                thumbColor={isEnabledRemeberMe ? "#ff6600" : "#f4f3f4"}
+                ios_backgroundColor="lightgrey"
+                onValueChange={this.toggleSwitchRememberMe}
+                value={isEnabledRemeberMe}
+              />
               <Text>Se souvenir de moi</Text>
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -109,6 +135,13 @@ class SignIn extends React.Component {
                 tintColors={{ true: '#ff6600', false: 'lightgrey' }}
                 style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
               /> */}
+              <Switch
+                trackColor={{ false: "#767577", true: "#ffce00" }}
+                thumbColor={isEnabledCgu ? "#ff6600" : "#f4f3f4"}
+                ios_backgroundColor="lightgrey"
+                onValueChange={this.toggleSwitchCgu}
+                value={isEnabledCgu}
+              />
               <Text>Accepter les CGU</Text>
             </View>
 
@@ -121,7 +154,7 @@ class SignIn extends React.Component {
               }}
               size="sm"
               backgroundColor="#ff6600"
-              //disabled={!isFormValid}
+              disabled={!isEnabledCgu || !isFormValid}
             />
             <Text>Nouveau chez FoodAct ?</Text>
             <View style={{ alignItems: "center" }}>
@@ -144,6 +177,8 @@ class SignIn extends React.Component {
     );
   }
 }
+
+
 
 const styles = StyleSheet.create({
   signInContainer: {
