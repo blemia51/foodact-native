@@ -5,15 +5,15 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialIcons } from '@expo/vector-icons'
 
 
-import Home from '../screens/Home'
+import Home from '../containers/HomeContainer'
 import ProductCards from '../screens/ProductCards'
 import ProductDetail from '../screens/ProductDetail'
-import SignIn from '../screens/SignIn'
+import SignIn from '../containers/SignInContainer'
 import SignUp from '../screens/SignUp'
-import Menu from '../screens/Menu'
+import Menu from '../containers/MenuContainer'
 import FaqClient from '../screens/FaqClient'
 import ModalAddAddress from '../screens/ModalAddAddress'
-import MyFavorites from '../screens/MyFavorites'
+import MyFavorites from '../containers/MyFavoritesContainer'
 
 
 const Stack = createStackNavigator();

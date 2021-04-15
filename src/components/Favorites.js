@@ -17,9 +17,16 @@ export default class Favorites extends PureComponent {
 
   render() {
     const { isFavorites } = this.state;
+    //console.log('les props', this.props)
     return (
       <View>
-        <TouchableOpacity onPress={() => {this.setState({isFavorites: !isFavorites})}}>
+        <TouchableOpacity 
+          onPress={() => {
+            this.setState({isFavorites: !isFavorites
+          }),
+            this.props.onPress(this.props.categorie)
+            //console.log(this.props.favorites)
+      }}>
           <MaterialIcons
             name="favorite-border"
             color={isFavorites ? "#ff6600" : "lightgrey"}

@@ -25,6 +25,7 @@ class SignIn extends React.Component {
     isEnabledRemeberMe: false,
     isEnabledCgu: false
   };
+  
 
 
   toggleSwitchRememberMe = () => { 
@@ -52,28 +53,33 @@ class SignIn extends React.Component {
 
   onSubmit = async () => {
     //const { username, password } = this.state
-    const { navigation } = this.props
+    const { navigation, logIn, status } = this.props
+    const { login } = this.state
+    logIn(login)
+    console.log('les props', this.props)
+    status &&
+    navigation.navigate('Home')
 
-    try {
-      let response = await fetch("https://foodact.maresa.ma/api/login_check", {
-        method: "POST",
-        headers: new Headers({
-          "Content-Type": "application/json",
-        }),
-        body: JSON.stringify(this.state.login),
-      });
+  //   try {
+  //     let response = await fetch("https://foodact.maresa.ma/api/login_check", {
+  //       method: "POST",
+  //       headers: new Headers({
+  //         "Content-Type": "application/json",
+  //       }),
+  //       body: JSON.stringify(this.state.login),
+  //     });
 
-      let datas = await response.json();
-      console.log("le token", datas.token);
-      datas &&
-        (await AsyncStorage.setItem("token", datas.token),
-        navigation.navigate('Home')
-        );
+  //     let datas = await response.json();
+  //     console.log("le token", datas.token);
+  //     datas &&
+  //       (await AsyncStorage.setItem("token", datas.token),
+  //       navigation.navigate('Home')
+  //       );
 
-    } catch (error) {
-      console.error("erreur de connexion", error);
-    }
-  };
+  //   } catch (error) {
+  //     console.error("erreur de connexion", error);
+  //   }
+   };
 
   onChangeText = (key, val) => {
     const { login } = this.state
@@ -88,6 +94,7 @@ class SignIn extends React.Component {
     const { navigation } = this.props;
     const { login: { username, password }, isFormValid, isEnabledRemeberMe, isEnabledCgu } = this.state;
     console.log("state", this.state);
+    //console.log('props' , this.props)
     return (
       <ScrollView style={styles.container}>
         <View style={styles.signInContainer}>

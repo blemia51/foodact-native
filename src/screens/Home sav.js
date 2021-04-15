@@ -22,7 +22,10 @@ import * as Location from "expo-location";
 import { updateDate } from '../utils/functions'
 const jwtDecode = require('jwt-decode')
 
+//import Card from "../components/Card";
 import Header from "../components/Header";
+//import Nav from "../components/Nav";
+//import Location from "./src/components/Location";
 import Payment from "../components/Payment";
 import foodact_animated from "../assets/foodact_fadein.gif";
 
@@ -32,6 +35,12 @@ import Favorites from '../containers/FavoritesContainer'
 const initialState = {
   longitude: null,
   latitude: null,
+  categories: null,
+  fournisseurs: null,
+  paniers: null,
+  paniersName: null,
+  paniersPrice: null,
+  creneaux: null,
 };
 
 // const token =
@@ -47,15 +56,14 @@ export default function Home(props) {
     fetchPaniers,
     fetchPaniersName,
     fetchPaniersPrice,
-    fetchCreneauxFournisseurs,
     categories,
     fournisseurs,
     paniers,
     paniersName,
-    paniersPrice,
-    creneauxFournisseurs
+    paniersPrice
+
   } = props;
-  //console.log('creneaux',props.creneauxFournisseurs)
+  //console.log('prix des paniers',props.paniersPrice)
   const [userLocation, setUserLocation] = useState(null);
   const [state, setState] = useState(initialState);
   const [isLogged, setIsLogged] = useState(false)
@@ -63,19 +71,13 @@ export default function Home(props) {
   const {
     latitude,
     longitude,
+    //categories,
+    //fournisseurs,
+    //paniers,
+    //paniersName,
+    //paniersPrice,
+    creneaux,
   } = state;
-
-  useEffect(() => {
-    loadRessources();
-    getTokenNotification();
-    loadProfie();
-    fetchCategories()
-    fetchFournisseurs()
-    fetchPaniers()
-    fetchPaniersName()
-    fetchPaniersPrice()
-    fetchCreneauxFournisseurs()
-  }, []);
 
   const loadRessources = async () => {
     try {
@@ -111,7 +113,7 @@ export default function Home(props) {
         latitude,
         longitude,
       }));
-
+      //console.log("state", state);
     } catch (e) {
       console.error("error get userLocation", e);
     }
@@ -171,6 +173,7 @@ export default function Home(props) {
     }
   };
 
+  
   const loadProfie = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
@@ -187,13 +190,333 @@ export default function Home(props) {
     }
   };
 
+  
+  const getCategories = () => {
+    fetchCategories()
+    setState((prevState) => ({
+      ...prevState,
+      categories: categories,
+    }));
+  }
+  // const getCategories = async () => {
+  //   try {
+  //     let response = await fetch("http://foodact.maresa.ma/api/categories", {
+  //       method: "GET",
+  //       headers: {
+  //         ////Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     let datas = await response.json();
+  //     const categories =
+  //       datas &&
+  //       datas
+  //         .filter((data) => data.isActive && data.id !== 22)
+  //         .sort((a, b) => a.orderCategory - b.orderCategory);
+
+  //     setState((prevState) => ({
+  //       ...prevState,
+  //       categories: categories,
+  //     }));
+  //     //console.log('categories', categories);
+  //   } catch (error) {
+  //     console.error("connexion impossible", error);
+  //   }
+  // };
+
+  const getFournisseurs = () => {
+    fetchFournisseurs()
+    setState((prevState) => ({
+      ...prevState,
+      fournisseurs: fournisseurs,
+    }));
+
+  }
+
+  // const getFournisseurs = async () => {
+  //   try {
+  //     let response = await fetch("http://foodact.maresa.ma/api/fournisseurs", {
+  //       method: "GET",
+  //       headers: {
+  //         //Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     let datas = await response.json();
+  //     const fournisseurs =
+  //       datas &&
+  //       datas
+  //         .filter(
+  //           (data) =>
+  //             data.ville === "/api/villes/10" &&
+  //             data.isEnabled &&
+  //             data.paniers.length > 0
+  //         )
+  //         .map((fournisseur) => ({
+  //           id: fournisseur.id,
+  //           nom: fournisseur.nom,
+  //           adresse: fournisseur.adresse,
+  //           latitude: fournisseur.lat,
+  //           longitude: fournisseur.lng,
+  //           creneaux: fournisseur.expirationCreaneau,
+  //           paniers: fournisseur.paniers.map((data) =>
+  //             data.split("/")[3].toString("")
+  //           ),
+  //         }));
+
+  //     setState((prevState) => ({
+  //       ...prevState,
+  //       fournisseurs: fournisseurs,
+  //     }));
+  //     //console.log("fournisseurs", fournisseurs);
+  //   } catch (error) {
+  //     console.error("connexion impossible", error);
+  //   }
+  // };
+
+  const getCreneaux = async () => {
+    try {
+      let response = await fetch(
+        "http://foodact.maresa.ma/api/expiration_creaneaus",
+        {
+          method: "GET",
+          headers: {
+            //Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      let datas = await response.json();
+      const creneaux = optimiseCreneaux(datas);
+
+      setState((prevState) => ({
+        ...prevState,
+        creneaux: creneaux,
+      }));
+
+      //.log("creneaux", creneaux);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const optimiseCreneaux = (datas) => {
+    const weekCreneaux =
+      datas &&
+      datas.map((value) => ({
+        id: value.id,
+        lundi: {
+          dayName: 'lundi',
+          id: 1,
+          isActive: value.lunIsActive,
+          start: value.lunStart,
+          end: value.lunEnd,
+          marche: value.marcheLun,
+        },
+        mardi: {
+          dayName: 'mardi',
+          id: 2,
+          isActive: value.marIsActive,
+          start: value.marStart,
+          end: value.marEnd,
+          marche: value.marcheMar,
+        },
+        mercredi: {
+          dayName: 'mercredi',
+          id: 3,
+          isActive: value.merIsActive,
+          start: value.merStart,
+          end: value.merEnd,
+          marche: value.marcheMer,
+        },
+        jeudi: {
+          dayName: 'jeudi',
+          id: 4,
+          isActive: value.jeuIsActive,
+          start: value.jeuStart,
+          end: value.jeuEnd,
+          marche: value.marcheJeu,
+        },
+        vendredi: {
+          dayName: 'vendredi',
+          id: 5,
+          isActive: value.venIsActive,
+          start: value.venStart,
+          end: value.venEnd,
+          marche: value.marcheVen,
+        },
+        samedi: {
+          dayName: 'samedi',
+          id: 6,
+          isActive: value.samIsActive,
+          start: value.samStart,
+          end: value.samEnd,
+          marche: value.marcheSam,
+        },
+        dimanche: {
+          dayName: 'dimanche',
+          id: 0,
+          isActive: value.dimIsActive,
+          start: value.dimStart,
+          end: value.dimEnd,
+          marche: value.marcheDim,
+        }
+      }));
+    //console.log("week creneaux", weekCreneaux);
+    return weekCreneaux
+  };
+
+  const getPaniers =  () => {
+    fetchPaniers()
+    setState((prevState) => ({
+      ...prevState,
+      paniers: paniers,
+    }));
+
+
+  }
+  
+  // const getPaniers = async () => {
+  //   try {
+  //     let response = await fetch(
+  //       "http://foodact.maresa.ma/api/paniers?is_activated=true&fournisseur.is_enabled=true",
+  //       {
+  //         method: "GET",
+  //         headers: {
+  //           //Authorization: `Bearer ${token}`,
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+  //     let datas = await response.json();
+  //     const date = new Date();
+  //     //console.log("date", Date.parse(date));
+
+  //     //.filter(
+  //     //(data) => data.isActivated
+  //     //&& Date.parse(data.DateExpirAffichage) - Date.parse(date) >= 0
+  //     //);
+  //     // const paniersdate = datas
+  //     // .map((panier) => panier.DateExpirAffichage);
+  //     // console.log('date panier', paniersdate)
+
+  //     setState((prevState) => ({
+  //       ...prevState,
+  //       paniers: datas,
+  //     }));
+
+  //     //console.log("paniers", paniers);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  const getPanierPrice = () => {
+    fetchPaniersPrice()
+    setState((prevState) => ({
+      ...prevState,
+      paniersPrice: paniersPrice,
+    }));
+
+  }
+
+  // const getPanierPrice = async () => {
+  //   try {
+  //     let response = await fetch("http://foodact.maresa.ma/api/prix_paniers", {
+  //       method: "GET",
+  //       headers: {
+  //         //Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     let datas = await response.json();
+  //     const prixPaniers = datas;
+
+  //     setState((prevState) => ({
+  //       ...prevState,
+  //       prixPaniers: prixPaniers,
+  //     }));
+
+  //     //console.log('prix paniers', prixPaniers);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  const getPanierName = () => {
+    fetchPaniersName()
+    setState((prevState) => ({
+      ...prevState,
+      paniesrName: paniersName,
+    }));
+  }
+
+  // const getPanierName = async () => {
+  //   try {
+  //     let response = await fetch("http://foodact.maresa.ma/api/panier_names", {
+  //       method: "GET",
+  //       headers: {
+  //         //Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     let datas = await response.json();
+  //     const panierNames = datas;
+
+  //     setState((prevState) => ({
+  //       ...prevState,
+  //       panierNames: panierNames,
+  //     }));
+
+  //     //console.log('noms panier', panierNames);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  useEffect(() => {
+    loadRessources();
+    getTokenNotification();
+    loadProfie();
+    getCategories();
+    getFournisseurs();
+    getCreneaux();
+    getPaniers();
+    getPanierPrice();
+    getPanierName();
+  }, []);
+
+  useEffect(() => {
+    setState((prevState) => ({
+      ...prevState,
+      latitude,
+      longitude,
+      categories,
+      fournisseurs,
+      paniers,
+      paniersPrice,
+      paniersName,
+    }));
+  }, [
+    latitude,
+    longitude,
+    categories,
+    fournisseurs,
+    paniers,
+    paniersName,
+    paniersPrice,
+  ]);
+
   useEffect(() => {
     setIsLogged
   }, [isLogged])
   
+
+
   const paniersAndFournisseur =
     fournisseurs &&
     paniers &&
+    //categories &&
     fournisseurs.flatMap((val) =>
       val.paniers.map((key) => ({
         ...val,
@@ -201,19 +524,23 @@ export default function Home(props) {
       }))
     );
 
+  //console.log('paniersAndFournisseur', paniersAndFournisseur)
+
   const paniersAndFournisseurAddCreneaux =
-    creneauxFournisseurs &&
+    creneaux &&
     paniersAndFournisseur &&
     paniersAndFournisseur.map(
       (data) =>
         data && {
           ...data,
-          creneaux: creneauxFournisseurs.find(
+          creneaux: creneaux.find(
             (creneau) =>
               `/api/expiration_creaneaus/${creneau.id}` === data.creneaux
           ),
         }
     );
+
+  //console.log('paniersAndFournisseurAddCreneaux', paniersAndFournisseurAddCreneaux)
 
   const paniersAndFournisseurAddPanierName =
     paniersName &&
@@ -229,6 +556,8 @@ export default function Home(props) {
         }
     );
 
+  //console.log('paniersAndFournisseurAddPanierName', paniersAndFournisseurAddPanierName)
+
   const paniersAndFournisseurAddPanierPrice =
     paniersPrice &&
     paniersAndFournisseurAddPanierName &&
@@ -242,6 +571,8 @@ export default function Home(props) {
           ).prix,
         }
     );
+
+  //console.log('paniersAndFournisseurAddPanierPrice',paniersAndFournisseurAddPanierPrice)
 
   const paniersAndFournisseurByCategorie = (id) => {
     const date = new Date();
@@ -299,21 +630,21 @@ export default function Home(props) {
       console.log(favorites)
     }
   }
-  console.log(state)
 
   if (
     !latitude ||
     !longitude ||
-    !categories ||
-    !fournisseurs ||
-    !paniers ||
-    !paniersPrice ||
-    !paniersName ||
-    !creneauxFournisseurs
+    !state.categories ||
+    !state.fournisseurs ||
+    !state.paniers ||
+    !state.paniersPrice ||
+    !state.paniersName ||
+    !state.creneaux
   ) {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Image source={foodact_animated} />
+        {/* <ActivityIndicator size="large" color="lightgrey" /> */}
       </View>
     );
   }
@@ -340,6 +671,7 @@ export default function Home(props) {
                         data: paniersAndFournisseurByCategorie(categorie.id),
                         latitude: latitude,
                         longitude: longitude
+                        
                       });
                     }}
                   >
@@ -353,6 +685,8 @@ export default function Home(props) {
                   maxToRenderPerBatch={6}
                   initialNumToRender={2}
                   data={paniersAndFournisseurByCategorie(categorie.id)}
+                  //data={paniersAndFournisseurByCategorie(21)}
+                  //renderItem={renderItem}
                   renderItem={({ item }) => (
                     <RenderItem
                       item={item}
@@ -369,6 +703,7 @@ export default function Home(props) {
         {/* <PaymentCardTextField
           style={styles.field}
         /> */}
+        {/* <Location /> */}
         <StatusBar style="auto" />
         <View
           style={{ flex: 1, justifyContent: "center", flexDirection: "row" }}
@@ -386,6 +721,7 @@ export default function Home(props) {
           /> */}
         </View>
       </ScrollView>
+      {/* <Nav navigation={navigation} /> */}
     </>
   );
 }
@@ -408,8 +744,10 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   title: {
+    //paddingHorizontal: 5,
     fontSize: 14,
     fontWeight: "bold",
+    //height: 60,
     marginTop: 0,
   },
   category: {
@@ -423,6 +761,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingHorizontal: 10,
     color: "#ff6600",
+  },
+  image: {
+    // width: 50
   },
   headerContainer: {
     flex: 1,

@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import ItemCard from "./ItemCard";
 import { updateDate } from '../utils/functions'
 
-export default class RenderItem extends Component {
+export default class RenderItem extends PureComponent {
 
   timeOut = (value, creneaux) => {
     const date = new Date();

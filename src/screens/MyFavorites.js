@@ -1,13 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 export default function MyFavorites(props) {
-  const { myFavorites } = props;
+  const { favorites } = props;
+  const [fav, setFav] = useState()
+  console.log('fav', fav)
+  console.log('props favorites', favorites)
+
+  useEffect(() => {
+    setFav(favorites)
+  }, [])
+
+  useEffect(() => {
+    setFav(favorites)
+  }, [favorites], console.log('rerender?', fav))
+
+  const renderFavorites = () => {
+    return (
+      <Text>TOTO</Text>
+    )
+  }
 
   return (
     <>
-      {myFavorites.length < 1 && (
+      {favorites.length < 1 ? (
         <View style={styles.container}>
           <Text>
             Vous n'avez pas encore enregitré de categorie dans vos favoris
@@ -18,13 +35,18 @@ export default function MyFavorites(props) {
             <Text> pour les ajouter ! </Text>
           </View>
         </View>
-      )}
+      )
+      :
+      <View>
+        {renderFavorites()}
+      </View>
+    }
     </>
   );
 }
 
 MyFavorites.defaultProps = {
-  myFavorites: [],
+  favorites: [],
 };
 
 const styles = StyleSheet.create({

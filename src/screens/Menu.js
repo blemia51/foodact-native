@@ -1,9 +1,43 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MaterialIcons } from "@expo/vector-icons";
+import UserContext from '../components/UserContext'
 
-export default function Menu({ navigation }) {
-  const islogged = false;
+export default function Menu({ route, navigation, status }) {
+
+  console.log('route', route);
+  console.log('status', status)
+
+  //const toto = useContext(UserContext)
+
+  const [isLogged, setIsLogged] = useState(false)  
+  
+  const loadProfie = async () => {
+    //const token = await AsyncStorage.getItem("token");
+    //const tokenDecoded = jwtDecode(token)
+    console.log("isLogged", status);
+    
+    status && setIsLogged(true)
+    
+  };
+
+  const removeToken = async () => {
+      try {
+        await AsyncStorage.removeItem("token")
+        navigation.navigate('Home')
+      } catch(e) {
+        console.error(e)
+      }
+    
+      console.log('Done.')
+    }
+  
+  
+  useEffect(()=> {
+    loadProfie()
+  }, [])
+
   return (
     <View style={styles.container}>
       <View style={styles.menuItems}>
@@ -19,7 +53,7 @@ export default function Menu({ navigation }) {
       </View>
 
       <View style={styles.lineStyle} />
-      {islogged ? (
+      {isLogged ? (
         <>
           <View style={styles.menuItems}>
             <MaterialIcons name="event-note" color="lightgrey" size={30} />
@@ -37,8 +71,15 @@ export default function Menu({ navigation }) {
           </View>
 
           <View style={styles.menuItems}>
-            <MaterialIcons name="logout" color="lightgrey" size={30} />
-            <Text style={styles.textItems}>Déconnection</Text>
+            <TouchableOpacity
+              style={styles.menuItems}
+              onPress={() => {
+                removeToken()
+              }}
+            >
+              <MaterialIcons name="logout" color="lightgrey" size={30} />
+              <Text style={styles.textItems}>Déconnection</Text>
+            </TouchableOpacity>
           </View>
         </>
       ) : (

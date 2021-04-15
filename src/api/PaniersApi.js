@@ -6,7 +6,18 @@ export default function PaniersApi() {
   })
 
   async function fetchPaniers() {
-    return fetch('api/')
+    try {
+      const response = await fetch('http://foodact.maresa.ma/api/paniers?is_activated=true&fournisseur.is_enabled=true', {
+      method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const datas = await response.json();
+      return datas
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   async function fetchPaniersPrice() {
