@@ -22,7 +22,7 @@ import { StatusBar } from 'react-native';
 import { updateDate } from "../utils/functions";
 const jwtDecode = require("jwt-decode");
 
-//import Header from "../components/Header";
+import Header from "../components/Header";
 //import Payment from "../components/Payment";
 import foodact_animated from "../assets/foodact_fadein.gif";
 
@@ -332,7 +332,7 @@ export default function Home(props) {
       <View style={{ 
         flex: 1, 
         }}>
-          {/* <Header /> */}
+          <Header />
           <View style={{ 
             flex: 1, 
             alignItems: "center", 
@@ -347,7 +347,7 @@ export default function Home(props) {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
-      {/* <Header /> */}
+      <Header />
       {/* <Payment /> */}
       <ScrollView style={styles.container}>
         {categories &&

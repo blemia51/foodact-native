@@ -8,7 +8,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 import Home from '../containers/HomeContainer'
 import ProductDetail from '../screens/ProductDetail'
 import ProductCards from '../screens/ProductCards'
-import ProductOrder from '../screens/ProductOrder'
+import ProductOrder from '../containers/ProductOrderContainer'
 import SignIn from '../containers/SignInContainer'
 import SignUp from '../screens/SignUp'
 import Menu from '../containers/MenuContainer'
@@ -31,16 +31,16 @@ function HomeStackScreen() {
         
         options={{
           //cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-          headerTitle: () => <LogoHeader />,
+          // headerTitle: () => <LogoHeader />,
           headerStyle: {
             backgroundColor: '#16214b',
-            height: 85
+            //height: 85
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
             fontWeight: 'bold',
           },
-          //headerShown: false,
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -51,7 +51,7 @@ function HomeStackScreen() {
           title: '',
           headerStyle: {
             backgroundColor: '#16214b',
-            height: 85
+            //height: 85
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -68,7 +68,7 @@ function HomeStackScreen() {
           title: 'Reservez',
           headerStyle: {
             backgroundColor: '#16214b',
-            height: 85
+            //height: 85
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -85,7 +85,7 @@ function HomeStackScreen() {
           // title: 'Reservez',
           // headerStyle: {
           //   backgroundColor: '#16214b',
-          //   height: 85
+          //   //height: 85
           // },
           // headerTintColor: '#fff',
           // headerTitleStyle: {
@@ -111,7 +111,7 @@ function FavoritesStackScreen() {
           title: 'Mes Favoris',
           headerStyle: {
             backgroundColor: '#16214b',
-            height: 85
+            //height: 85
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -136,7 +136,7 @@ function ExploreStackScreen() {
           title: 'Explorer',
           headerStyle: {
             backgroundColor: '#16214b',
-            height: 85
+            //height: 85
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -161,7 +161,7 @@ function MenuStackScreen() {
           title: 'Menu',
           headerStyle: {
             backgroundColor: '#16214b',
-            height: 85
+            //height: 85
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -178,7 +178,7 @@ function MenuStackScreen() {
           title: 'Mon Profil',
           headerStyle: {
             backgroundColor: '#16214b',
-            height: 85
+            //height: 85
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -194,7 +194,7 @@ function MenuStackScreen() {
           title: 'FAQ',
           headerStyle: {
             backgroundColor: '#16214b',
-            height: 85
+            //height: 85
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -210,7 +210,7 @@ function MenuStackScreen() {
           title: 'Se connecter',
           headerStyle: {
             backgroundColor: '#16214b',
-            height: 85
+            //height: 85
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -226,7 +226,7 @@ function MenuStackScreen() {
           title: 'S\'inscrire',
           headerStyle: {
             backgroundColor: '#16214b',
-            height: 85
+            //height: 85
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -242,7 +242,7 @@ function MenuStackScreen() {
           title: '',
           headerStyle: {
             backgroundColor: '#16214b',
-            height: 85
+            //height: 85
           },
           headerTintColor: '#fff',
           headerTitleStyle: {

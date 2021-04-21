@@ -30,7 +30,7 @@ export default function Header()  {
 const styles = StyleSheet.create({
   header: {
     backgroundColor: "#16214b",
-    paddingTop: 40,
+    paddingTop: 10,
     paddingBottom: 15,
     //borderBottomColor: "#ffffff",
     //borderBottomWidth: 1,
