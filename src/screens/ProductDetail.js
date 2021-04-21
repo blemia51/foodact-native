@@ -83,7 +83,7 @@ export default class ProductDetail extends Component {
       adresse,
       distance,
     } = route.params;
-    //console.log('route', route);
+    //console.log('date detail', date);
     return (
       <ScrollView>
         <View style={styles.container}>
@@ -160,6 +160,7 @@ export default class ProductDetail extends Component {
                 navigation.navigate(
                   'ProductOrder', {
                     creneaux: creneaux,
+                    date: date,
                     paniername: paniername,
                     nom: nom,
                     quantite: quantity,

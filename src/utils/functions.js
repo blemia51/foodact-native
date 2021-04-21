@@ -155,6 +155,7 @@ export const optimiseCreneaux = (datas) => {
   return weekCreneaux
 };
 
+
 export function getHoursFromDate(date) {
   return getTwoDigits(new Date(date).getHours())
 }
@@ -170,4 +171,22 @@ export function getTimeFromDate(date) {
 
 export function getTwoDigits(number) {
   return (number < 10 ? '0' : '') + number
+}
+
+export function getDayFromDate(date) {
+  return getTwoDigits(new Date(date).getDate())
+}
+
+export function getMonthFromDate(date) {
+  return getTwoDigits(new Date(date).getMonth())
+}
+
+export function getFullYearFromDate(date) {
+  return new Date(date).getFullYear()
+}
+
+
+export function getLongDate(date) {
+  
+  return `${getDayFromDate(date)}/${getMonthFromDate(date)}/${getFullYearFromDate(date)}`
 }
