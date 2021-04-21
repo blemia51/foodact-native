@@ -50,7 +50,7 @@ const Item = ({
           })
         }}
       >
-        <View style={{width: '100%'}}>
+        <View style={{width: '100%', opacity: isTimeOut ? 0.5 : 1,}}>
         <Image
           source={{
             uri: `http://foodact.maresa.ma/${slug}`,
@@ -61,18 +61,20 @@ const Item = ({
             borderTopRightRadius: 10,
             borderTopLeftRadius: 10,
             overflow: "hidden",
-            opacity: isTimeOut ? 0.4 : 1,
+            //opacity: isTimeOut ? 0.4 : 1,
           }}
           resizeMode="cover"
           alt="food"
         />
-        </View>
         {!isTimeOut &&
           <Basket quantity={quantity} />
         }
-        <Price price={price} />
+        <Price isTimeOut= {isTimeOut} price={price} />
         <Discount discount={discount} />
+        
+        </View>
         <CountDown date={date} />
+        
         <View
           style={{
             flex: 1,

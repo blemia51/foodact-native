@@ -2,41 +2,60 @@ import React, { useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MaterialIcons } from "@expo/vector-icons";
-import UserContext from '../components/UserContext'
+import { useFocusEffect } from '@react-navigation/native';
+import ModalAddAddress from '../screens/ModalAddAddress'
 
-export default function Menu({ route, navigation, status }) {
+export default function Menu({ route, navigation, status, token, logOut }) {
 
-  console.log('route', route);
-  console.log('status', status)
-
-  //const toto = useContext(UserContext)
-
-  const [isLogged, setIsLogged] = useState(false)  
+  //console.log('route', route);
   
-  const loadProfie = async () => {
-    //const token = await AsyncStorage.getItem("token");
+  
+  const [isLogged, setIsLogged] = useState('')
+  const [isModalVisible, setIsModalVisible] = useState(false)  
+  
+  const loadProfile = async () => {
+    const token = await AsyncStorage.getItem("token");
     //const tokenDecoded = jwtDecode(token)
-    console.log("isLogged", status);
-    
-    status && setIsLogged(true)
-    
+    console.log("status", status);
+    token && setIsLogged(token || '')
   };
 
-  const removeToken = async () => {
-      try {
-        await AsyncStorage.removeItem("token")
-        navigation.navigate('Home')
-      } catch(e) {
-        console.error(e)
-      }
-    
-      console.log('Done.')
+  const removeToken = () => {
+    logOut()
+    setIsLogged(token)
+    navigation.navigate('Home')
+    console.log('Done.')
+    }
+
+  useEffect(() => {
+    setIsLogged(token)
+    console.log("rerender menu", token)
+  }, [token])
+
+  const load = () => {
+      token && setIsLogged(true)
     }
   
-  
-  useEffect(()=> {
-    loadProfie()
-  }, [])
+  useFocusEffect(
+    React.useCallback(() => {
+      // Do something when the screen is focused
+      setIsLogged(token)
+      console.log('isLogged', isLogged)
+      console.log('le token dans menu', token)
+
+      
+      return () => {
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+        //!token && setIsLogged(false)
+        console.log('bye bye')
+      };
+    }, [])
+  );
+
+  const setModalVisible = () => {
+    setIsModalVisible(!isModalVisible)
+  }
 
   return (
     <View style={styles.container}>
@@ -48,27 +67,34 @@ export default function Menu({ route, navigation, status }) {
           }}
         >
           <MaterialIcons name="shopping-cart" color="lightgrey" size={30} />
-          <Text style={styles.textItems}>Commander</Text>
+          <Text style={styles.textItems}>Paniers</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.lineStyle} />
-      {isLogged ? (
+      {token ? (
         <>
           <View style={styles.menuItems}>
             <MaterialIcons name="event-note" color="lightgrey" size={30} />
-            <Text style={styles.textItems}>Mes Commandes</Text>
+            <Text style={styles.textItems}>Mes Paniers</Text>
           </View>
 
           <View style={styles.menuItems}>
+            <TouchableOpacity
+              style={styles.menuItems}
+              onPress={() => {
+                navigation.navigate("Profile");
+              }}
+            >
             <MaterialIcons name="account-circle" color="lightgrey" size={30} />
             <Text style={styles.textItems}>Mon Profil</Text>
+            </TouchableOpacity>
           </View>
 
-          <View style={styles.menuItems}>
+          {/* <View style={styles.menuItems}>
             <MaterialIcons name="credit-card" color="lightgrey" size={30} />
             <Text style={styles.textItems}>Information Paiement</Text>
-          </View>
+          </View> */}
 
           <View style={styles.menuItems}>
             <TouchableOpacity
@@ -130,7 +156,7 @@ export default function Menu({ route, navigation, status }) {
         <TouchableOpacity
           style={styles.menuItems}
           onPress={() => {
-            navigation.navigate('ModalAddAddress')
+            setIsModalVisible()
           }}
         >
           <MaterialIcons name="location-on" color="lightgrey" size={30} />
@@ -138,12 +164,13 @@ export default function Menu({ route, navigation, status }) {
         </TouchableOpacity>
       </View>
 
+      <ModalAddAddress modalVisible={isModalVisible}/>
+
       <View style={styles.menuItems}>
         <TouchableOpacity
           style={styles.menuItems}
           onPress={() => { }}
         >
-
           <MaterialIcons name="event-note" color="lightgrey" size={30} />
           <Text style={styles.textItems}>CGU</Text>
         </TouchableOpacity>
@@ -155,7 +182,7 @@ export default function Menu({ route, navigation, status }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 50,
+    marginTop: 20,
     //backgroundColor: '#16214b',
   },
   menuItems: {

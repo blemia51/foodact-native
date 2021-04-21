@@ -6,12 +6,13 @@ export default class Input extends PureComponent {
 
   
   render() {
-    const { value, label, name, placeholder, onChangeText, ...props } = this.props;
+    const { value, defaultValue, label, name, placeholder, onChangeText, ...props } = this.props;
     return (
       <View style={styles.inputcontainer}>
         <Text style={styles.label}>{label}</Text>
         <TextInput
           value={value}
+          defaultValue={defaultValue}
           name={name}
           style={styles.Input}
           placeholder={placeholder}
@@ -30,12 +31,12 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
     width: '100%', 
     justifyContent: 'center', 
-    marginTop: 12,
+    marginTop: 14,
   },
   Input: {
     width: '100%',
-    paddingVertical: 9,
-    paddingTop: 0,
+    paddingVertical: 1,
+    paddingTop: 16,
     paddingLeft: 9,
     borderWidth: 1,
     borderRadius: 3,

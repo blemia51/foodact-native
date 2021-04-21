@@ -8,11 +8,11 @@ export default connect(
     (state) => ({
       //token: state.auth.token,
       token: state.userState.token,
-      userID: state.userState.userID,
+      userId: state.userState.userId,
       status: state.userState.status,
     }),
     (dispatch) => ({
-      saveToken: (token, userID) => dispatch(saveToken(token, userID)),
+      saveToken: (token, userId) => dispatch(saveToken(token, userId)),
       logIn: (login) => dispatch(logIn(login)),
     })
   )(SignIn);

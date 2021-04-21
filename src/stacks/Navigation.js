@@ -6,20 +6,23 @@ import { MaterialIcons } from '@expo/vector-icons'
 
 
 import Home from '../containers/HomeContainer'
-import ProductCards from '../screens/ProductCards'
 import ProductDetail from '../screens/ProductDetail'
+import ProductCards from '../screens/ProductCards'
+import ProductOrder from '../screens/ProductOrder'
 import SignIn from '../containers/SignInContainer'
 import SignUp from '../screens/SignUp'
 import Menu from '../containers/MenuContainer'
 import FaqClient from '../screens/FaqClient'
 import ModalAddAddress from '../screens/ModalAddAddress'
 import MyFavorites from '../containers/MyFavoritesContainer'
+import UserProfile from '../containers/UserProfileContainer'
+import Explore from '../screens/Explore'
+import LogoHeader from '../components/LogoHeader'
 
 
 const Stack = createStackNavigator();
-const BottomTabs = createBottomTabNavigator();
 
-function BottomTabsNavigation() {
+function HomeStackScreen() {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -28,25 +31,27 @@ function BottomTabsNavigation() {
         
         options={{
           //cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-          title: 'FoodAct',
+          headerTitle: () => <LogoHeader />,
           headerStyle: {
             backgroundColor: '#16214b',
+            height: 85
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
             fontWeight: 'bold',
           },
-          headerShown: false,
+          //headerShown: false,
         }}
       />
       <Stack.Screen
-        name="MyFavorites"
-        component={MyFavorites}
+        name="ProductCards"
+        component={ProductCards}
         options={{
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-          title: 'Mes Favoris',
+          title: '',
           headerStyle: {
             backgroundColor: '#16214b',
+            height: 85
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -63,6 +68,7 @@ function BottomTabsNavigation() {
           title: 'Reservez',
           headerStyle: {
             backgroundColor: '#16214b',
+            height: 85
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -72,24 +78,26 @@ function BottomTabsNavigation() {
         }}
       />
       <Stack.Screen
-          name="ProductCards"
-          component={ProductCards}
-          options={{
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-            title: '',
-            headerStyle: {
-              backgroundColor: '#16214b',
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-            //headerShown: false,
-          }}
-        />
+        name="ProductOrder"
+        component={ProductOrder}
+        options={{
+          // cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          // title: 'Reservez',
+          // headerStyle: {
+          //   backgroundColor: '#16214b',
+          //   height: 85
+          // },
+          // headerTintColor: '#fff',
+          // headerTitleStyle: {
+          //   fontWeight: 'bold',
+          // },
+          headerShown: false,
+        }}
+      />
     </Stack.Navigator>
   )
 }
+
 
 const FavoritesStack = createStackNavigator()
 
@@ -103,6 +111,7 @@ function FavoritesStackScreen() {
           title: 'Mes Favoris',
           headerStyle: {
             backgroundColor: '#16214b',
+            height: 85
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -112,6 +121,31 @@ function FavoritesStackScreen() {
         }}
       />
     </FavoritesStack.Navigator>
+  )
+}
+
+const ExploreStack = createStackNavigator()
+
+function ExploreStackScreen() {
+  return (
+    <ExploreStack.Navigator>
+      <MenuStack.Screen
+        name="Explore" 
+        component={Explore}
+        options={{
+          title: 'Explorer',
+          headerStyle: {
+            backgroundColor: '#16214b',
+            height: 85
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          //headerShown: false,
+        }}
+      />
+    </ExploreStack.Navigator>
   )
 }
 
@@ -127,12 +161,29 @@ function MenuStackScreen() {
           title: 'Menu',
           headerStyle: {
             backgroundColor: '#16214b',
+            height: 85
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
             fontWeight: 'bold',
           },
           //headerShown: false,
+        }}
+      />
+       <MenuStack.Screen
+        name="Profile"
+        component={UserProfile}
+        options={{
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          title: 'Mon Profil',
+          headerStyle: {
+            backgroundColor: '#16214b',
+            height: 85
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
         }}
       />
       <MenuStack.Screen
@@ -143,6 +194,7 @@ function MenuStackScreen() {
           title: 'FAQ',
           headerStyle: {
             backgroundColor: '#16214b',
+            height: 85
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -158,6 +210,7 @@ function MenuStackScreen() {
           title: 'Se connecter',
           headerStyle: {
             backgroundColor: '#16214b',
+            height: 85
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -173,6 +226,7 @@ function MenuStackScreen() {
           title: 'S\'inscrire',
           headerStyle: {
             backgroundColor: '#16214b',
+            height: 85
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -188,6 +242,7 @@ function MenuStackScreen() {
           title: '',
           headerStyle: {
             backgroundColor: '#16214b',
+            height: 85
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -199,6 +254,7 @@ function MenuStackScreen() {
   );
 }
 
+const BottomTabs = createBottomTabNavigator();
 
 function Navigation() {
   return (
@@ -230,12 +286,12 @@ function Navigation() {
       >
         <BottomTabs.Screen
           name='Accueil'
-          component={BottomTabsNavigation}
+          component={HomeStackScreen}
         />
-        {/* <BottomTabs.Screen
+        <BottomTabs.Screen
           name='Explorer'
-          component={ProductCards}
-        /> */}
+          component={ExploreStackScreen}
+        />
         <BottomTabs.Screen
           name='Favoris'
           component={FavoritesStackScreen}

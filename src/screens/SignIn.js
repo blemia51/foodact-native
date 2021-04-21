@@ -6,14 +6,14 @@ import {
   Image,
   Text,
   TouchableOpacity,
-  Switch
+  Switch,
+  Alert
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 //import CheckBox from '@react-native-community/checkbox';
 import Input from "../components/Input";
 import Button from "../components/Button";
-import { isEnabled } from "react-native/Libraries/Performance/Systrace";
 
 class SignIn extends React.Component {
   state = {
@@ -26,8 +26,6 @@ class SignIn extends React.Component {
     isEnabledCgu: false
   };
   
-
-
   toggleSwitchRememberMe = () => { 
     const { isEnabledRemeberMe } = this.state
     this.setState(() => ({isEnabledRemeberMe: !isEnabledRemeberMe}))
@@ -37,7 +35,6 @@ class SignIn extends React.Component {
     const { isEnabledCgu } = this.state
     this.setState(() => ({isEnabledCgu: !isEnabledCgu}))
   }
-
 
   checkFormValidity = () => {
     const { login: { username, password }, isFormValid } = this.state;
@@ -51,14 +48,29 @@ class SignIn extends React.Component {
     }
   };
 
-  onSubmit = async () => {
-    //const { username, password } = this.state
-    const { navigation, logIn, status } = this.props
+  onSubmit = (e) => {
+    e.preventDefault();
+    const { navigation, logIn, status, token } = this.props
     const { login } = this.state
     logIn(login)
-    console.log('les props', this.props)
-    status &&
-    navigation.navigate('Home')
+    //console.log('les props', this.props)
+    if (status !== 'error') {
+      navigation.popToTop()
+    }
+    // if (status === 'success') {
+    //   navigation.popToTop()
+    // } else {
+    //   Alert.alert(
+    //     "Problème de connexion",
+    //     "merci de verifier vos nom d'utilisateur et mot de passe",
+    //     [
+    //       { text: "fermer", onPress: () => console.log("cancel") },
+    //       { text: "Allow", onPress: () => Linking.openURL("app-settings:") },
+    //     ],
+    //     { cancelable: true }
+    //   );
+    // }
+    //navigation.replace('Home')
 
   //   try {
   //     let response = await fetch("https://foodact.maresa.ma/api/login_check", {
@@ -88,12 +100,10 @@ class SignIn extends React.Component {
       () => ({ login: { ...login, [key]: val.trim() } }), this.checkFormValidity)
   };
 
-  
-
   render() {
     const { navigation } = this.props;
     const { login: { username, password }, isFormValid, isEnabledRemeberMe, isEnabledCgu } = this.state;
-    console.log("state", this.state);
+    //console.log("state", this.state);
     //console.log('props' , this.props)
     return (
       <ScrollView style={styles.container}>
@@ -155,8 +165,8 @@ class SignIn extends React.Component {
             <Button
               style={styles.button}
               title="Se connecter"
-              onPress={() => {
-                this.onSubmit();
+              onPress={(e) => {
+                this.onSubmit(e);
                 //navigation.navigate('HomeConnected')
               }}
               size="sm"
@@ -184,8 +194,6 @@ class SignIn extends React.Component {
     );
   }
 }
-
-
 
 const styles = StyleSheet.create({
   signInContainer: {

@@ -2,6 +2,9 @@ import {
   LOG_IN_START,
   LOG_IN_SUCCESS,
   LOG_IN_FAILURE,
+  LOG_OUT,
+  LOG_OUT_SUCCESS,
+  LOG_OUT_FAILURE,
   FETCH_USER_PROFILE,
   FETCH_USER_PROFILE_SUCCESS,
   USER_PROFILE_FAILURE,
@@ -20,7 +23,7 @@ export default function (state = {}, action) {
       case LOG_IN_SUCCESS:
         return {
           ...state,
-          userID: action.payload.userID,
+          userId: action.payload.userId,
           token: action.payload.token,
           status: STATUS_SUCCESS,
         };
@@ -30,6 +33,23 @@ export default function (state = {}, action) {
           error: action.payload,
           status: STATUS_FAILURE,
         };
+        case LOG_OUT:
+          return {
+            ...state,
+            status: STATUS_LOADING,
+          };
+          case LOG_OUT_SUCCESS:
+            return {
+              ...state,
+              token: null,
+              status: STATUS_SUCCESS,
+            };
+          case LOG_OUT_FAILURE:
+            return {
+              ...state,
+              error: action.payload,
+              status: STATUS_FAILURE,
+            };
         case FETCH_USER_PROFILE:
           return {
             ...state,

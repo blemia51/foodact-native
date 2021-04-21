@@ -11,31 +11,34 @@ import {
   // postUserProfileSuccess,
   // UPDATE_USER_PROFILE,
   // updateUserProfileSuccess,
-  // LOG_OUT,
-  // logOutSuccess,
-  // logOutFailure,
+  LOG_OUT,
+  logOutSuccess,
+  logOutFailure,
   LOG_IN_START,
   logInSuccess,
   logInFailure,
 } from "../actions/user";
 
 
-// export function* getUserProfile(userID, token) {
-//   console.log("userID", userID, "token", token);
-//   const userApi = new UserApi();
-//   try {      
-//     const userProfile = yield call(userApi.fetchUserProfile, userID, token);
-//     yield put(fetchUserProfileSuccess(...userProfile));
-//     history.push('/accueil')
-//     console.log('history', history);
-//   } catch (e) {
-//     if (e.response) {
-//       yield put(userProfileFailure(e.response.data.code));
-//     } else {
-//       yield put(userProfileFailure(e.message));
-//     }
-//   }
-// }
+export function* getUserProfile(userId) {
+  console.log("userId", userId);
+  const userApi = new UserApi();
+  try {      
+    const userProfile = yield call(userApi.fetchUserProfile, userId);
+    const { client } = userProfile
+    const clientId = client.split('/')[3].toString('')*1
+    const clientProfile = yield call (userApi.fetchClientProfile, clientId)
+    yield put(fetchUserProfileSuccess(clientProfile));
+    //history.push('/accueil')
+    //console.log('history', history);
+  } catch (e) {
+    if (e.response) {
+      yield put(userProfileFailure(e.response.data.code));
+    } else {
+      yield put(userProfileFailure(e.message));
+    }
+  }
+}
 
 // export function* postUserProfile(action) {
 //   const { userProfile } = action.payload;
@@ -66,10 +69,10 @@ export function* logIn(action) {
     const { login } = action.payload;
     const userApi = new UserApi();
     const userLoggedIn = yield call(userApi.logIn, login);
-    const { userID, token } = userLoggedIn;
+    const { userId, token } = userLoggedIn;
     
-    yield put(logInSuccess(userID, token));
-    //yield call(getUserProfile, userID, token);
+    yield put(logInSuccess(userId, token));
+    yield call(getUserProfile, userId);
     //history.push('/accueil')
     
   } catch(e) {
@@ -77,19 +80,20 @@ export function* logIn(action) {
   }
 }
 
-// export function* logOut() {
-//   try {
-//     yield put(logOutSuccess());
-//   } catch(e) {
-//     yield put(logOutFailure(e.message));
-//   }
-// }
+export function* logOut() {
+  try {
+    yield put(logOutSuccess());
+  } catch(e) {
+    yield put(logOutFailure(e.message));
+  }
+}
 
 export default function* userSaga() {
   console.log('test de userSaga')
+
   yield takeLatest(LOG_IN_START, logIn);
-  // yield takeLatest(FETCH_USER_PROFILE, getUserProfile);
+  yield takeLatest(FETCH_USER_PROFILE, getUserProfile);
   // yield takeLatest(POST_USER_PROFILE, postUserProfile);
   // yield takeLatest(UPDATE_USER_PROFILE, updateUserProfile);
-  // yield takeLatest(LOG_OUT, logOut);
+  yield takeLatest(LOG_OUT, logOut);
 }

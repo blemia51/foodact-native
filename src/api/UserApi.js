@@ -1,6 +1,10 @@
+import axios from 'axios';
+
+
 export default function UserApi() {
   return ({
     fetchUserProfile,
+    fetchClientProfile,
     //postUserProfile,
     //updateUserProfile,
     logIn,
@@ -10,37 +14,53 @@ export default function UserApi() {
   //   return fetch('api/')
   // }
 
-  async function logIn(login) {
-    try {
-      const response = await fetch("http://foodact.maresa.ma/api/login_check", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(login),
-      });
-      const datas = await response.json();
-      return datas
-    } catch (error) {
-      console.error(error);
-    }
-  }
-    
+  // function logIn(login) {
   
+  //    fetch("http://foodact.maresa.ma/api/login_check", {
+  //       method: "POST",
+  //       headers: new Header({
+  //         "Content-Type": "application/json",
+  //       }),
+  //       body: JSON.stringify(login),
+  //     })
+  //     .then((response) => {
+  //       //const datas =  response.json();
+  //       //console.log('response', response.json())
+  //       response.json()
+  //     })
+  //     .then((result) => result)
+  //     .catch(error => console.log('error', error))
+  // }
 
-  async function fetchUserProfile(userId, token) {
-    try {
-      const response = await fetch(`http://foodact.maresa.ma/api/users/${userId}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      const datas = await response.json();
-      return datas
-    } catch (error) {
-      console.error(error);
-    }
+  function logIn(login) {
+    return axios.post(`http://foodact.maresa.ma/api/login_check`, login)
+      .then((response) => response.data)
+      .catch(event => console.error(event))
   }
-} 
+
+  function fetchUserProfile(userId, token) {
+    return axios.get('http://foodact.maresa.ma/api/users/1074')
+    //, {
+      // headers: {s
+      //   Authorization: "Bearer " + token,
+      //  "Content-Type": "application/json",
+      // }, 
+    //})
+    .then((response) => response.data)
+    .catch(event => console.error(event))
+  }
+
+
+  function fetchClientProfile(clientId, token) {
+    return axios.get(`http://foodact.maresa.ma/api/clients/${clientId}`)
+    //, {
+      // headers: {s
+      //   Authorization: "Bearer " + token,
+      //  "Content-Type": "application/json",
+      // }, 
+    //})
+    .then((response) => response.data)
+    .catch(event => console.error(event))
+  }
+}
+  

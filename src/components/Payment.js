@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Text, StyleSheet, View, Button } from 'react-native'
+
 import { PaymentsStripe as Stripe } from 'expo-payments-stripe';
 
 
@@ -7,7 +8,7 @@ const params = {
   // mandatory
   number: '4242424242424242',
   expMonth: 11,
-  expYear: 17,
+  expYear: 22,
   cvc: '223',
   // optional
   // name: 'Test User',
@@ -48,18 +49,17 @@ export default class Payment extends Component {
   }
 
   requestPayment = async () => {
-    const token = await Stripe.paymentRequestWithCardFormAsync(options)
+    const token = await Stripe.paymentRequestWithCardFormAsync(params)
     //const token = await Stripe.createTokenWithCardAsync(params);
     console.log(token);
 
   };
 
   render() {
-    
     return (
       <View style={styles.container}>
         <Button
-          title="Make a payment"
+          title="Payer"
           onPress={() => this.requestPayment()}
           disabled={false}
         />

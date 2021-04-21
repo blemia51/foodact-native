@@ -1,27 +1,15 @@
 import React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 
-export default function Header()  {
+export default function LogoHeader()  {
   return (
     <View style={styles.header}>
       <View style={styles.image}>
         <Image
-          source={require("../assets/foodact_logo.png")}
-          style={{ width: "50%" }}
+          source={require("../assets/foodact_logo_text.png")}
+          style={{ width: "100%" }}
           resizeMode="contain"
         />
-      </View>
-      <View>
-        <Text
-          style={{
-            color: "#ffffff",
-            fontSize: 11,
-            textAlign: "center",
-            paddingTop: 4,
-          }}
-        >
-          Click and Collect Remois Anti Surstocks Alimentaires
-        </Text>
       </View>
     </View>
   );
@@ -29,8 +17,8 @@ export default function Header()  {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#16214b",
-    paddingTop: 40,
+    //backgroundColor: "#16214b",
+    paddingTop: 20,
     paddingBottom: 15,
     //borderBottomColor: "#ffffff",
     //borderBottomWidth: 1,
@@ -41,7 +29,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    width: "80%",
+    //width: "80%",
     paddingVertical: 20,
   },
 });

@@ -1,9 +1,6 @@
 import React, { useEffect } from "react";
-import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, FlatList } from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
 //import Favorites from "../components/Favorites";
-import Basket from "../components/Basket";
-import Price from "../components/Price";
-import Discount from "../components/Discount";
 import RenderItemCards from "../components/RenderItemCards"
 
 const ProductCards = ({ route, navigation }) => {
@@ -16,50 +13,6 @@ const ProductCards = ({ route, navigation }) => {
     
   return (
     <View style={styles.container}>
-      
-  
-      <Text
-        style={{
-          textAlign: "center",
-          fontSize: 16,
-          fontWeight: "bold",
-        }}
-      >
-        {/* {route.params.title} */}
-      </Text>
-      
-      {/* <View style={styles.card}>
-        <View style={styles.image}>
-          <TouchableOpacity onPress={() => {navigation.navigate('ProductDetail')}}>
-            <Image
-              source={{
-                uri:
-                //`https://files.meilleurduchef.com/mdc/photo/recette/viennoiserie-facile/viennoiserie-facile-640.jpg`,
-                  "https://fac.img.pmdstatic.net/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2FFAC.2Fvar.2Ffemmeactuelle.2Fstorage.2Fimages.2Fcuisine.2Fguides-cuisine.2Fcongeler-fruits-et-legumes-42221.2F14651477-1-fre-FR.2Fcomment-congeler-les-fruits-et-les-legumes.2Ejpg/850x478/quality/90/crop-from/center/comment-congeler-les-fruits-et-les-legumes.jpeg",
-              }}
-              style={{ height: "100%", width: "100%" }}
-            />
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "flex-start",
-            paddingHorizontal: 5,
-            height: 50,
-          }}
-        >
-          <View style={styles.title}>
-            <Text style={{ fontSize: 18 }}>Lorem ipsum</Text>
-            <Text style={{ fontSize: 12 }}>Lorem lorem lorem ipsum</Text>
-          </View>
-        </View>
-        <Basket quantity="3 paniers" />
-        <Discount discount='-15%' />
-        <Price price="4€" />
-      </View> */}
       <FlatList
         removeClippedSubviews
         maxToRenderPerBatch={6}
@@ -77,9 +30,6 @@ const ProductCards = ({ route, navigation }) => {
         )}
         keyExtractor={(item) => item.paniers.id.toString()}
       />
-      
-      
-      {/* </View> */}
     </View>
   );
 };

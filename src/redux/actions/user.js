@@ -1,6 +1,9 @@
 export const LOG_IN_START = 'LOG_IN_START';
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
 export const LOG_IN_FAILURE = 'LOG_IN_FAILURE';
+export const LOG_OUT = 'LOG_OUT';
+export const LOG_OUT_SUCCESS = 'LOG_OUT_SUCCESS';
+export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE';
 export const FETCH_USER_PROFILE = 'FETCH_USER_PROFILE';
 export const FETCH_USER_PROFILE_SUCCESS = 'FETCH_USER_PROFILE_SUCCESS';
 export const USER_PROFILE_FAILURE = 'USER_PROFILE_FAILURE';
@@ -27,11 +30,26 @@ export const logInFailure = (error) => ({
   }
 });
 
-export const fetchUserProfile = (userID, token) => ({
+export const logOut = () => ({
+  type: LOG_OUT,
+});
+
+export const logOutSuccess = () => ({
+  type: LOG_OUT_SUCCESS,
+});
+
+export const logOutFailure = (error) => ({
+  type: LOG_IN_FAILURE,
+  payload: {
+    error,
+  }
+});
+
+export const fetchUserProfile = (userId, token) => ({
   type: FETCH_USER_PROFILE,
   payload: {
-    userID: userID,
-    token,
+    userId,
+    //token,
   },
 });
 

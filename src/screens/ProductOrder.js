@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Text, StyleSheet, View, Modal, Alert, Pressable, ScrollView } from 'react-native'
 import Button from '../components/Button'
 import Input from '../components/Input'
+import Payment from '../components/Payment'
 import { MaterialIcons } from '@expo/vector-icons';
 
 export default class ProductOrder extends Component {
@@ -24,6 +25,8 @@ export default class ProductOrder extends Component {
     phoneNumber: '',
     email: '',
   };
+
+  
 
   setModalVisible = (visible) => {
     this.setState({ modalVisible: visible });
@@ -55,36 +58,28 @@ export default class ProductOrder extends Component {
 
 
   render() {
-    const { quantity, productName, totalPrice, contractor: {name, address} } = this.props;
+    const { quantity, productName, totalPrice, contractor: {name, address}, navigation } = this.props;
+    const { route } = this.props;
+    const { quantite, price, paniername, nom, adresse } = route.params;
+
     const { modalVisible, firstName, phoneNumber, email } = this.state;
     return (
       
-        <View style={styles.container}>
           
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          //statusBarTranslucent={true}
-          //backdropOpacity={0.3}
-          onRequestClose={() => {
-            // Alert.alert("Modal has been closed.");
-            this.setModalVisible(!modalVisible);
-          }}
-        >
-        <ScrollView>
+        
+        <ScrollView style={styles.container}>
           
           <View style={styles.container}>
             <View style={styles.modalView}>
-              <View style={{position: 'absolute', top: 5, right:5}}>
+              <View style={{position: 'absolute', top: 10, right:10}}>
                 <Pressable
-                  onPress={() => this.setModalVisible(!modalVisible)}
+                  onPress={() => navigation.goBack()}
                 >
                   <MaterialIcons  name="close" size={24} color="black" />
                 </Pressable>
               </View>
-              <Text>{`Vous êtes sur le point de sauver:\n${quantity} panier(s) ${productName} chez ${name} pour ${totalPrice}€`}</Text>
-              <Text>{`Adresse: ${address}`}</Text>
+              <Text style={{fontWeight:'bold'}}>{`Vous êtes sur le point de sauver:\n${quantite} panier(s) ${paniername} chez ${nom} pour ${price}€`}</Text>
+              <Text>{`Adresse: ${adresse}`}</Text>
               <View>
                 <Input
                   value={firstName}
@@ -120,17 +115,18 @@ export default class ProductOrder extends Component {
                   cvcPlaceholder="CVC"
                 /> */}
                 
+                
               </View>
-              <Text>Paiement sécurisé par stripe</Text>
-              <Button title='payer' />
+              <Text style={{marginBottom: 100}}>Paiement sécurisé par stripe</Text>
+              <Payment />
+              <Button title='payer'  />
               <Text>Créneaux de collecte</Text>
-              <Text>{`Lorem Ipsum\nLorem Ipsum`}</Text>
+              <Text>{`Lorem Ipsum\nLorem Ipsum\nLorem Ipsum\nLorem Ipsum`}</Text>
             </View>
           </View>
           </ScrollView>
-        </Modal>
-        
-        </View>
+  
+        // <View style={styles.container}>
         
       
     )
@@ -140,15 +136,15 @@ export default class ProductOrder extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: "center",
+    //justifyContent: 'flex-end',
+    //alignItems: "center",
     //marginTop: 22,
     //backgroundColor: 'rgba(0, 0, 0, 0.5)'
   },
   modalView: {
    // margin: 20,
     //width: '100%',
-    backgroundColor: "white",
+    //backgroundColor: "white",
     //borderRadius: 20,
     padding: 35,
     alignItems: "center",

@@ -23,17 +23,16 @@ export default class ModalAddAddress extends Component {
   }
 
   render() {
-    const { address, modalVisible } = this.state;
-    const { navigation } = this.props;
+    const { address } = this.state;
+    const { navigation, modalVisible } = this.props;
     return (
       
-        
         <Modal
           animationType="slide"
           transparent={true}
           visible={modalVisible}
           //statusBarTranslucent={true}
-          //backdropOpacity={0.3}
+          backdropOpacity={0.3}
           onRequestClose={() => {
             // Alert.alert("Modal has been closed.");
             this.setModalVisible(!modalVisible);
@@ -44,8 +43,8 @@ export default class ModalAddAddress extends Component {
         <View style={{position: 'absolute', top: 5, right:5}}>
           <Pressable
             
-            //onPress={() => this.setModalVisible(!modalVisible)}
-            onPress={() => navigation.pop()}
+            onPress={() => this.setModalVisible(!modalVisible)}
+            //onPress={() => navigation.pop()}
           >
             <MaterialIcons  name="close" size={24} color="black" />
           </Pressable>
