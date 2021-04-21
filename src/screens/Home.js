@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createContext } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,7 +6,6 @@ import {
   ScrollView,
   FlatList,
   Image,
-  ActivityIndicator,
   Platform,
   Linking,
   Alert,
@@ -18,14 +17,13 @@ import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import * as Notifications from "expo-notifications";
 import * as Location from "expo-location";
-//import { StatusBar } from 'expo-status-bar';
 import { StatusBar } from 'react-native';
 //import MapView from "react-native-maps";
 import { updateDate } from "../utils/functions";
 const jwtDecode = require("jwt-decode");
 
-import Header from "../components/Header";
-import Payment from "../components/Payment";
+//import Header from "../components/Header";
+//import Payment from "../components/Payment";
 import foodact_animated from "../assets/foodact_fadein.gif";
 
 import RenderItem from "../components/RenderItem";
@@ -45,7 +43,6 @@ export const StoreContext = React.createContext(null);
 export default function Home(props) {
   const {
     navigation,
-    fetchUserProfile,
     fetchCategories,
     fetchFournisseurs,
     fetchPaniers,
@@ -61,7 +58,7 @@ export default function Home(props) {
     paniersPrice,
     creneauxFournisseurs,
   } = props;
-  console.log('creneaux',props.Fournisseurs)
+  
   const [userLocation, setUserLocation] = useState(null);
   const [state, setState] = useState(initialState);
   const [isLogged, setIsLogged] = useState(false);
@@ -78,11 +75,6 @@ export default function Home(props) {
     fetchPaniersName();
     fetchPaniersPrice();
     fetchCreneauxFournisseurs();
-
-    // if (token) {
-    //   console.log(token) 
-    //   fetchUserProfile(1074) 
-    // }
   }, []);
 
   useEffect(() => {
@@ -315,9 +307,6 @@ export default function Home(props) {
     if (favorites.indexOf(id) === -1) {
       favorites.push(id);
       props.uploadFavorite(favorites);
-      //const toto = paniersAndFournisseurByCategorie(id)
-      //console.log(favorites)
-      //console.log('test',toto)
     }
   };
 
@@ -326,9 +315,6 @@ export default function Home(props) {
     if (favorites.indexOf(id) !== -1) {
       favorites.splice(favorites.indexOf(id), 1)
       props.uploadFavorite(favorites);
-      //const toto = paniersAndFournisseurByCategorie(id)
-      //console.log(favorites)
-      //console.log('test',toto)
     }
   };
 

@@ -12,10 +12,9 @@ import Button from "../components/Button";
 import Basket from "../components/Basket";
 import Price from "../components/Price";
 import Discount from "../components/Discount";
-import ProductOrder from "../screens/ProductOrder";
+//import ProductOrder from "../screens/ProductOrder";
 import CountDown from "../components/CountDown";
 import { FontAwesome, EvilIcons } from "@expo/vector-icons";
-import Navigation from "../stacks/Navigation";
 
 export default class ProductDetail extends Component {
   state = {
@@ -74,6 +73,7 @@ export default class ProductDetail extends Component {
     const {
       slug,
       date,
+      creneaux,
       paniername,
       description,
       nom,
@@ -159,6 +159,7 @@ export default class ProductDetail extends Component {
               onPress={() =>
                 navigation.navigate(
                   'ProductOrder', {
+                    creneaux: creneaux,
                     paniername: paniername,
                     nom: nom,
                     quantite: quantity,

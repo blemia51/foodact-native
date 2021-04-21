@@ -11,6 +11,7 @@ const Item = ({
   id,
   isTimeOut,
   date,
+  creneaux,
   paniername,
   description,
   slug,
@@ -39,6 +40,7 @@ const Item = ({
           navigation.navigate('ProductDetail', {
             slug: slug,
             date: date,
+            creneaux: creneaux,
             paniername: paniername,
             description: description,
             nom: nom,

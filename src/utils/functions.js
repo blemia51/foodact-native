@@ -154,3 +154,20 @@ export const optimiseCreneaux = (datas) => {
   //console.log("week creneaux", weekCreneaux);
   return weekCreneaux
 };
+
+export function getHoursFromDate(date) {
+  return getTwoDigits(new Date(date).getHours())
+}
+
+export function getMinutesFromDate(date) {
+  return getTwoDigits(new Date(date).getMinutes())
+}
+
+// Get time in french ie. 18h00
+export function getTimeFromDate(date) {
+  return `${getHoursFromDate(date)}h${getMinutesFromDate(date)}`
+}
+
+export function getTwoDigits(number) {
+  return (number < 10 ? '0' : '') + number
+}

@@ -12,6 +12,7 @@ export default class RenderItem extends Component {
 
   render() {
     const { item, navigation, latitude, longitude } = this.props;
+    console.log('items', item)
     return (
       <Item
         navigation={navigation}
@@ -21,6 +22,7 @@ export default class RenderItem extends Component {
             item.creneaux
           )
         }
+        creneaux={item.creneaux}
         paniername={item.paniername}
         description={item.paniers.description}
         slug={item.paniers.image}

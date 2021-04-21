@@ -4,7 +4,7 @@ import { View, StyleSheet, FlatList } from "react-native";
 import RenderItemCards from "../components/RenderItemCards"
 
 const ProductCards = ({ route, navigation }) => {
-  console.log('route', route.params.data);
+  //console.log('route', route.params.data);
     const { data, id, title, latitude, longitude } = route.params
 
     useEffect(()=>{

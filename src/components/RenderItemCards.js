@@ -21,6 +21,7 @@ export default class RenderItem extends PureComponent {
             item.creneaux
           )
         }
+        creneaux={item.creneaux}
         paniername={item.paniername}
         description={item.paniers.description}
         slug={item.paniers.image}
