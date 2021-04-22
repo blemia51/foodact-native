@@ -17,18 +17,18 @@ export default class Discount extends PureComponent {
     return (
       <View
         style={{
-          width: 70,
-          paddingHorizontal: 10,
+          width: 50,
           position: "absolute",
           top: 10,
-          right:50
+          right:55,
+          borderRadius: 20,
+          backgroundColor: "green",
+          
         }}
       >
         <Text
           style={{
             padding: 8,
-            borderRadius: 5,
-            backgroundColor: "green",
             color: "white",
             textAlign: "center",
           }}

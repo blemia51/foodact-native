@@ -156,7 +156,7 @@ export default function Menu({ route, navigation, status, token, logOut }) {
         <TouchableOpacity
           style={styles.menuItems}
           onPress={() => {
-            setIsModalVisible()
+            
           }}
         >
           <MaterialIcons name="location-on" color="lightgrey" size={30} />

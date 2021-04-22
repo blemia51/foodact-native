@@ -178,7 +178,7 @@ export function getDayFromDate(date) {
 }
 
 export function getMonthFromDate(date) {
-  return getTwoDigits(new Date(date).getMonth())
+  return getTwoDigits(new Date(date).getMonth() + 1)
 }
 
 export function getFullYearFromDate(date) {
