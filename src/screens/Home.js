@@ -332,7 +332,7 @@ export default function Home(props) {
       <View style={{ 
         flex: 1, 
         }}>
-          <Header />
+          {/* <Header /> */}
           <View style={{ 
             flex: 1, 
             alignItems: "center", 
@@ -383,7 +383,7 @@ export default function Home(props) {
                   horizontal
                   removeClippedSubviews
                   maxToRenderPerBatch={6}
-                  initialNumToRender={2}
+                  initialNumToRender={3}
                   data={paniersAndFournisseurByCategorie(categorie.id)}
                   renderItem={({ item }) => (
                     <RenderItem
