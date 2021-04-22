@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-//import { persistReducer } from 'redux-persist'
+import { persistReducer } from 'redux-persist'
 //import storage from 'redux-persist/lib/storage'
 // import authReducer from "./authReducer";
 // import avatarReducer from "./avatarReducer";
@@ -13,13 +13,13 @@ import paniers from './paniers'
 import categories from './categories'
 import fournisseurs from './fournisseurs'
 //import travels from './travels'
-//import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// const persistConfig = {
-//   key: 'root',
-//   storage: AsyncStorage,
-//   whitelist: []
-//  }
+const persistConfig = {
+  key: 'root',
+  storage: AsyncStorage,
+  whitelist: ['favoritesState']
+}
 
 const rootReducers = combineReducers({
   userState: user,
@@ -29,6 +29,6 @@ const rootReducers = combineReducers({
   fournisseursState: fournisseurs,
 });
 
-//export default persistReducer(persistConfig, rootReducers);
+export default persistReducer(persistConfig, rootReducers);
 
-export default rootReducers;
+//export default rootReducers;
