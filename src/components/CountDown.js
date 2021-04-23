@@ -15,7 +15,7 @@ class CountDown extends PureComponent {
   };
 
   updateClock = () => {
-    const { date } = this.props;
+    const { date, quantity } = this.props;
     //console.log("Date props", date)
     
     //const eventDate = Date.parse(date);
@@ -23,7 +23,7 @@ class CountDown extends PureComponent {
     //console.log("eventDate", eventDate)
     const remainingTime = eventDate - new Date();
 
-    if (remainingTime < 1) {
+    if (remainingTime < 1 || quantity < 1) {
       this.setState(prevState => ({ ...prevState, timeUp: true }));
     } else {
       let days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));

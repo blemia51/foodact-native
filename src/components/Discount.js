@@ -17,7 +17,7 @@ export default class Discount extends PureComponent {
     return (
       <View
         style={{
-          width: 50,
+          width: 58,
           position: "absolute",
           top: 10,
           right:55,

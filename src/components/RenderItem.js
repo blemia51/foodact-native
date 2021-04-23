@@ -4,10 +4,10 @@ import { updateDate } from '../utils/functions'
 
 export default class RenderItem extends Component {
 
-  timeOut = (value, creneaux) => {
+  timeOut = (value, creneaux, quantity) => {
     const date = new Date();
     const newDate = updateDate(value, creneaux);
-    return newDate - Date.parse(date) > 0 ? false : true;
+    return newDate - Date.parse(date) <= 0 || quantity < 1  ? true : false;
   };
 
   render() {
@@ -37,7 +37,8 @@ export default class RenderItem extends Component {
         longitude={longitude}
         isTimeOut={this.timeOut(
           item.paniers.DateExpirAffichage,
-          item.creneaux
+          item.creneaux,
+          item.paniers.qte
         )}
       />
     );

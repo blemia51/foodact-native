@@ -75,7 +75,7 @@ const Item = ({
         <Discount discount={discount} />
         
         </View>
-        <CountDown date={date} />
+        <CountDown date={date} quantity={quantity} />
         
         <View
           style={{

@@ -75,7 +75,7 @@ export default class ProductOrder extends Component {
       creneaux,
       date,
     } = route.params;
-    console.log("date", new Date(parseInt(date)));
+    console.log("date", getTimeFromDate(parseInt(date)).toString());
     const { modalVisible, firstName, phoneNumber, email } = this.state;
 
     const collectDays = Object.values(creneaux).reduce((acc, day) => {
@@ -126,9 +126,10 @@ export default class ProductOrder extends Component {
                 {`Limite de retrait le`}
                 <Text style={{ fontWeight: "bold", color: "#ff6600" }}>
                   {" "}
-                  {`${getLongDate(parseInt(date))} à ${getTimeFromDate(
-                    parseInt(date)
-                  )}`}
+                  {`${getLongDate(parseInt(date))} `} {getTimeFromDate(
+                    parseInt(date))!=='00h00' && `à ${getTimeFromDate(
+                      parseInt(date))}`}
+                  
                 </Text>
               </Text>
               {!token && (

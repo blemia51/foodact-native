@@ -48,6 +48,7 @@ export const convertCollectDay = (data) => {
 
 export const updateDate = (data, creneaux) => {
   let newDate = new Date(data);
+  
   let collectDay = convertCollectDay(data)
   
   const getCollectTimeByDay = (creneaux) => {
@@ -74,9 +75,14 @@ export const updateDate = (data, creneaux) => {
 
   let collectTimeEnd = getCollectTimeByDay(creneaux)
 
-  return (newDate = newDate
+  if (collectTimeEnd) {
+    newDate = newDate
     .setTime(newDate.getTime() + (collectTimeEnd + 1) * 3600 * 1000)
-    .toString());
+    .toString()
+  } else {
+      newDate = newDate.getTime().toString()
+  }
+    return newDate
 };
 
 export const updateCategories = (data) => {
