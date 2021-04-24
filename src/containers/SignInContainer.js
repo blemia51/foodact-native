@@ -10,6 +10,7 @@ export default connect(
       token: state.userState.token,
       userId: state.userState.userId,
       status: state.userState.status,
+      profilStatus: state.userState.profilState
     }),
     (dispatch) => ({
       saveToken: (token, userId) => dispatch(saveToken(token, userId)),

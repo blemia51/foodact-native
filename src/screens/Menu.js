@@ -75,9 +75,16 @@ export default function Menu({ route, navigation, status, token, logOut }) {
       {token ? (
         <>
           <View style={styles.menuItems}>
-            <MaterialIcons name="event-note" color="lightgrey" size={30} />
-            <Text style={styles.textItems}>Mes Paniers</Text>
-          </View>
+            <TouchableOpacity
+                style={styles.menuItems}
+                onPress={() => {
+                  navigation.navigate("UserOrders");
+                }}
+              >
+              <MaterialIcons name="event-note" color="lightgrey" size={30} />
+              <Text style={styles.textItems}>Mes Paniers</Text>
+              </TouchableOpacity>
+            </View>
 
           <View style={styles.menuItems}>
             <TouchableOpacity
@@ -156,7 +163,7 @@ export default function Menu({ route, navigation, status, token, logOut }) {
         <TouchableOpacity
           style={styles.menuItems}
           onPress={() => {
-            
+           
           }}
         >
           <MaterialIcons name="location-on" color="lightgrey" size={30} />

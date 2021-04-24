@@ -49,6 +49,7 @@ export default function Home(props) {
     fetchPaniersName,
     fetchPaniersPrice,
     fetchCreneauxFournisseurs,
+    fetchClientOrders,
     //userProfile,
     //token,
     categories,
@@ -57,6 +58,7 @@ export default function Home(props) {
     paniersName,
     paniersPrice,
     creneauxFournisseurs,
+    orderStatus
   } = props;
   
   const [userLocation, setUserLocation] = useState(null);
@@ -75,6 +77,7 @@ export default function Home(props) {
     fetchPaniersName();
     fetchPaniersPrice();
     fetchCreneauxFournisseurs();
+    fetchClientOrders()
   }, []);
 
   useEffect(() => {
@@ -84,6 +87,8 @@ export default function Home(props) {
       longitude,
     }));
   }, [latitude, longitude])
+
+  console.log('orderstatus', orderStatus)
 
   const loadRessources = async () => {
     try {

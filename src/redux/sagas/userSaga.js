@@ -11,6 +11,9 @@ import {
   // postUserProfileSuccess,
   // UPDATE_USER_PROFILE,
   // updateUserProfileSuccess,
+  FETCH_CLIENT_ORDERS,
+  fetchClientOrdersSuccess,
+  clientOrdersFailure,
   LOG_OUT,
   logOutSuccess,
   logOutFailure,
@@ -36,6 +39,24 @@ export function* getUserProfile(userId) {
       yield put(userProfileFailure(e.response.data.code));
     } else {
       yield put(userProfileFailure(e.message));
+    }
+  }
+}
+
+export function* getClientOrders() {
+  const userApi = new UserApi();
+  try {      
+    const clientOrders = yield call(userApi.fetchClientOrders);
+    //const { client } = userProfile
+    yield put(fetchClientOrdersSuccess(
+      clientOrders
+        .filter((data) => data.client === '/api/clients/388' && data.isPaid)
+    ));
+  } catch (e) {
+    if (e.response) {
+      yield put(clientOrdersFailure(e.response.data.code));
+    } else {
+      yield put(clientOrdersFailure(e.message));
     }
   }
 }
@@ -93,6 +114,7 @@ export default function* userSaga() {
 
   yield takeLatest(LOG_IN_START, logIn);
   yield takeLatest(FETCH_USER_PROFILE, getUserProfile);
+  yield takeLatest(FETCH_CLIENT_ORDERS, getClientOrders);
   // yield takeLatest(POST_USER_PROFILE, postUserProfile);
   // yield takeLatest(UPDATE_USER_PROFILE, updateUserProfile);
   yield takeLatest(LOG_OUT, logOut);

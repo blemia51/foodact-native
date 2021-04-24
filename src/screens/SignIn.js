@@ -53,7 +53,7 @@ class SignIn extends React.Component {
     const { navigation, logIn, status, token } = this.props
     const { login } = this.state
     logIn(login)
-    //console.log('les props', this.props)
+    console.log('les props', this.props)
     if (status !== 'error') {
       navigation.popToTop()
     }

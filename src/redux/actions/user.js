@@ -7,9 +7,9 @@ export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE';
 export const FETCH_USER_PROFILE = 'FETCH_USER_PROFILE';
 export const FETCH_USER_PROFILE_SUCCESS = 'FETCH_USER_PROFILE_SUCCESS';
 export const USER_PROFILE_FAILURE = 'USER_PROFILE_FAILURE';
-export const FETCH_USER_COMMANDES = 'FETCH_USER_COMMANDEs';
-export const FETCH_USER_COMMANDES_SUCCESS = 'FETCH_USER_COMMANDES_SUCCESS';
-export const USER_COMMANDES_FAILURE = 'USER_COMMANDES_FAILURE';
+export const FETCH_CLIENT_ORDERS = 'FETCH_CLIENT_ORDERS';
+export const FETCH_CLIENT_ORDERS_SUCCESS = 'FETCH_CLIENT_ORDERS_SUCCESS';
+export const CLIENT_ORDERS_FAILURE = 'CLIENT_ORDERS_FAILURE';
 
 export const logIn = (login) => ({
   type: LOG_IN_START,
@@ -70,23 +70,23 @@ export const userProfileFailure = (error) => ({
   },
 });
 
-export const fetchUserCommandes = () => ({
-  type: FETCH_USER_COMMANDES,
+export const fetchClientOrders = () => ({
+  type: FETCH_CLIENT_ORDERS,
   payload: {
     //userId,
     //token,
   },
 });
 
-export const fetchUserCommandesSuccess = (userCommandes) => ({
-  type: FETCH_USER_COMMANDES_SUCCESS,
+export const fetchClientOrdersSuccess = (clientOrders) => ({
+  type: FETCH_CLIENT_ORDERS_SUCCESS,
   payload: {
-    userCommandes: userCommandes,
+    clientOrders: clientOrders,
   },
 });
 
-export const userCommandesFailure = (error) => ({
-  type: USER_COMMANDES_FAILURE,
+export const clientOrdersFailure = (error) => ({
+  type: CLIENT_ORDERS_FAILURE,
   payload: {
     error,
   },
