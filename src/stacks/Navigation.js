@@ -17,6 +17,7 @@ import ModalAddAddress from '../screens/ModalAddAddress'
 import MyFavorites from '../containers/MyFavoritesContainer'
 import UserProfile from '../containers/UserProfileContainer'
 import Explore from '../screens/Explore'
+import UserOrders from '../containers/UserOrdersContainer'
 import LogoHeader from '../components/LogoHeader'
 
 
@@ -94,6 +95,7 @@ function HomeStackScreen() {
           headerShown: false,
         }}
       />
+      
     </Stack.Navigator>
   )
 }
@@ -232,6 +234,23 @@ function MenuStackScreen() {
           headerTitleStyle: {
             fontWeight: 'bold',
           }
+        }}
+      />
+      <Stack.Screen
+        name="UserOrders"
+        component={UserOrders}
+        options={{
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          title: 'Mes Paniers',
+          headerStyle: {
+            backgroundColor: '#16214b',
+          //   //height: 85
+          },
+          headerTintColor: '#fff',
+            headerTitleStyle: {
+            fontWeight: 'bold',
+            },
+          //headerShown: false,
         }}
       />
       <MenuStack.Screen

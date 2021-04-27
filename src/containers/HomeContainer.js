@@ -4,7 +4,7 @@ import { uploadFavorite, deleteFavorite } from "../redux/actions/favorites";
 import { fetchPaniers, fetchPaniersName, fetchPaniersPrice } from '../redux/actions/paniers'
 import { fetchCategories } from '../redux/actions/categories'
 import { fetchFournisseurs, fetchCreneauxFournisseurs } from '../redux/actions/fournisseurs'
-import { fetchUserProfile } from '../redux/actions/user'
+import { fetchUserProfile, fetchClientOrders } from '../redux/actions/user'
 import Home from "../screens/Home";
 
 export default connect(
@@ -17,9 +17,11 @@ export default connect(
       categories: state.categoriesState.categories,
       fournisseurs: state.fournisseursState.fournisseurs,
       creneauxFournisseurs: state.fournisseursState.creneauxFournisseurs,
+      orderStatus: state.userState.orderStatus,
     
     }),
     (dispatch) => ({
+      fetchClientOrders: () => dispatch(fetchClientOrders()),
       fetchUserProfile: (token, userID) => dispatch(fetchUserProfile(token, userID)),
       uploadFavorite: (data) => dispatch(uploadFavorite(data)),
       deleteFavorite: () => dispatch(deleteFavorite()),
