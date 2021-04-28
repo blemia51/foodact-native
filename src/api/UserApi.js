@@ -40,7 +40,7 @@ export default function UserApi() {
   }
 
   function fetchUserProfile(userId, token) {
-    return axios.get('http://foodact.maresa.ma/api/users/592')
+    return axios.get('http://foodact.maresa.ma/api/users/1074')
     //, {
       // headers: {1074
       //   Authorization: "Bearer " + token,
@@ -53,7 +53,7 @@ export default function UserApi() {
 
 
   function fetchClientProfile(clientId, token) {
-    return axios.get(`http://foodact.maresa.ma/api/clients/${clientId}`)
+    return axios.get(`http://foodact.maresa.ma/api/clients/842`)
     //, {
       // headers: {s
       //   Authorization: "Bearer " + token,
