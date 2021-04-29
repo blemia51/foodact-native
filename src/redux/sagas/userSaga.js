@@ -1,3 +1,4 @@
+import jwtDecode from 'jwt-decode';
 import { takeLatest, put, call } from 'redux-saga/effects';
 //import request from '../utils/request';
 import UserApi from '../../api/UserApi';
@@ -23,10 +24,10 @@ import {
 } from "../actions/user";
 
 
-export function* getUserProfile(userId) {
+export function* getUserProfile(token) {
   const userApi = new UserApi();
   try {      
-    const userProfile = yield call(userApi.fetchUserProfile, userId);
+    const userProfile = yield call(userApi.fetchUserProfile, token);
     const { client } = userProfile
     const clientId = client.split('/')[3].toString('')*1
     const clientProfile = yield call(userApi.fetchClientProfile, clientId)
@@ -92,13 +93,19 @@ export function* logIn(action) {
     const { login } = action.payload;
     const userApi = new UserApi();
     const userLoggedIn = yield call(userApi.logIn, login);
-    const { token } = userLoggedIn;
-    //const tokenDecoded = jwtDecode(token);
-   // console.log('user login', tokenDecoded)
     
-    yield put(logInSuccess(token));
-    yield call(getUserProfile, jwtDecode(token).id);
+    const { token } = userLoggedIn;
+    const tokenDecoded = jwtDecode(token)
+    
+    yield put(
+      logInSuccess(
+        token,
+        tokenDecoded,
+      ));
+    
+    yield call(getUserProfile, token);
     //history.push('/accueil')
+    
     
   } catch(e) {
     yield put(logInFailure(e.message));

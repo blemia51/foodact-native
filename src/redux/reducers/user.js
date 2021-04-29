@@ -27,6 +27,7 @@ export default function (state = {}, action) {
         return {
           ...state,
           token: action.payload.token,
+          tokenDecoded: action.payload.tokenDecoded,
           status: STATUS_SUCCESS,
         };
       case LOG_IN_FAILURE:

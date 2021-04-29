@@ -7,9 +7,11 @@ import SignIn from "../screens/SignIn";
 export default connect(
     (state) => ({
       //token: state.auth.token,
+      userProfile: state.userState.userProfile,
+      tokenDecoded: state.userState.tokenDecoded,
       token: state.userState.token,
       status: state.userState.status,
-      profilStatus: state.userState.profilState
+      profilStatus: state.userState.profilStatus
     }),
     (dispatch) => ({
       saveToken: (token) => dispatch(saveToken(token)),

@@ -1,4 +1,5 @@
 import axios from 'axios';
+const jwtDecode = require("jwt-decode");
 
 
 export default function UserApi() {
@@ -39,10 +40,12 @@ export default function UserApi() {
       .catch(event => console.error(event))
   }
 
-  function fetchUserProfile(userId, token) {
+  function fetchUserProfile(token) {
+    
+    const userId = jwtDecode(token).id
     return axios.get(`http://foodact.maresa.ma/api/users/${userId}`)
     //, {
-      // headers: {1074
+      // headers: {
       //   Authorization: "Bearer " + token,
       //  "Content-Type": "application/json",
       // }, 

@@ -77,7 +77,7 @@ export default function Home(props) {
     fetchPaniersName();
     fetchPaniersPrice();
     fetchCreneauxFournisseurs();
-    fetchClientOrders()
+    //fetchClientOrders()
   }, []);
 
   useEffect(() => {

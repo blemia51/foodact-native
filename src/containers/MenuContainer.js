@@ -7,9 +7,11 @@ import Menu from "../screens/Menu";
 export default connect(
     (state) => ({
       //token: state.auth.token,
+      userProfile: state.userState.userProfile,
       token: state.userState.token,
-      userID: state.userState.userID,
+      tokenDecoded: state.userState.tokenDecoded,
       status: state.userState.status,
+      profilStatus: state.userState.profilStatus,
     }),
     (dispatch) => ({
       logOut: () => dispatch(logOut()),

@@ -5,9 +5,10 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useFocusEffect } from '@react-navigation/native';
 import ModalAddAddress from '../screens/ModalAddAddress'
 
-export default function Menu({ route, navigation, status, token, logOut }) {
+export default function Menu({ route, navigation, status, token, logOut, ...props }) {
 
   //console.log('route', route);
+  console.log('props du menu', props)
   
   
   const [isLogged, setIsLogged] = useState('')
@@ -42,6 +43,8 @@ export default function Menu({ route, navigation, status, token, logOut }) {
       setIsLogged(token)
       console.log('isLogged', isLogged)
       console.log('le token dans menu', token)
+      console.log('props du menu', props)
+      
 
       
       return () => {
