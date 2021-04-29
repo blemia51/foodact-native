@@ -196,7 +196,7 @@ export default class ProductOrder extends Component {
                           day.start
                         )} - ${getTimeFromDate(day.end)}`}
                       </Text>
-                      {(day.marche !== "Aucun" || null)
+                      {(day.marche !== "Aucun" && day.marche)
                         && (
                           <Text style={{ fontSize: 11, color: "#ff6600" }}>
                             {day.marche}

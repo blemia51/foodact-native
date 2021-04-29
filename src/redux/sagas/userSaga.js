@@ -91,9 +91,12 @@ export function* logIn(action) {
     const userApi = new UserApi();
     const userLoggedIn = yield call(userApi.logIn, login);
     const { userId, token } = userLoggedIn;
+    //const tokenDecoded = jwtDecode(token);
+   // console.log('user login', tokenDecoded)
     
-    yield put(logInSuccess(userId, token));
-    yield call(getUserProfile, userId);
+    yield put(logInSuccess(
+      userId, token));
+    yield call(getUserProfile, jwtDecode(token).id);
     //history.push('/accueil')
     
   } catch(e) {
