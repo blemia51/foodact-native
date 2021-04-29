@@ -26,7 +26,6 @@ export default function (state = {}, action) {
       case LOG_IN_SUCCESS:
         return {
           ...state,
-          userId: action.payload.userId,
           token: action.payload.token,
           status: STATUS_SUCCESS,
         };

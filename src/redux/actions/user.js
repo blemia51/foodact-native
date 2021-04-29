@@ -18,10 +18,9 @@ export const logIn = (login) => ({
   }
 });
 
-export const logInSuccess = (userId, token) => ({
+export const logInSuccess = (token) => ({
   type: LOG_IN_SUCCESS,
   payload: {
-    userId,
     token
   }
 });
