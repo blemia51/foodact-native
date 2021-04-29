@@ -24,14 +24,14 @@ import {
 
 
 export function* getUserProfile(userId) {
-  console.log("userId", userId);
   const userApi = new UserApi();
   try {      
     const userProfile = yield call(userApi.fetchUserProfile, userId);
     const { client } = userProfile
     const clientId = client.split('/')[3].toString('')*1
-    const clientProfile = yield call (userApi.fetchClientProfile, clientId)
+    const clientProfile = yield call(userApi.fetchClientProfile, clientId)
     yield put(fetchUserProfileSuccess(clientProfile));
+    yield call(getUserProfile, clientId)
     //history.push('/accueil')
     //console.log('history', history);
   } catch (e) {
@@ -43,14 +43,16 @@ export function* getUserProfile(userId) {
   }
 }
 
-export function* getClientOrders() {
+export function* getClientOrders(clientId) {
   const userApi = new UserApi();
   try {      
     const clientOrders = yield call(userApi.fetchClientOrders);
     //const { client } = userProfile
     yield put(fetchClientOrdersSuccess(
       clientOrders
-        .filter((data) => data.client === '/api/clients/388' && data.isPaid)
+        .filter((data) => data.client === `/api/clients/${clientId}`
+         && data.isPaid
+        )
     ));
   } catch (e) {
     if (e.response) {
@@ -90,12 +92,11 @@ export function* logIn(action) {
     const { login } = action.payload;
     const userApi = new UserApi();
     const userLoggedIn = yield call(userApi.logIn, login);
-    const { userId, token } = userLoggedIn;
+    const { token } = userLoggedIn;
     //const tokenDecoded = jwtDecode(token);
    // console.log('user login', tokenDecoded)
     
-    yield put(logInSuccess(
-      userId, token));
+    yield put(logInSuccess(token));
     yield call(getUserProfile, jwtDecode(token).id);
     //history.push('/accueil')
     
