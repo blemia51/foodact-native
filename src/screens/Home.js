@@ -10,14 +10,14 @@ import {
   Linking,
   Alert,
   TouchableOpacity,
-  SafeAreaView
+  SafeAreaView,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import * as Notifications from "expo-notifications";
 import * as Location from "expo-location";
-import { StatusBar } from 'react-native';
+import { StatusBar } from "react-native";
 //import MapView from "react-native-maps";
 import { updateDate } from "../utils/functions";
 const jwtDecode = require("jwt-decode");
@@ -28,7 +28,6 @@ import foodact_animated from "../assets/foodact_fadein.gif";
 
 import RenderItem from "../components/RenderItem";
 import Favorites from "../containers/FavoritesContainer";
-
 
 const initialState = {
   longitude: null,
@@ -58,9 +57,10 @@ export default function Home(props) {
     paniersName,
     paniersPrice,
     creneauxFournisseurs,
-    orderStatus
+    orderStatus,
+    favorites,
   } = props;
-  
+
   const [userLocation, setUserLocation] = useState(null);
   const [state, setState] = useState(initialState);
   const [isLogged, setIsLogged] = useState(false);
@@ -86,9 +86,9 @@ export default function Home(props) {
       latitude,
       longitude,
     }));
-  }, [latitude, longitude])
+  }, [latitude, longitude]);
 
-  console.log('orderstatus', orderStatus)
+  console.log("orderstatus", orderStatus);
 
   const loadRessources = async () => {
     try {
@@ -202,6 +202,16 @@ export default function Home(props) {
   // useEffect(() => {
   //   setIsLogged;
   // }, [isLogged]);
+
+  const favoritesCategories =
+    favorites.length > 0 
+    ? categories &&
+        categories.map((data) => ({
+          ...data,
+          isFavorite: favorites.find(favorite => data.id === favorite ? true : false)
+        }))
+    : categories
+      console.log('favoris', favoritesCategories)
 
   const paniersAndFournisseur =
     fournisseurs &&
@@ -318,7 +328,7 @@ export default function Home(props) {
   const handleRemoveFavorites = (id) => {
     const favorites = props.favorites;
     if (favorites.indexOf(id) !== -1) {
-      favorites.splice(favorites.indexOf(id), 1)
+      favorites.splice(favorites.indexOf(id), 1);
       props.uploadFavorite(favorites);
     }
   };
@@ -334,17 +344,21 @@ export default function Home(props) {
     !creneauxFournisseurs
   ) {
     return (
-      <View style={{ 
-        flex: 1, 
-        }}>
-          {/* <Header /> */}
-          <View style={{ 
-            flex: 1, 
-            alignItems: "center", 
-            justifyContent: "center" 
-          }}>
+      <View
+        style={{
+          flex: 1,
+        }}
+      >
+        {/* <Header /> */}
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <Image source={foodact_animated} />
-        </View> 
+        </View>
       </View>
     );
   }
@@ -355,8 +369,8 @@ export default function Home(props) {
       <Header />
       {/* <Payment /> */}
       <ScrollView style={styles.container}>
-        {categories &&
-          categories.map((categorie) => {
+        {favoritesCategories &&
+          favoritesCategories.map((categorie) => {
             return (
               <View key={categorie.id}>
                 <View style={styles.headerContainer}>
@@ -364,6 +378,7 @@ export default function Home(props) {
                     <Text style={styles.category}>{categorie.nom}</Text>
                     <Favorites
                       categorie={categorie.id}
+                      isFavorite={categorie.isFavorite}
                       //data={paniersAndFournisseurByCategorie(categorie.id)}
                       addFavorites={handleAddFavorites}
                       removeFavorites={handleRemoveFavorites}
@@ -454,7 +469,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingHorizontal: 10,
     color: "#16214b",
-    
   },
   link: {
     fontSize: 16,
@@ -473,8 +487,7 @@ const styles = StyleSheet.create({
   },
   categoryContainer: {
     flexDirection: "row",
-    alignItems: 'center'
-
+    alignItems: "center",
   },
   field: {
     width: 300,

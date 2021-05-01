@@ -15,9 +15,16 @@ export default class Favorites extends PureComponent {
     isFavorites: false,
   };
 
+  componentDidMount() {
+    const { isFavorite } = this.props
+    this.setState({
+      isFavorites: isFavorite
+    })
+  }
+
   render() {
     const { isFavorites } = this.state;
-    const { categorie, addFavorites, removeFavorites } = this.props;
+    const { categorie, addFavorites, removeFavorites, isFavorite } = this.props;
     //console.log("les props", this.props);
     return (
       <View>
