@@ -320,7 +320,7 @@ export default function Home(props) {
 
   const handleAddFavorites = (id) => {
     const favorites = props.favorites;
-    //const data = paniersAndFournisseurByCategorie(id)
+    const data = paniersAndFournisseurByCategorie(id)
     if (favorites.indexOf(id) === -1) {
       favorites.push(id);
       console.log('favfavfav', favorites)
