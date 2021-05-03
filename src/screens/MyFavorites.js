@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
-
 
 export default function MyFavorites(props) {
   const { favorites, navigation, categories } = props;
-  const [fav, setFav] = useState(favorites || [])
-  
+  const [fav, setFav] = useState(favorites || []);
+
   //console.log('props favorites', props)
 
   // useEffect(() => {
@@ -20,17 +19,16 @@ export default function MyFavorites(props) {
   useFocusEffect(
     React.useCallback(() => {
       // Do something when the screen is focused
-      setFav(favorites)
+      setFav(favorites);
       //console.log('mis a jour', fav)
-      renderFavorites()
+      renderFavorites();
       return () => {
         // Do something when the screen is unfocused
         // Useful for cleanup functions
-      setFav([])
+        setFav([]);
       };
     }, [])
   );
-
 
   // useEffect(() => {
   //   const isFocus = navigation.addListener('focus', () => {
@@ -42,50 +40,46 @@ export default function MyFavorites(props) {
   //   });
 
   //   return isFocus;
-    
+
   // }, [navigation])
 
+  useEffect(
+    () => {
+      setFav(favorites);
+    },
+    [favorites],
+    console.log("rerender?")
+  );
 
-
-  useEffect(() => {
-    setFav(favorites)
-    },[favorites], console.log('rerender?'));
-
-
-  const renderFavorites = () => { 
+  const renderFavorites = () => {
     const categoriesFavorite =
-      favorites &&
-      categories &&
-        favorites.map(id =>
-          categories.find(categorie => id === categorie.id).nom)
-        //console.log('totototototo', categoriesFavorite)
-    return (
-      categoriesFavorite.map(data =>
-        <Text key={`${data}_0`} style={styles.category}>{data}</Text>
-      )
-    )
-  }
+    favorites &&
+    categories &&
+      favorites.map(id =>
+        categories.find(categorie => id === categorie.id).nom)
+    return categoriesFavorite.map((data) => (
+      <Text key={`${data}_0`} style={styles.category}>
+        {data}
+      </Text>
+    ));
+  };
 
-  if (favorites && favorites.length < 1) {
+  if (!favorites || favorites.length < 1) {
     return (
-        <View style={styles.container}>
-          <Text>
-            Vous n'avez pas encore enregitré de categorie dans vos favoris
-          </Text>
-          <View style={styles.noFavorites}>
-            <Text>Cliquez sur le </Text>
-            <MaterialIcons name="favorite-border" color="lightgrey" size={24} />
-            <Text> pour les ajouter ! </Text>
-          </View>
+      <View style={styles.container}>
+        <Text>
+          Vous n'avez pas encore enregitré de categorie dans vos favoris
+        </Text>
+        <View style={styles.noFavorites}>
+          <Text>Cliquez sur le </Text>
+          <MaterialIcons name="favorite-border" color="lightgrey" size={24} />
+          <Text> pour les ajouter ! </Text>
         </View>
-    )
+      </View>
+    );
   }
 
-  return ( 
-    <View>
-      {renderFavorites()}
-    </View>
-  ) 
+  return <View>{renderFavorites()}</View>;
 }
 
 MyFavorites.defaultProps = {

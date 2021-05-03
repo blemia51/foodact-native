@@ -204,14 +204,15 @@ export default function Home(props) {
   // }, [isLogged]);
 
   const favoritesCategories =
-    favorites.length > 0 
-    ? categories &&
+    favorites.length > 0
+      ? categories &&
         categories.map((data) => ({
           ...data,
-          isFavorite: favorites.find(favorite => data.id === favorite ? true : false)
+          isFavorite: favorites.find((favorite) =>
+            data.id === favorite ? true : false
+          ),
         }))
-    : categories
-      console.log('favoris', favoritesCategories)
+      : categories;
 
   const paniersAndFournisseur =
     fournisseurs &&
@@ -319,8 +320,10 @@ export default function Home(props) {
 
   const handleAddFavorites = (id) => {
     const favorites = props.favorites;
+    //const data = paniersAndFournisseurByCategorie(id)
     if (favorites.indexOf(id) === -1) {
       favorites.push(id);
+      console.log('favfavfav', favorites)
       props.uploadFavorite(favorites);
     }
   };
