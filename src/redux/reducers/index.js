@@ -7,6 +7,7 @@ import { persistReducer } from 'redux-persist'
 // import userReducer from "./userReducer";
 // import travelsReducer from "./travelsReducer";
 import favorites from "./favorites";
+import favoritesDatas from './favoritesDatas'
 // import myTravelsReducer from "./myTravelsReducer";
 import user from './user'
 import paniers from './paniers'
@@ -24,6 +25,7 @@ const persistConfig = {
 const rootReducers = combineReducers({
   userState: user,
   favoritesState: favorites,
+  favoritesDatasState: favoritesDatas,
   paniersState: paniers,
   categoriesState: categories,
   fournisseursState: fournisseurs,

@@ -59,6 +59,7 @@ export default function Home(props) {
     creneauxFournisseurs,
     orderStatus,
     favorites,
+    favoritesDatas,
   } = props;
 
   const [userLocation, setUserLocation] = useState(null);
@@ -184,20 +185,20 @@ export default function Home(props) {
     }
   };
 
-  const loadProfie = async () => {
-    try {
-      const token = await AsyncStorage.getItem("token");
-      const tokenDecoded = jwtDecode(token);
-      console.log("username", tokenDecoded);
-      if (!token) {
-        return;
-      }
-      token && setIsLogged(true);
-      console.log("connecté ?", isLogged);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const loadProfie = async () => {
+  //   try {
+  //     const token = await AsyncStorage.getItem("token");
+  //     const tokenDecoded = jwtDecode(token);
+  //     console.log("username", tokenDecoded);
+  //     if (!token) {
+  //       return;
+  //     }
+  //     token && setIsLogged(true);
+  //     console.log("connecté ?", isLogged);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   // useEffect(() => {
   //   setIsLogged;
@@ -307,6 +308,7 @@ export default function Home(props) {
             cat.paniers.qte > 0
         )
         .sort((a, b) => a.panierprix - b.panierprix)
+
         .sort(
           (a, b) =>
             // Date.parse(a.paniers.DateExpirAffichage) -
@@ -320,12 +322,17 @@ export default function Home(props) {
 
   const handleAddFavorites = (id) => {
     const favorites = props.favorites;
-    const data = paniersAndFournisseurByCategorie(id)
+    console.log('fav', favorites)
     if (favorites.indexOf(id) === -1) {
       favorites.push(id);
       console.log('favfavfav', favorites)
       props.uploadFavorite(favorites);
     }
+    // if (favoritesDatas.indexOf(data) === -1) {
+    //   favoritesDatas.push(data);
+    //   console.log('favfavfavData', favoritesDatas)
+    //   props.uploadFavoriteData(favoritesDatas);
+    // }
   };
 
   const handleRemoveFavorites = (id) => {

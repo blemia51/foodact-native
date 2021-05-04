@@ -193,6 +193,5 @@ export function getFullYearFromDate(date) {
 
 
 export function getLongDate(date) {
-  
   return `${getDayFromDate(date)}/${getMonthFromDate(date)}/${getFullYearFromDate(date)}`
 }
