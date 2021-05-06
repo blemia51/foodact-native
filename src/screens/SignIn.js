@@ -53,10 +53,10 @@ class SignIn extends React.Component {
     const { navigation, logIn, status, token } = this.props
     const { login } = this.state
     logIn(login)
-    console.log('les props', this.props)
-    if (status !== 'error') {
-      navigation.popToTop()
-    }
+    //console.log('les props', this.props)
+    // if (status !== 'error') {
+    //   navigation.popToTop()
+    // }
     // if (status === 'success') {
     //   navigation.popToTop()
     // } else {
@@ -101,7 +101,7 @@ class SignIn extends React.Component {
   };
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, status } = this.props;
     const { login: { username, password }, isFormValid, isEnabledRemeberMe, isEnabledCgu } = this.state;
     //console.log("state", this.state);
     //console.log('props' , this.props)
@@ -167,6 +167,8 @@ class SignIn extends React.Component {
               title="Se connecter"
               onPress={(e) => {
                 this.onSubmit(e);
+                status==='success' && navigation.popToTop()
+                console.log('status', status)
                 //navigation.navigate('HomeConnected')
               }}
               size="sm"

@@ -1,6 +1,8 @@
 import { connect } from "react-redux";
 
 import { uploadFavorite, deleteFavorite } from "../redux/actions/favorites";
+import { uploadFavoriteData,deleteFavoriteData } from '../redux/actions/favoritesDatas'
+import { uploadLocation, deleteLocation } from '../redux/actions/location'
 import { fetchPaniers, fetchPaniersName, fetchPaniersPrice } from '../redux/actions/paniers'
 import { fetchCategories } from '../redux/actions/categories'
 import { fetchFournisseurs, fetchCreneauxFournisseurs } from '../redux/actions/fournisseurs'
@@ -11,6 +13,7 @@ export default connect(
     (state) => ({
       token: state.userState.token,
       favorites: state.favoritesState.favorites,
+      favoritesDatas: state.favoritesDatasState.favoritesDatas,
       paniers: state.paniersState.paniers,
       paniersName: state.paniersState.paniersName,
       paniersPrice: state.paniersState.paniersPrice,
@@ -25,6 +28,9 @@ export default connect(
       fetchUserProfile: (token, userID) => dispatch(fetchUserProfile(token, userID)),
       uploadFavorite: (data) => dispatch(uploadFavorite(data)),
       deleteFavorite: () => dispatch(deleteFavorite()),
+      uploadFavoriteData: (data) => dispatch(uploadFavoriteData(data)),
+      deleteFavoriteData: () => dispatch(deleteFavoriteData()),
+      uploadLocation: (location) => dispatch(uploadLocation(location)),
       fetchPaniers: () => dispatch(fetchPaniers()),
       fetchPaniersName: () => dispatch(fetchPaniersName()),
       fetchPaniersPrice: () => dispatch(fetchPaniersPrice()),

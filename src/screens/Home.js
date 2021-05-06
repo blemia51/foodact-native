@@ -59,6 +59,8 @@ export default function Home(props) {
     creneauxFournisseurs,
     orderStatus,
     favorites,
+    favoritesDatas,
+    uploadLocation,
   } = props;
 
   const [userLocation, setUserLocation] = useState(null);
@@ -86,6 +88,7 @@ export default function Home(props) {
       latitude,
       longitude,
     }));
+    uploadLocation({latitude: latitude, longitude: longitude})
   }, [latitude, longitude]);
 
   console.log("orderstatus", orderStatus);
@@ -116,8 +119,10 @@ export default function Home(props) {
   const getUserLocation = async () => {
     try {
       const {
-        coords: { latitude, longitude },
+        coords, coords: { latitude, longitude },
       } = await Location.getCurrentPositionAsync();
+      console.log("userlocation", latitude, longitude)
+      uploadLocation({latitude: latitude, longitude: longitude})
 
       setState((prevState) => ({
         ...prevState,
@@ -184,20 +189,20 @@ export default function Home(props) {
     }
   };
 
-  const loadProfie = async () => {
-    try {
-      const token = await AsyncStorage.getItem("token");
-      const tokenDecoded = jwtDecode(token);
-      console.log("username", tokenDecoded);
-      if (!token) {
-        return;
-      }
-      token && setIsLogged(true);
-      console.log("connecté ?", isLogged);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const loadProfie = async () => {
+  //   try {
+  //     const token = await AsyncStorage.getItem("token");
+  //     const tokenDecoded = jwtDecode(token);
+  //     console.log("username", tokenDecoded);
+  //     if (!token) {
+  //       return;
+  //     }
+  //     token && setIsLogged(true);
+  //     console.log("connecté ?", isLogged);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   // useEffect(() => {
   //   setIsLogged;
@@ -307,6 +312,7 @@ export default function Home(props) {
             cat.paniers.qte > 0
         )
         .sort((a, b) => a.panierprix - b.panierprix)
+
         .sort(
           (a, b) =>
             // Date.parse(a.paniers.DateExpirAffichage) -
@@ -320,12 +326,17 @@ export default function Home(props) {
 
   const handleAddFavorites = (id) => {
     const favorites = props.favorites;
-    //const data = paniersAndFournisseurByCategorie(id)
+    console.log('fav', favorites)
     if (favorites.indexOf(id) === -1) {
       favorites.push(id);
       console.log('favfavfav', favorites)
       props.uploadFavorite(favorites);
     }
+    // if (favoritesDatas.indexOf(data) === -1) {
+    //   favoritesDatas.push(data);
+    //   console.log('favfavfavData', favoritesDatas)
+    //   props.uploadFavoriteData(favoritesDatas);
+    // }
   };
 
   const handleRemoveFavorites = (id) => {

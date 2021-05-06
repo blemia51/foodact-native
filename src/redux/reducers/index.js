@@ -7,6 +7,8 @@ import { persistReducer } from 'redux-persist'
 // import userReducer from "./userReducer";
 // import travelsReducer from "./travelsReducer";
 import favorites from "./favorites";
+import favoritesDatas from './favoritesDatas'
+import location from './location'
 // import myTravelsReducer from "./myTravelsReducer";
 import user from './user'
 import paniers from './paniers'
@@ -18,15 +20,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['favoritesState', 'userState']
+  whitelist: ['favoritesState', 'userState',]
 }
 
 const rootReducers = combineReducers({
   userState: user,
   favoritesState: favorites,
+  favoritesDatasState: favoritesDatas,
   paniersState: paniers,
   categoriesState: categories,
   fournisseursState: fournisseurs,
+  locationState: location,
 });
 
 export default persistReducer(persistConfig, rootReducers);

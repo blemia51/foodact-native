@@ -16,7 +16,7 @@ import FaqClient from '../screens/FaqClient'
 import ModalAddAddress from '../screens/ModalAddAddress'
 import MyFavorites from '../containers/MyFavoritesContainer'
 import UserProfile from '../containers/UserProfileContainer'
-import Explore from '../screens/Explore'
+import Explore from '../containers/ExploreContainer'
 import UserOrders from '../containers/UserOrdersContainer'
 import LogoHeader from '../components/LogoHeader'
 
@@ -144,7 +144,7 @@ function ExploreStackScreen() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
-          //headerShown: false,
+          headerShown: false,
         }}
       />
     </ExploreStack.Navigator>
