@@ -60,6 +60,7 @@ export default function Home(props) {
     orderStatus,
     favorites,
     favoritesDatas,
+    uploadLocation,
   } = props;
 
   const [userLocation, setUserLocation] = useState(null);
@@ -87,6 +88,7 @@ export default function Home(props) {
       latitude,
       longitude,
     }));
+    uploadLocation({latitude: latitude, longitude: longitude})
   }, [latitude, longitude]);
 
   console.log("orderstatus", orderStatus);
@@ -117,8 +119,10 @@ export default function Home(props) {
   const getUserLocation = async () => {
     try {
       const {
-        coords: { latitude, longitude },
+        coords, coords: { latitude, longitude },
       } = await Location.getCurrentPositionAsync();
+      console.log("userlocation", latitude, longitude)
+      uploadLocation({latitude: latitude, longitude: longitude})
 
       setState((prevState) => ({
         ...prevState,

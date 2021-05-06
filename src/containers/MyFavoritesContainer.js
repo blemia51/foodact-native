@@ -12,6 +12,7 @@ export default connect(
       creneauxFournisseurs: state.fournisseursState.creneauxFournisseurs,
       paniersName: state.paniersState.paniersName,
       paniersPrice: state.paniersState.paniersPrice,
+      location: state.locationState.location,
 
     }),
     

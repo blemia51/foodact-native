@@ -18,7 +18,10 @@ export default function MyFavorites(props) {
     paniersName,
     paniersPrice,
     creneauxFournisseurs,
+    location,
   } = props;
+
+  console.log("userlocation", location)
 
   const [fav, setFav] = useState(favorites || []);
   const [datas, setDatas] = useState()
@@ -82,24 +85,18 @@ export default function MyFavorites(props) {
     );
   };
 
-  // useEffect(() => {
-  //   const paniersFournisseur = paniersAndFournisseur(
-  //     fournisseurs,
-  //     paniers,
-  //     creneauxFournisseurs,
-  //     paniersName,
-  //     paniersPrice
-  //   );
-  //   setDatas(paniersFournisseur)
-  //   console.log("paniersFournisseur state", datas);
-  // }, []);
+  useEffect(() => {
+    
+    setFav(favorites)
+    
+  }, []);
 
   useFocusEffect(
     React.useCallback(() => {
       // Do something when the screen is focused
       setFav(favorites);
       //console.log('mis a jour', fav)
-      renderFavorites();
+      //renderFavorites();
       return () => {
         // Do something when the screen is unfocused
         // Useful for cleanup functions
@@ -131,9 +128,9 @@ export default function MyFavorites(props) {
 
   const renderFavorites = () => {
     const categoriesFavorite =
-      favorites &&
+      fav &&
       categories &&
-      favorites.map(
+      fav.map(
         (id) => ({
           id: id,
           nom: categories.find((categorie) => id === categorie.id).nom,
@@ -155,8 +152,8 @@ export default function MyFavorites(props) {
           renderItem={({ item }) => (
             <RenderItem
               item={item}
-              latitude={49.258329}
-              longitude={	4.031696}
+              latitude={location.latitude}
+              longitude={location.longitude}
               navigation={navigation}
             />
           )}
@@ -180,9 +177,6 @@ export default function MyFavorites(props) {
       </View>
     );
   }
-
-  
-
   return <ScrollView style={styles.container}>{renderFavorites()}</ScrollView>
 }
 
