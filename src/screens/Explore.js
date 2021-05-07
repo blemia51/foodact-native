@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Dimensions, Image } from "react-native";
+import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity } from "react-native";
 import MapView, { Marker, Callout } from "react-native-maps";
-import TOTO from '../assets/compass.png'
-import  ExplorerCategories from '../containers/ExplorerCategoriesContainer'
-
+import TOTO from "../assets/compass.png";
+import ExplorerCategories from "../containers/ExplorerCategoriesContainer";
+import { paniersAndFournisseur } from "../utils/dataToRenderFunctions";
+import { updateDate } from "../utils/functions";
 
 const window = Dimensions.get("window");
 
@@ -12,9 +13,23 @@ export default function Explore(props) {
     navigation,
     location: { latitude, longitude },
     fournisseurs,
+    paniers,
+    paniersName,
+    paniersPrice,
+    creneauxFournisseurs,
   } = props;
 
-  const [dimensions, setDimensions] = useState({ window })
+  const paniersFournisseur = paniersAndFournisseur(
+    fournisseurs,
+    paniers,
+    creneauxFournisseurs,
+    paniersName,
+    paniersPrice
+  );
+  console.log("paniersFournisseur", paniersFournisseur);
+
+  const [selectedId, setSelectedId] = useState(5);
+  const [dimensions, setDimensions] = useState({ window });
 
   const onChange = ({ window }) => {
     setDimensions({ window });
@@ -27,16 +42,37 @@ export default function Explore(props) {
     };
   });
 
-  
+  const { width, height } = dimensions;
+  console.log("dimensions", dimensions);
 
-  const { width, height } = dimensions
-  console.log('dimensions', dimensions)
+  const Item = ({ nom, id, onPress, textColor }) => {
+    return (
+      <View style={styles.containerItem}>
+        <TouchableOpacity onPress={onPress}>
+          <View style={styles.categorie}>
+            <Text style={[styles.categorieName, textColor]}>{nom}</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
-  
+  const renderItem = ({ item }) => {
+    const color = item.id === selectedId ? "#16214b" : "lightgrey";
+    return (
+      <Item
+        id={item.id}
+        nom={item.nom}
+        onPress={() => setSelectedId(item.id)}
+        textColor={{ color }}
+      />
+    );
+  };
+
   return (
     <View style={styles.container}>
       <MapView
-        style={{width, height, flex: 1, zIndex: 10}}
+        style={{ width, height, flex: 1, zIndex: 10 }}
         showsUserLocation
         followsUserLocation
         showsMyLocationButton
@@ -48,32 +84,37 @@ export default function Explore(props) {
           longitudeDelta: 0.121,
         }}
       >
-        {fournisseurs.filter((fournisseur) => fournisseur.longitude !== null && fournisseur.latitude !== null).map(
-          data =>
-          <Marker
-            key={data.id}
-            coordinate={{ 
-              latitude: parseFloat(data.latitude),
-              longitude: parseFloat(data.longitude),
-            }}
-            title={data.nom}
-            //description=" blablabla blablabla"
-            pinColor="orange"
-          >
-            <Callout style={{flex: 1}}>
-              <View style={{flexDirection: 'row'}}>
-              <Text>{data.nom}</Text>
-                <Text>
-                 <Image source={TOTO} style={{ height: 30, width: 30 }} resizeMode="cover" />
-                </Text>
+        {paniersFournisseur &&
+          paniersFournisseur
+            .filter(
+              (fournisseur) =>
+                fournisseur &&
+                fournisseur.longitude !== null &&
+                fournisseur.latitude !== null &&
+                fournisseur.paniers.categorie === `/api/categories/${selectedId}`
+            )
+            .map((data) => (
+              <Marker
+                key={data.paniers.id}
+                coordinate={{
+                  latitude: parseFloat(data.latitude),
+                  longitude: parseFloat(data.longitude),
+                }}
+                title={data.nom}
+                description={data.adresse}
+                pinColor="orange"
+              >
+                {/* <Callout tooltip>
+              <View style={{padding: 15, borderRadius: 12, backgroundColor: 'white'}}>
+                <Text>{data.nom}</Text>
+                <Image source={require('../assets/compass.png')} style={{ height: 60, width: 60 }} resizeMode="cover" />
               </View>
-
-            </Callout>
-          </Marker>
-        )}
+            </Callout> */}
+              </Marker>
+            ))}
       </MapView>
-      <View  style={styles.categoriesContainer} >
-        <ExplorerCategories  />
+      <View style={styles.categoriesContainer}>
+        <ExplorerCategories renderItem={renderItem} selectedId={selectedId} />
       </View>
     </View>
   );
@@ -96,5 +137,26 @@ const styles = StyleSheet.create({
     left: 10,
     right: 10,
     zIndex: 20,
-  }
+    paddingVertical: 5,
+  },
+  categorie: {
+    backgroundColor: "white",
+    paddingHorizontal: 10,
+    paddingVertical: 12,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
+    elevation: 3,
+  },
+  categorieName: {
+    fontWeight: "bold",
+    color: "lightgrey",
+  },
+  containerItem: {
+    flex: 1,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
 });
