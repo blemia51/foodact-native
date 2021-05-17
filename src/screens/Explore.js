@@ -107,6 +107,7 @@ export default function Explore(props) {
             )
             .map((data) => (
               <Marker
+                image={require('../assets/shop_orange.png')}
                 key={data.paniers.id}
                 coordinate={{
                   latitude: parseFloat(data.latitude),
