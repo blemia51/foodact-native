@@ -16,6 +16,7 @@ export default function UserOrders(props) {
   }, []);
 
   const getPanierId = 
+    clientOrders &&
     clientOrders.filter(data => data.paniers.length > 0)
       .map(value => value.paniers.map(
         (name) => name

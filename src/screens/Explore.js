@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity, SafeAreaView } from "react-native";
 import MapView, { Marker, Callout } from "react-native-maps";
-import TOTO from "../assets/compass.png";
 import ExplorerCategories from "../containers/ExplorerCategoriesContainer";
 import { paniersAndFournisseur } from "../utils/dataToRenderFunctions";
 import { updateDate } from "../utils/functions";
@@ -26,14 +25,30 @@ export default function Explore(props) {
     paniersName,
     paniersPrice
   );
-  console.log("paniersFournisseur", paniersFournisseur);
+  //console.log("paniersFournisseur", paniersFournisseur);
+
+  const intitialLocation = {
+    region: {
+      latitude: latitude,
+      longitude: longitude,
+      latitudeDelta: 0.015,
+      longitudeDelta: 0.121,
+    }
+  }
 
   const [selectedId, setSelectedId] = useState(5);
   const [dimensions, setDimensions] = useState({ window });
+  const [location, setLocation] = useState(intitialLocation)
 
   const onChange = ({ window }) => {
     setDimensions({ window });
   };
+
+  const onRegionChange = (region) => {
+    setLocation(region)
+    console.log('region', region)
+    console.log('location', location)
+  }
 
   useEffect(() => {
     Dimensions.addEventListener("change", onChange);
@@ -70,19 +85,16 @@ export default function Explore(props) {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <MapView
         style={{ width, height, flex: 1, zIndex: 10 }}
         showsUserLocation
-        followsUserLocation
+        //followsUserLocation
         showsMyLocationButton
-        //mapPadding={{ top: 10, bottom: 100 }}
-        region={{
-          latitude: latitude,
-          longitude: longitude,
-          latitudeDelta: 0.015,
-          longitudeDelta: 0.121,
-        }}
+        loadingEnabled
+        mapPadding={{ top: 1, bottom: 10, rigth:50 }}
+        region={location.region}
+        //onRegionChangeComplete={onRegionChange}
       >
         {paniersFournisseur &&
           paniersFournisseur
@@ -106,8 +118,9 @@ export default function Explore(props) {
               >
                 {/* <Callout tooltip>
               <View style={{padding: 15, borderRadius: 12, backgroundColor: 'white'}}>
-                <Text>{data.nom}</Text>
+                <Text>{data.nom}
                 <Image source={require('../assets/compass.png')} style={{ height: 60, width: 60 }} resizeMode="cover" />
+                </Text> 
               </View>
             </Callout> */}
               </Marker>
@@ -116,7 +129,7 @@ export default function Explore(props) {
       <View style={styles.categoriesContainer}>
         <ExplorerCategories renderItem={renderItem} selectedId={selectedId} />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -133,7 +146,7 @@ const styles = StyleSheet.create({
   },
   categoriesContainer: {
     position: "absolute",
-    top: 30,
+    top: 45,
     left: 10,
     right: 10,
     zIndex: 20,
