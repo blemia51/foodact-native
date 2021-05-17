@@ -18,6 +18,7 @@ import * as Permissions from "expo-permissions";
 import * as Notifications from "expo-notifications";
 import * as Location from "expo-location";
 import { StatusBar } from "react-native";
+import * as IntentLauncher from "expo-intent-launcher";
 //import MapView from "react-native-maps";
 import { updateDate } from "../utils/functions";
 const jwtDecode = require("jwt-decode");
@@ -88,7 +89,7 @@ export default function Home(props) {
       latitude,
       longitude,
     }));
-    uploadLocation({latitude: latitude, longitude: longitude})
+    uploadLocation({ latitude: latitude, longitude: longitude });
   }, [latitude, longitude]);
 
   console.log("orderstatus", orderStatus);
@@ -103,6 +104,12 @@ export default function Home(props) {
       const statusNotification = result[1].status;
       console.log("status", result);
       console.log("statusNotif", statusNotification);
+
+      const pkg = Constants.manifest.releaseChannel
+        ? Constants.manifest.android.package
+        : "host.exp.exponent";
+
+        console.log('pkg', pkg)
 
       if (status === "granted") {
         getUserLocation();
@@ -119,10 +126,11 @@ export default function Home(props) {
   const getUserLocation = async () => {
     try {
       const {
-        coords, coords: { latitude, longitude },
+        coords,
+        coords: { latitude, longitude },
       } = await Location.getCurrentPositionAsync();
-      console.log("userlocation", latitude, longitude)
-      uploadLocation({latitude: latitude, longitude: longitude})
+      console.log("userlocation", latitude, longitude);
+      uploadLocation({ latitude: latitude, longitude: longitude });
 
       setState((prevState) => ({
         ...prevState,
@@ -150,22 +158,37 @@ export default function Home(props) {
     //   }
     // }
     if (Constants.isDevice) {
-      const {
-        status: existingStatus,
-      } = await Notifications.getPermissionsAsync();
+      const pkg = Constants.manifest.releaseChannel
+        ? Constants.manifest.android.package
+        : "host.exp.exponent";
+
+        console.log('pkg', pkg)
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
+
       if (existingStatus !== "granted") {
         const { status } = await Notifications.requestPermissionsAsync();
         finalStatus = status;
       }
+
       if (finalStatus !== "granted") {
         //alert('Failed to get push token for push notification!');
         Alert.alert(
-          "No Notification Permission",
-          "please goto setting and on notification permission manual",
+          "Les Notifications ne sont pas activées",
+          "Les activer manuellement dans les parametres ?",
           [
-            { text: "cancel", onPress: () => console.log("cancel") },
-            { text: "Allow", onPress: () => Linking.openURL("app-settings:") },
+            { text: "Annuler", onPress: () => console.log("cancel") },
+            {
+              text: "Configurer",
+              onPress: () =>
+                Platform.OS === "ios"
+                  ? Linking.openURL("app-settings:")
+                  : IntentLauncher.startActivityAsync(
+                      IntentLauncher.ACTION_APPLICATION_DETAILS_SETTINGS,
+                      { data: `package: ${pkg}` }
+                    ),
+            },
           ],
           { cancelable: false }
         );
@@ -326,10 +349,10 @@ export default function Home(props) {
 
   const handleAddFavorites = (id) => {
     const favorites = props.favorites;
-    console.log('fav', favorites)
+    console.log("fav", favorites);
     if (favorites.indexOf(id) === -1) {
       favorites.push(id);
-      console.log('favfavfav', favorites)
+      console.log("favfavfav", favorites);
       props.uploadFavorite(favorites);
     }
     // if (favoritesDatas.indexOf(data) === -1) {

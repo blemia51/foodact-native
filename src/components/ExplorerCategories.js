@@ -1,27 +1,30 @@
-import React from 'react'
-import { StyleSheet, Text, View, FlatList } from 'react-native'
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 
 export default function ExplorerCategories(props) {
-  const { categories } = props
+  const { categories, renderItem, selectedId } = props;
 
-  const Item = ({nom, id}) => {
-    return (
-      <View style={styles.container}>
-        <View style={styles.categorie}>
-          <Text style={styles.categorieName}>{nom}</Text>
-        </View>
-      </View>
-    )
-  }
+  //const [selectedId, setSelectedId] = useState(5);
 
-  const renderItem = ({item}) => {
-    return(
-      <Item
-        id={item.id}
-        nom={item.nom}
-      />
-    )
-  }
+  // aa
+
+  // const renderItem = ({ item }) => {
+  //   const color = item.id === selectedId ? "#16214b" : "lightgrey";
+  //   return (
+  //     <Item
+  //       id={item.id}
+  //       nom={item.nom}
+  //       onPress={() => setSelectedId(item.id)}
+  //       textColor={{ color }}
+  //     />
+  //   );
+  // };
 
   return (
     <FlatList
@@ -29,25 +32,30 @@ export default function ExplorerCategories(props) {
       data={categories}
       renderItem={renderItem}
       keyExtractor={(item) => item.id.toString()}
+      extraData={selectedId}
     />
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 8
+    paddingHorizontal: 8,
+    paddingVertical: 4,
   },
   categorie: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     paddingHorizontal: 10,
     paddingVertical: 12,
-    //margin: 8,
-    borderRadius:8
-    
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
+    elevation: 3,
   },
   categorieName: {
-    fontWeight: 'bold',
-    color: 'lightgrey'
-  }
-})
+    fontWeight: "bold",
+    color: "lightgrey",
+  },
+});
