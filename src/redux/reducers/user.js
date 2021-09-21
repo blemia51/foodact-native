@@ -11,6 +11,7 @@ import {
   FETCH_CLIENT_ORDERS,
   FETCH_CLIENT_ORDERS_SUCCESS,
   CLIENT_ORDERS_FAILURE,
+  POST_USER_PROFILE_SUCCESS
 } from '../actions/user'
 import { STATUS_LOADING, STATUS_FAILURE, STATUS_SUCCESS } from '../../constants/statusConstants';
 
@@ -45,6 +46,7 @@ export default function (state = {}, action) {
             return {
               ...state,
               token: null,
+              userProfile: null,
               status: STATUS_SUCCESS,
             };
           case LOG_OUT_FAILURE:
@@ -52,6 +54,12 @@ export default function (state = {}, action) {
               ...state,
               error: action.payload,
               status: STATUS_FAILURE,
+            };
+          case POST_USER_PROFILE_SUCCESS:
+              return {
+                ...state,
+                postSuccess: action.payload.response,
+                postStatus: STATUS_SUCCESS,
             };
         case FETCH_USER_PROFILE:
           return {

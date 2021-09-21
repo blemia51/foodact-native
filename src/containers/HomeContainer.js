@@ -21,7 +21,7 @@ export default connect(
       fournisseurs: state.fournisseursState.fournisseurs,
       creneauxFournisseurs: state.fournisseursState.creneauxFournisseurs,
       orderStatus: state.userState.orderStatus,
-    
+      userProfile: state.userState.userProfile,
     }),
     (dispatch) => ({
       fetchClientOrders: () => dispatch(fetchClientOrders()),

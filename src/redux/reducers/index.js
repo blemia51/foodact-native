@@ -14,6 +14,7 @@ import user from './user'
 import paniers from './paniers'
 import categories from './categories'
 import fournisseurs from './fournisseurs'
+import order from "./order";
 //import travels from './travels'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -31,6 +32,7 @@ const rootReducers = combineReducers({
   categoriesState: categories,
   fournisseursState: fournisseurs,
   locationState: location,
+  orderState: order
 });
 
 export default persistReducer(persistConfig, rootReducers);

@@ -25,6 +25,8 @@ const Item = ({
   latitude,
   longitude,
   navigation,
+  fournisseur_id,
+  panier_id,
 }) => { 
 
   const distance = Math.round(getDistance(
@@ -44,11 +46,13 @@ const Item = ({
             paniername: paniername,
             description: description,
             nom: nom,
-            quantite: quantity,
+            qte: quantity,
             price: price,
             discount: discount,
             adresse: adresse,
             distance: distance,
+            fournisseur_id: fournisseur_id,
+            panier_id: panier_id,
           })
         }}
       >
@@ -69,7 +73,7 @@ const Item = ({
           alt="food"
         />
         {!isTimeOut &&
-          <Basket quantity={quantity} />
+          <Basket quantite={quantity} />
         }
         <Price isTimeOut= {isTimeOut} price={price} />
         <Discount discount={discount} />

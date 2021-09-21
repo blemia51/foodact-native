@@ -50,7 +50,7 @@ export default function Home(props) {
     fetchPaniersPrice,
     fetchCreneauxFournisseurs,
     fetchClientOrders,
-    //userProfile,
+    userProfile,
     //token,
     categories,
     fournisseurs,
@@ -70,6 +70,8 @@ export default function Home(props) {
 
   const { latitude, longitude } = state;
 
+  console.log('userProfike Home', userProfile)
+
   useEffect(() => {
     loadRessources();
     getTokenNotification();
@@ -84,6 +86,7 @@ export default function Home(props) {
   }, []);
 
   useEffect(() => {
+    getUserLocation();
     setState((prevState) => ({
       ...prevState,
       latitude,
@@ -92,18 +95,22 @@ export default function Home(props) {
     uploadLocation({ latitude: latitude, longitude: longitude });
   }, [latitude, longitude]);
 
-  console.log("orderstatus", orderStatus);
+  //console.log("orderstatus", orderStatus);
+  //console.log("categorie", categories);
+  //console.log("fournisseurs", fournisseurs);
+
 
   const loadRessources = async () => {
     try {
       const result = await new Promise.all([
-        Permissions.askAsync(Permissions.LOCATION),
-        Permissions.askAsync(Permissions.NOTIFICATIONS),
+        Location.requestForegroundPermissionsAsync(),
+        //Permissions.askAsync(Permissions.LOCATION_FOREGROUND),
+        //Permissions.askAsync(Permissions.NOTIFICATIONS),
       ]);
       const status = result[0].status;
-      const statusNotification = result[1].status;
+      //const statusNotification = result[1].status;
       console.log("status", result);
-      console.log("statusNotif", statusNotification);
+      //console.log("statusNotif", statusNotification);
 
       const pkg = Constants.manifest.releaseChannel
         ? Constants.manifest.android.package
@@ -115,9 +122,11 @@ export default function Home(props) {
         getUserLocation();
       }
 
-      if (statusNotification !== "granted") {
-        Permissions.askAsync(Permissions.NOTIFICATIONS);
-      }
+      //getUserLocation();
+
+      // if (statusNotification !== "granted") {
+      //   Permissions.askAsync(Permissions.NOTIFICATIONS);
+      // }
     } catch (e) {
       console.error("problem loading ressources", e);
     }
@@ -128,8 +137,11 @@ export default function Home(props) {
       const {
         coords,
         coords: { latitude, longitude },
-      } = await Location.getCurrentPositionAsync();
+      } = await Location.getLastKnownPositionAsync({})
+      // await Location.getCurrentPositionAsync({ accuracy: 6 });
       console.log("userlocation", latitude, longitude);
+      console.log("coords", coords);
+      //console.log("Locatopn", Location)
       uploadLocation({ latitude: latitude, longitude: longitude });
 
       setState((prevState) => ({
@@ -304,7 +316,7 @@ export default function Home(props) {
           data.paniers &&
           data.paniers.isActivated &&
           data.paniers.categorie === `/api/categories/${id}` &&
-          //data.paniers.categorie === `/api/categories/21` &&
+          //data.paniers.categorie === `/api/categories/3` &&
 
           (data.paniers.qte < 1 ||
             //Date.parse(data.paniers.DateExpirAffichage) - Date.parse(date) <= 0)
@@ -316,7 +328,7 @@ export default function Home(props) {
         }
         return acc;
       }, []);
-
+      
     return (
       paniersAndFournisseurAddPanierPrice &&
       paniersAndFournisseurAddPanierPrice
@@ -326,9 +338,9 @@ export default function Home(props) {
             cat.paniers &&
             cat.paniers.isActivated &&
             cat.paniers.categorie === `/api/categories/${id}` &&
-            //cat.paniers.categorie === `/api/categories/21` &&
+            //cat.paniers.categorie === `/api/categories/3` &&
 
-            //Date.parse(cat.paniers.DateExpirAffichage) - Date.parse(date) > 0 &&
+            Date.parse(cat.paniers.DateExpirAffichage) - Date.parse(date) > 0 &&
             updateDate(cat.paniers.DateExpirAffichage, cat.creneaux) -
               Date.parse(date) >
               0 &&

@@ -17,6 +17,12 @@ const Button = ({ onPress, title, size, backgroundColor, disabled }) => (
         elevation: 6,
         width: 160,
       },
+      size === "medium" && {
+        paddingHorizontal: 8,
+        paddingVertical: 12,
+        elevation: 6,
+        width: 220,
+      },
       backgroundColor && { backgroundColor },
       disabled && { 
         backgroundColor: 'lightgrey',

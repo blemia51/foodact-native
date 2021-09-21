@@ -1,77 +1,117 @@
-import React, { Component } from 'react'
-import { Text, StyleSheet, View, Button } from 'react-native'
+import React, { useState } from 'react'
+import { Text, StyleSheet, View, Alert } from 'react-native'
 
-import { PaymentsStripe as Stripe } from 'expo-payments-stripe';
+import { CardField, useConfirmPayment } from "@stripe/stripe-react-native"
+import Button from "../components/Button";
 
+const Payment = (props) => {
 
-const params = {
-  // mandatory
-  number: '4242424242424242',
-  expMonth: 11,
-  expYear: 22,
-  cvc: '223',
-  // optional
-  // name: 'Test User',
-  // currency: 'usd',
-  // addressLine1: '123 Test Street',
-  // addressLine2: 'Apt. 5',
-  // addressCity: 'Test City',
-  // addressState: 'Test State',
-  // addressCountry: 'Test Country',
-  // addressZip: '55555',
-};
+  const { prenom, tel, mailclient } = props
+  const [cardDetails, setCardDetails] = useState()
+  const { confirmPayment, loading } = useConfirmPayment()
 
+  console.log('props de paiement', props)
 
-const options = {
-  requiredBillingAddressFields: 'full',
-  prefilledInformation: {
-    billingAddress: {
-      name: 'Gunilla Haugeh',
-      line1: 'Canary Place',
-      line2: '3',
-      city: 'Macon',
-      state: 'Georgia',
-      country: 'US',
-      postalCode: '31217',
-    },
-  },
-};
+  const API_URL= "https://foodact.maresa.ma/api/stripe"
 
-
-export default class Payment extends Component {
-  
-  componentDidMount() {
-    Stripe.setOptionsAsync({
-      publishableKey: 'pk_test_51IaHc7GWapTjuaBLyg6WwLz4D4AUKM7SaSH1ij1Ia1RH7EnLwGHefFT2jxJEm9DEUueSs4nrPCpagZbFEiW2zG5u003B3l7P3Y',
-      androidPayMode: 'test',
-    });
-    //this.requestPayment()
+  const fetchPaymentIntentClientSecret = async () => {
+    const response = await fetch(`${API_URL}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        currency: 'eur',
+      }),
+    })
+    const { clientSecret, error} = await response.json()
+    console.log("clientSecret", clientSecret)
+    return {clientSecret, error}
   }
 
-  requestPayment = async () => {
-    const token = await Stripe.paymentRequestWithCardFormAsync(params)
-    //const token = await Stripe.createTokenWithCardAsync(params);
-    console.log(token);
-
-  };
-
-  render() {
-    return (
-      <View style={styles.container}>
+  const handlePayPress = async () => {
+    console.log('detail carte',cardDetails)
+    if (!cardDetails?.complete || !mailclient) {
+      Alert.alert(
+        "",
+        "Veuillez compléter le detail de votre carte de credit ainsi que vos prénom, téléphone et email"
+      )
+      return
+    }
+    const billingDetails = {
+      prenom: prenom,
+      tel: tel,
+      mailclient: mailclient,
+    }
+    try {
+      const { clientSecret, error} = await fetchPaymentIntentClientSecret()
+      if (error) {
+        console.log('Erreur du processus de paiement')
+      } else {
+        const { paymentItent, error } = await confirmPayment(
+          clientSecret, {
+            type: 'Card',
+            billingDetails: billingDetails
+          }
+        )
+        if (error) {
+          Alert.alert(
+            "",
+            "Erreur de confirmation de paiement"
+          )
+        } else if (paymentItent) {
+          Alert.alert(
+            "Paiement validé",
+            ""
+          )
+        }
+      }
+      
+    } catch (error) {
+      console.log(error) 
+    }
+  }
+  
+  return (
+    <View style={styles.container}>
+      <CardField
+        style={styles.cardContainer}
+        cardStyle={styles.card}
+        postalCodeEnabled={false}
+        placeholder={{
+          number:'4242 4242 4242 4242',
+        }}
+        onCardChange={cardDetails => {
+          setCardDetails(cardDetails)
+        }}
+        onFocus={(focusedField) => {
+          console.log('focusField', focusedField);
+        }}
+      />
+      <View style={{alignItems: 'center'}}>
         <Button
+          onPress={handlePayPress}
           title="Payer"
-          onPress={() => this.requestPayment()}
-          disabled={false}
+          disabled={loading}
         />
       </View>
-    )
-  }
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
   },
+  cardContainer: {
+    height: 50,
+    marginVertical: 10,
+  },
+  card: {
+    fontSize: 14
+  }
 })
+
+export default Payment;

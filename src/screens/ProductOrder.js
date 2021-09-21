@@ -10,12 +10,15 @@ import {
   Image,
   SafeAreaView,
 } from "react-native";
+import { StripeProvider } from "@stripe/stripe-react-native";
 import { EvilIcons } from "@expo/vector-icons";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import Payment from "../components/Payment";
 import { MaterialIcons } from "@expo/vector-icons";
 import { getTimeFromDate, getLongDate } from "../utils/functions";
+import { userProfileFailure } from "../redux/actions/user";
+import { or } from "react-native-reanimated";
 
 export default class ProductOrder extends Component {
   static defaultProps = {
@@ -36,6 +39,8 @@ export default class ProductOrder extends Component {
     email: "",
   };
 
+  
+
   setModalVisible = (visible) => {
     this.setState({ modalVisible: visible });
   };
@@ -45,26 +50,9 @@ export default class ProductOrder extends Component {
     //this.setState(() => ({ [key]: val.trim() }),() => console.log("state", this.state))
   };
 
-  handleFieldParamsChange = (valid, params) => {
-    console.log(`
-      Valid: ${valid}
-      Number: ${params.number || "-"}
-      Month: ${params.expMonth || "-"}
-      Year: ${params.expYear || "-"}
-      CVC: ${params.cvc || "-"}
-    `);
-  };
-
-  isPaymentCardTextFieldFocused = () => this.paymentCardInput.isFocused();
-
-  focusPaymentCardTextField = () => this.paymentCardInput.focus();
-
-  blurPaymentCardTextField = () => this.paymentCardInput.blur();
-
-  resetPaymentCardTextField = () => this.paymentCardInput.setParams({});
 
   render() {
-    const { navigation, token } = this.props;
+    const { navigation, token, userProfile, order } = this.props;
     const { route } = this.props;
     const {
       quantite,
@@ -74,17 +62,19 @@ export default class ProductOrder extends Component {
       adresse,
       creneaux,
       date,
+      amount
     } = route.params;
     console.log("date", getTimeFromDate(parseInt(date)).toString());
     const { modalVisible, firstName, phoneNumber, email } = this.state;
-
+    const STRIPE_PUBLIC_KEY_TEST = "pk_test_51GuNRlCg4UkzpRv9jw3LhFRJ4M77Z5CgbxtxWPlZuq8diUEe78JTzzV7dMGGKwQXKtsXTlnuJZXhIaPhRlu2PEWN00zFpRWeVI"
+    const STRIPE_PUBLIC_KEY_LIVE = "pk_live_51HlV34Cg8RcqQyrsT9VdMszf0mE6tIUo4eXGEBOfdfVov8T1iP35LzqaLWCEyr4wTFxKLTUHZxy5bdKtiZuxotzL00VXUupS63"
     const collectDays = Object.values(creneaux).reduce((acc, day) => {
       if (day !== "id") {
         acc.push(day);
       }
       return acc;
     }, []);
-    //console.log("collecDays", collectDays);
+    console.log("order redux", order);
 
     return (
       <SafeAreaView style={{flex: 1}}>
@@ -181,10 +171,18 @@ export default class ProductOrder extends Component {
                 />
               </View>
               <View style={{ width: "85%", paddingBottom: 12 }}>
-                <Input placeholder="XXXX XXXX XXXX XXXX" name="cb" label="cb" />
+                
+                <StripeProvider publishableKey={STRIPE_PUBLIC_KEY_TEST}>
+                  <Payment 
+                    prenom={firstName|| userProfile && userProfile.nom}
+                    tel={phoneNumber || userProfile && userProfile.tel}
+                    mailclient={email || userProfile && userProfile.email}
+                    commande_id={order && order.id}
+                    amount={amount}
+                    qte={quantite}
+                  /> 
+                </StripeProvider>
               </View>
-              {/* <Payment /> */}
-              <Button title="payer" />
               <Text style={{ fontWeight: "bold" }}>{`Créneaux de collecte`}</Text>
               <View style={{ alignItems: "center", paddingBottom: 14 }}>
                 {collectDays

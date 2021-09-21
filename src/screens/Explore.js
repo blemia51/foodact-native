@@ -73,7 +73,7 @@ export default function Explore(props) {
   };
 
   const renderItem = ({ item }) => {
-    const color = item.id === selectedId ? "#16214b" : "lightgrey";
+    const color = item.id === selectedId ? "#ff6600" : "#16214b";
     return (
       <Item
         id={item.id}
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   },
   categoriesContainer: {
     position: "absolute",
-    top: 45,
+    top: 55,
     left: 10,
     right: 10,
     zIndex: 20,

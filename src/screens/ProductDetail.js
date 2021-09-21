@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import {
   Text,
   StyleSheet,
@@ -16,60 +16,85 @@ import Discount from "../components/Discount";
 import CountDown from "../components/CountDown";
 import { FontAwesome, EvilIcons } from "@expo/vector-icons";
 
-export default class ProductDetail extends Component {
+export default class ProductDetail extends PureComponent {
   state = {
-    quantity: 1,
-    price: 6,
-    totalPrice: 6,
-    basket: 5,
+    order: {
+      fournisseur: '',
+      prix: null,
+      client: '',
+      quantite: null,
+      paniers: [],
+    },
+    price: null,
+    basket: null,
     modalVisible: false,
   };
 
   componentDidMount() {
-    const { route } = this.props;
-    const { quantite, price, discount } = route.params;
+    const { route, userProfile } = this.props;
+    const { qte, price, discount, fournisseur_id, panier_id } = route.params;
+
+    console.log('la route pour commande', route.params)
+    console.log('le profil existe ?', userProfile)
+
 
     this.setState((prevState) => ({
       ...prevState,
-      totalPrice: price,
-      basket: quantite,
+      order: {
+        fournisseur: `api/fournisseurs/${fournisseur_id}`,
+        paniers: [`api/paniers/${panier_id}`],
+        client: userProfile ? `api/clients/${userProfile.id})` : null,
+        prix: price,
+        quantite: 1,
+      },
       price: price,
-    }));
+      basket: qte,
+      
+    }),() => console.log('le state pour commande', this.state));
+
+    //console.log('le state pour commande', this.state)
   }
 
+
   handelIncrease = () => {
-    const { quantity, totalPrice, basket } = this.state;
+    const { order: { quantite, prix }, basket } = this.state;
     const { route } = this.props;
     const { price, discount } = route.params;
-    if (quantity < basket) {
+    if (quantite < basket) {
       this.setState((prevState) => ({
         ...prevState,
-        quantity: quantity + 1,
-        totalPrice: totalPrice + price,
+        order: {
+          quantite: quantite + 1,
+          prix: prix + price,
+        },
       }));
     }
   };
 
   handelDecrease = () => {
-    const { quantity, totalPrice } = this.state;
+    const { order: { quantite, prix } } = this.state;
     const { route } = this.props;
     const { price, discount } = route.params;
-    if (quantity > 1) {
+    if (quantite > 1) {
       this.setState((prevState) => ({
         ...prevState,
-        quantity: quantity - 1,
-        totalPrice: totalPrice - price,
+        order: {
+          quantite: quantite - 1,
+          prix: prix - price,
+        },
       }));
     }
   };
+
+  
 
   setModalVisible = (visible) => {
     this.setState((prevState) => ({ ...prevState, modalVisible: visible }));
   };
 
   render() {
-    const { totalPrice, basket, modalVisible, quantity } = this.state;
-    const { route, navigation } = this.props;
+    const { basket, modalVisible, order, order: { quantite, prix } } = this.state;
+    const { route, navigation, postOrder } = this.props;
     const {
       slug,
       date,
@@ -77,13 +102,19 @@ export default class ProductDetail extends Component {
       paniername,
       description,
       nom,
-      quantite,
+      qte,
       price,
       discount,
       adresse,
       distance,
+      fournisseur_id,
+      panier_id
     } = route.params;
-    //console.log('date detail', date);
+    console.log('state detail', this.state);
+
+    console.log('order', order)
+
+
     return (
       <ScrollView>
         <View style={styles.container}>
@@ -95,7 +126,7 @@ export default class ProductDetail extends Component {
               style={{ height: "100%", width: "100%" }}
             />
           </View>
-          <Basket quantity={`${quantite}`} />
+          <Basket quantite={`${qte}`} />
           <Price price={`${price}`} />
           <Discount discount={discount} />
           <CountDown date={date} />
@@ -114,40 +145,40 @@ export default class ProductDetail extends Component {
 
           {description && <View style={styles.lineStyle} />}
 
-          <View style={styles.quantity}>
+          <View style={styles.quantite}>
             <TouchableOpacity
               onPress={() => {
                 this.handelDecrease();
               }}
-              disabled={quantity === 1}
+              disabled={quantite === 1}
             >
               <FontAwesome
                 style={styles.icon}
                 name="minus-square"
                 size={36}
-                color={quantity > 1 ? "#ffce00" : "lightgrey"}
+                color={quantite > 1 ? "#ffce00" : "lightgrey"}
               />
             </TouchableOpacity>
             <Text style={{ fontSize: 24, fontWeight: "bold" }}>
               {" "}
-              {quantity}{" "}
+              {quantite}{" "}
             </Text>
             <TouchableOpacity
               onPress={() => {
                 this.handelIncrease();
               }}
-              disabled={quantity >= basket}
+              disabled={quantite >= basket}
             >
               <FontAwesome
                 style={styles.icon}
                 name="plus-square"
                 size={36}
-                color={quantity < basket ? "#ffce00" : "lightgrey"}
+                color={quantite < basket ? "#ffce00" : "lightgrey"}
               />
             </TouchableOpacity>
             <Text
               style={{ position: "absolute", right: 20 }}
-            >{`Total   ${totalPrice} €`}</Text>
+            >{`Total   ${prix} €`}</Text>
           </View>
 
           <View style={styles.lineStyle} />
@@ -156,19 +187,20 @@ export default class ProductDetail extends Component {
             <Button
               title="Validez"
               backgroundColor="#ffce00"
-              onPress={() =>
+              onPress={() => {
+                postOrder(order)
                 navigation.navigate(
                   'ProductOrder', {
                     creneaux: creneaux,
                     date: date,
                     paniername: paniername,
                     nom: nom,
-                    quantite: quantity,
-                    price: totalPrice,
+                    quantite: quantite,
+                    price: prix,
                     adresse: adresse,
-  
+                    amount: price
                   }
-              )}
+              )}}
             />
           </View>
           {/* <ProductOrder modalVisible={modalVisible} /> */}
@@ -201,7 +233,7 @@ const styles = StyleSheet.create({
     color: "grey",
     paddingVertical: 4,
   },
-  quantity: {
+  quantite: {
     flexDirection: "row",
     alignItems: "center",
     padding: 12,

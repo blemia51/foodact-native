@@ -1,124 +1,131 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { Text, StyleSheet, View, ScrollView } from 'react-native'
 
 import Input from '../components/Input';
 import Button from '../components/Button';
 
-export default class UserProfile extends Component {
-
-  state = {
-    profil: {
-      prenom: "",
-      telephone: "",
-      email: "",
-      password: "",
-    },
-    user: [],
-    isAdded: false,
-  };
-
-
-  // componentDidMount() {
-  //   const { fetchUserProfile, userProfile } = this.props
-  //   //fetchUserProfile(1074)
-  //   console.log('userProfile', userProfile )
-  // }
-
-  // getClientProfile = () => {
-  //   //userProfile &&
-  //   const clientId = userProfile && userProfile.client.split('/')[3].toString('')*1
-  //   console.log('clientId', clientId)
-  // }
-
+export default class UserProfile extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      profil: {
+        userId: "",
+        prenom: "",
+        adresse: "",
+        email: "",
+        telephone: "",
+        //password: "",
+      },
+      user: [],
+      isAdded: false,
+    };
+  }
   
   static getDerivedStateFromProps(props, state) {
     const {
+      user,
       nom,
-      tel,
+      adresse,
       email,
-      password
+      tel
     } = props.userProfile;
 
     const {
       profil: {
-        prenom: statePrenom, 
-        telephone: stateTelephone,
+        userId: stateUserId ,
+        prenom: statePrenom,
         email: stateEmail,
-        password: statePassword
+        telephone: stateTelephone
       }
     } = state;
 
     const stateNotHydrated = statePrenom === '' && 
         stateEmail === '' && 
-        stateTelephone === '' ;
+        stateTelephone === '' &&
+        stateUserId === ''
 
     if (stateNotHydrated) {
       return {
         profil: {
-          nom, 
-          tel,
+          user,
+          nom,
+          adresse,
           email,
-          password
+          tel
         }
       };
     }
-    console.log('state', state)
     return state;
   }
 
-  render() {
-    const { userProfile, navigation } = this.props
-    console.log('props user Profile', userProfile)
-    const { profil: stateProfil } = this.state;
+  handleChange = (key, val) => {
+    const { profil } = this.state;
+    this.setState(() => ({
+      profil: {
+        ...profil,
+        [key]: val,
+      }
+    }))
+  }
 
-    const inputs = Object.keys(stateProfil).reduce((acc, input) => {
-      acc.push(input);
-      return acc;
-    }, []);
-    console.log('inputs', inputs)
-    
+  render() {
+    const { userProfile, updateUserProfile, navigation } = this.props
+    console.log('props user Profile', this.props)
+    const { profil: stateProfil } = this.state;
+    console.log('stateProfil', stateProfil)
+
     return (
       <ScrollView style={styles.comtainer}>
         <View style={styles.inputsContainer}>
-          <View style={{width: '80%'}}>
-            {React.Children.toArray(inputs.map(input => 
-              input==='password' ?
-              (<Input
-                //noEdit
-                defaultValue={stateProfil[input] || ''}
-                label={'mot de passe'}
-                name={input}
-                placeholder=""
-                autoCapitalize="none"
-                secureTextEntry
-                
-                //onChange={(value) => this.handleChange(value, input)}
-                // hasError={input === 'email' && error !== ''}
-                // errorMessage={error}
-              />)
-              :
-            
-              <Input
-                //noEdit
-                defaultValue={stateProfil[input] || ''}
-                label={input}
-                name={input}
-                placeholder=""
-                autoCapitalize="none"
-                
-                //onChange={(value) => this.handleChange(value, input)}
-                // hasError={input === 'email' && error !== ''}
-                // errorMessage={error}
-              />
-            ))}
+          <View style={{width: '80%', marginBottom: 20}}>
+            <Input
+              defaultValue={stateProfil['nom'] }
+              label='nom'
+              name='nom'
+              placeholder=""
+              autoCapitalize="none"
+              onChangeText={this.handleChange}
+              //onChangeText={(value) => this.handleChange(input, value)}
+              // hasError={input === 'email' && error !== ''}
+              // errorMessage={error}
+            />
+            <Input
+              defaultValue={stateProfil['email'] }
+              label='email'
+              name='email'
+              placeholder=""
+              autoCapitalize="none"
+              onChangeText={this.handleChange}
+              // hasError={input === 'email' && error !== ''}
+              // errorMessage={error}
+            />
+            <Input
+              defaultValue={stateProfil['tel'] }
+              label='tel'
+              name='tel'
+              placeholder=""
+              autoCapitalize="none"
+              onChangeText={this.handleChange}
+              // hasError={input === 'email' && error !== ''}
+              // errorMessage={error}
+            />
           </View>
           <Button
             title='Sauvegarder'
             onPress={() => {
+              updateUserProfile(stateProfil)
               navigation.popToTop()
             }}
             size="sm"
           />
+          {/* <Button
+            title='Modifier mon mot de passe'
+            backgroundColor='red'
+            onPress={() => {
+              navigation.popToTop()
+            }}
+            size="sm"
+          /> */}
         </View>
       </ScrollView>
     )
@@ -133,7 +140,5 @@ const styles = StyleSheet.create({
   inputsContainer: {
     alignItems: 'center',
     marginTop: 24
-    
   }
-    
 })

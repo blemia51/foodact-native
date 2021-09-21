@@ -12,7 +12,7 @@ export default class RenderItem extends Component {
 
   render() {
     const { item, navigation, latitude, longitude } = this.props;
-    console.log('items', item)
+   // console.log('items', item)
     return (
       <Item
         navigation={navigation}
@@ -40,6 +40,8 @@ export default class RenderItem extends Component {
           item.creneaux,
           item.paniers.qte
         )}
+        fournisseur_id={item.id}
+        panier_id={item.paniers.id}
       />
     );
   }

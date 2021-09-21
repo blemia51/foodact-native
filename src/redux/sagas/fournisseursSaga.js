@@ -1,7 +1,7 @@
-import { takeLatest, put, call } from 'redux-saga/effects';
+import { takeLatest, put, call } from "redux-saga/effects";
 //import request from '../utils/request';
-import FournisseursApi from '../../api/FournisseursApi'
-import { 
+import FournisseursApi from "../../api/FournisseursApi";
+import {
   FETCH_FOURNISSEURS,
   fetchFournisseursSuccess,
   fetchFournisseursFailure,
@@ -9,12 +9,11 @@ import {
   fetchCreneauxFournisseursSuccess,
   fetchCreneauxFournisseursFailure,
 } from "../actions/fournisseurs";
- 
-  
+
 export function* getFournisseurs() {
   //const url = '/api/travels'
-  const fournisseursApi = new FournisseursApi()
-  try {      
+  const fournisseursApi = new FournisseursApi();
+  try {
     const fournisseurs = yield call(fournisseursApi.fetchFournisseurs);
     yield put(
       fetchFournisseursSuccess(
@@ -36,7 +35,8 @@ export function* getFournisseurs() {
               data.split("/")[3].toString("")
             ),
           }))
-        ));
+      )
+    );
   } catch (e) {
     if (e.response) {
       yield put(fetchFournisseursFailure(e.response.data.code));
@@ -48,16 +48,17 @@ export function* getFournisseurs() {
 
 export function* getCreneauxFournisseurs() {
   //const url = '/api/travels'
-  const fournisseursApi = new FournisseursApi()
-  try {      
-    const creneauxFournisseurs = yield call(fournisseursApi.fetchCreneauxFournisseurs);
+  const fournisseursApi = new FournisseursApi();
+  try {
+    const creneauxFournisseurs = yield call(
+      fournisseursApi.fetchCreneauxFournisseurs
+    );
     yield put(
       fetchCreneauxFournisseursSuccess(
-        creneauxFournisseurs
-        .map((value) => ({
+        creneauxFournisseurs.map((value) => ({
           id: value.id,
           lundi: {
-            dayName: 'lundi',
+            dayName: "lundi",
             id: 1,
             isActive: value.lunIsActive,
             start: value.lunStart,
@@ -65,7 +66,7 @@ export function* getCreneauxFournisseurs() {
             marche: value.marcheLun,
           },
           mardi: {
-            dayName: 'mardi',
+            dayName: "mardi",
             id: 2,
             isActive: value.marIsActive,
             start: value.marStart,
@@ -73,7 +74,7 @@ export function* getCreneauxFournisseurs() {
             marche: value.marcheMar,
           },
           mercredi: {
-            dayName: 'mercredi',
+            dayName: "mercredi",
             id: 3,
             isActive: value.merIsActive,
             start: value.merStart,
@@ -81,7 +82,7 @@ export function* getCreneauxFournisseurs() {
             marche: value.marcheMer,
           },
           jeudi: {
-            dayName: 'jeudi',
+            dayName: "jeudi",
             id: 4,
             isActive: value.jeuIsActive,
             start: value.jeuStart,
@@ -89,7 +90,7 @@ export function* getCreneauxFournisseurs() {
             marche: value.marcheJeu,
           },
           vendredi: {
-            dayName: 'vendredi',
+            dayName: "vendredi",
             id: 5,
             isActive: value.venIsActive,
             start: value.venStart,
@@ -97,7 +98,7 @@ export function* getCreneauxFournisseurs() {
             marche: value.marcheVen,
           },
           samedi: {
-            dayName: 'samedi',
+            dayName: "samedi",
             id: 6,
             isActive: value.samIsActive,
             start: value.samStart,
@@ -105,15 +106,16 @@ export function* getCreneauxFournisseurs() {
             marche: value.marcheSam,
           },
           dimanche: {
-            dayName: 'dimanche',
+            dayName: "dimanche",
             id: 0,
             isActive: value.dimIsActive,
             start: value.dimStart,
             end: value.dimEnd,
             marche: value.marcheDim,
-          }
+          },
         }))
-      ));
+      )
+    );
   } catch (e) {
     if (e.response) {
       yield put(fetchCreneauxFournisseursFailure(e.response.data.code));
@@ -124,7 +126,7 @@ export function* getCreneauxFournisseurs() {
 }
 
 export default function* fournisseursSaga() {
-  console.log('test de fournisseurs Saga')
-  yield takeLatest(FETCH_FOURNISSEURS, getFournisseurs)
-  yield takeLatest(FETCH_CRENEAUX_FOURNISSEURS, getCreneauxFournisseurs)
+  console.log("test de fournisseurs Saga");
+  yield takeLatest(FETCH_FOURNISSEURS, getFournisseurs);
+  yield takeLatest(FETCH_CRENEAUX_FOURNISSEURS, getCreneauxFournisseurs);
 }

@@ -1,5 +1,6 @@
 import { connect } from "react-redux";
-import ProductOrder from "../screens/ProductOrder";
+import ProductDetail from "../screens/ProductDetail";
+import { postOrder } from "../redux/actions/order"
 
 
 export default connect(
@@ -7,7 +8,9 @@ export default connect(
       token: state.userState.token,
       userId: state.userState.userId,
       userProfile: state.userState.userProfile,
-      order: state.orderState.order
     }),
+    (dispatch) => ({
+      postOrder: (order) => dispatch(postOrder(order)),
+    })
     
-  )(ProductOrder);
+  )(ProductDetail);

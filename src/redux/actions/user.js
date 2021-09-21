@@ -10,6 +10,12 @@ export const USER_PROFILE_FAILURE = 'USER_PROFILE_FAILURE';
 export const FETCH_CLIENT_ORDERS = 'FETCH_CLIENT_ORDERS';
 export const FETCH_CLIENT_ORDERS_SUCCESS = 'FETCH_CLIENT_ORDERS_SUCCESS';
 export const CLIENT_ORDERS_FAILURE = 'CLIENT_ORDERS_FAILURE';
+export const POST_USER_PROFILE = 'POST_USER_PROFILE';
+export const POST_USER_PROFILE_SUCCESS = 'POST_USER_PROFILE_SUCCESS';
+export const POST_USER_PROFILE_FAILURE = 'POST_USER_PROFILE_FAILURE';
+export const UPDATE_USER_PROFILE = 'UPDATE_USER_PROFILE';
+export const UPDATE_USER_PROFILE_SUCCESS = 'UPDATE_USER_PROFILE_SUCCESS';
+export const UPDATE_USER_PROFILE_FAILURE = 'UPDATE_USER_PROFILE_FAILURE';
 
 export const logIn = (login) => ({
   type: LOG_IN_START,
@@ -47,6 +53,34 @@ export const logOutFailure = (error) => ({
     error,
   }
 });
+
+export const postUserProfile = (userProfile) => ({
+  type: POST_USER_PROFILE,
+  payload: {
+    userProfile
+  }
+})
+
+export const postUserProfileSuccess = (response) => ({
+  type: POST_USER_PROFILE_SUCCESS,
+  payload: {
+    response,
+  },
+});
+
+export const updateUserProfile = (userProfile) => ({
+  type: UPDATE_USER_PROFILE,
+  payload: {
+    userProfile
+  }
+})
+
+export const updateUserProfileSuccess = (response) => ({
+  type: UPDATE_USER_PROFILE_SUCCESS,
+  payload: {
+    response,
+  },
+})
 
 export const fetchUserProfile = (userId, token) => ({
   type: FETCH_USER_PROFILE,

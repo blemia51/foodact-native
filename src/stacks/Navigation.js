@@ -6,11 +6,11 @@ import { MaterialIcons } from '@expo/vector-icons'
 
 
 import Home from '../containers/HomeContainer'
-import ProductDetail from '../screens/ProductDetail'
+import ProductDetail from '../containers/ProductDetailContainer'
 import ProductCards from '../screens/ProductCards'
 import ProductOrder from '../containers/ProductOrderContainer'
 import SignIn from '../containers/SignInContainer'
-import SignUp from '../screens/SignUp'
+import SignUp from '../containers/SignUpContainer'
 import Menu from '../containers/MenuContainer'
 import FaqClient from '../screens/FaqClient'
 import ModalAddAddress from '../screens/ModalAddAddress'
@@ -300,6 +300,11 @@ function Navigation() {
           inactiveTintColor: 'lightgrey',
           labelStyle: {
             fontSize: 12,
+            paddingBottom: 6
+          },
+          style: {
+            height: 60,
+            paddingVertical: 10
           },
         }}
       >

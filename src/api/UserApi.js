@@ -6,15 +6,11 @@ export default function UserApi() {
   return ({
     fetchUserProfile,
     fetchClientProfile,
-    //postUserProfile,
-    //updateUserProfile,
+    postUserProfile,
+    updateUserProfile,
     fetchClientOrders,
     logIn,
   });
-
-  // async function fetchPaniers() {
-  //   return fetch('api/')
-  // }
 
   // function logIn(login) {
   
@@ -36,6 +32,19 @@ export default function UserApi() {
 
   function logIn(login) {
     return axios.post(`http://foodact.maresa.ma/api/login_check`, login)
+      .then((response) => response.data)
+      .catch(event => console.error(event))
+  }
+
+  function postUserProfile(userProfile) {
+    
+    let data = new FormData()
+      data.append('nom', userProfile.nom)
+      data.append('tel', userProfile.tel)
+      data.append('mail', userProfile.mail)
+      data.append('Password', userProfile.Password)
+
+    return axios.post('http://foodact.maresa.ma/api/inscription', data)
       .then((response) => response.data)
       .catch(event => console.error(event))
   }
@@ -80,3 +89,23 @@ function fetchClientOrders() {
   .catch(event => console.error(event))
 }
   
+function updateUserProfile(userProfile) {
+  
+  let data = new FormData()
+      data.append('userid', userProfile.user.split('/')[3].toString('')*1)
+      data.append('nom', userProfile.nom)
+      data.append('adresse', userProfile.adresse)
+      data.append('email', userProfile.email)
+      data.append('phone', userProfile.tel)
+      
+      console.log('userProfileapi', data)
+  return axios.post('http://foodact.maresa.ma/api/update_client', data)
+  //, {
+    // headers: {s
+    //   Authorization: "Bearer " + token,
+    //  "Content-Type": "application/json",
+    // }, 
+  //})
+  .then((response) => console.log('response', response.data))
+  .catch(event => console.error(event))
+}
