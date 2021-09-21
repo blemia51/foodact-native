@@ -62,10 +62,11 @@ export default class ProductOrder extends Component {
       adresse,
       creneaux,
       date,
-      amount
+      amount,
+      mailfournisseur
     } = route.params;
     console.log("date", getTimeFromDate(parseInt(date)).toString());
-    const { modalVisible, firstName, phoneNumber, email } = this.state;
+    const { modalVisible, firstName, phoneNumber, mailclient } = this.state;
     const STRIPE_PUBLIC_KEY_TEST = "pk_test_51GuNRlCg4UkzpRv9jw3LhFRJ4M77Z5CgbxtxWPlZuq8diUEe78JTzzV7dMGGKwQXKtsXTlnuJZXhIaPhRlu2PEWN00zFpRWeVI"
     const STRIPE_PUBLIC_KEY_LIVE = "pk_live_51HlV34Cg8RcqQyrsT9VdMszf0mE6tIUo4eXGEBOfdfVov8T1iP35LzqaLWCEyr4wTFxKLTUHZxy5bdKtiZuxotzL00VXUupS63"
     const collectDays = Object.values(creneaux).reduce((acc, day) => {
@@ -141,9 +142,9 @@ export default class ProductOrder extends Component {
                     onChangeText={this.onChangeText}
                   />
                   <Input
-                    value={email}
+                    value={mailclient}
                     label="Email"
-                    name="email"
+                    name="mailclient"
                     placeholder=""
                     autoCapitalize="none"
                     onChangeText={this.onChangeText}
@@ -176,10 +177,11 @@ export default class ProductOrder extends Component {
                   <Payment 
                     prenom={firstName|| userProfile && userProfile.nom}
                     tel={phoneNumber || userProfile && userProfile.tel}
-                    mailclient={email || userProfile && userProfile.email}
+                    mailclient={mailclient || userProfile && userProfile.email}
                     commande_id={order && order.id}
                     amount={amount}
                     qte={quantite}
+                    mailfournisseur={mailfournisseur}
                   /> 
                 </StripeProvider>
               </View>

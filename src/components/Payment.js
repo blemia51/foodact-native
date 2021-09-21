@@ -26,12 +26,12 @@ const Payment = (props) => {
       }),
     })
     const { clientSecret, error} = await response.json()
-    console.log("clientSecret", clientSecret)
+    console.log("clientSecret", response)
     return {clientSecret, error}
   }
 
   const handlePayPress = async () => {
-    console.log('detail carte',cardDetails)
+    console.log('detail carte', cardDetails)
     if (!cardDetails?.complete || !mailclient) {
       Alert.alert(
         "",

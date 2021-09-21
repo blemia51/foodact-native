@@ -42,6 +42,7 @@ export default class RenderItem extends Component {
         )}
         fournisseur_id={item.id}
         panier_id={item.paniers.id}
+        email={item.email}
       />
     );
   }

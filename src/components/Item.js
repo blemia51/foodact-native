@@ -27,6 +27,7 @@ const Item = ({
   navigation,
   fournisseur_id,
   panier_id,
+  email
 }) => { 
 
   const distance = Math.round(getDistance(
@@ -53,6 +54,8 @@ const Item = ({
             distance: distance,
             fournisseur_id: fournisseur_id,
             panier_id: panier_id,
+            mailfournisseur: email
+
           })
         }}
       >

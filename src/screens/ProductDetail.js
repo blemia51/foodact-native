@@ -37,7 +37,6 @@ export default class ProductDetail extends PureComponent {
     console.log('la route pour commande', route.params)
     console.log('le profil existe ?', userProfile)
 
-
     this.setState((prevState) => ({
       ...prevState,
       order: {
@@ -54,7 +53,6 @@ export default class ProductDetail extends PureComponent {
 
     //console.log('le state pour commande', this.state)
   }
-
 
   handelIncrease = () => {
     const { order: { quantite, prix }, basket } = this.state;
@@ -108,7 +106,8 @@ export default class ProductDetail extends PureComponent {
       adresse,
       distance,
       fournisseur_id,
-      panier_id
+      panier_id,
+      mailfournisseur
     } = route.params;
     console.log('state detail', this.state);
 
@@ -198,7 +197,8 @@ export default class ProductDetail extends PureComponent {
                     quantite: quantite,
                     price: prix,
                     adresse: adresse,
-                    amount: price
+                    amount: price,
+                    mailfournisseur: mailfournisseur
                   }
               )}}
             />

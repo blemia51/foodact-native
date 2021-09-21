@@ -27,6 +27,7 @@ export function* getFournisseurs() {
           .map((fournisseur) => ({
             id: fournisseur.id,
             nom: fournisseur.nom,
+            email: fournisseur.mailContact,
             adresse: fournisseur.adresse,
             latitude: fournisseur.lat,
             longitude: fournisseur.lng,
