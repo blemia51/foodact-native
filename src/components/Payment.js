@@ -6,7 +6,7 @@ import Button from "../components/Button";
 
 const Payment = (props) => {
 
-  const { prenom, tel, mailclient } = props
+  const { prenom, tel, mailclient, mailfournisseur, commande_id, amount, qte } = props
   const [cardDetails, setCardDetails] = useState()
   const { confirmPayment, loading } = useConfirmPayment()
 
@@ -15,19 +15,26 @@ const Payment = (props) => {
   const API_URL= "https://foodact.maresa.ma/api/stripe"
 
   const fetchPaymentIntentClientSecret = async () => {
-    const response = await fetch(`${API_URL}`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        currency: 'eur',
-      }),
-    })
-    const { clientSecret, error} = await response.json()
-    console.log("clientSecret", response)
-    return {clientSecret, error}
+    try {
+      const response = await fetch(`${API_URL}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          amount: amount,
+          qte: qte,
+          commande_id: commande_id,
+          mailfournisseur: mailfournisseur,
+          mailclient: mailclient
+        }),
+      })
+      const {client_secret} = await response.json()
+      return client_secret
+    } catch(e) {
+      console.log('erreur', e)
+    }
   }
 
   const handlePayPress = async () => {
@@ -40,37 +47,45 @@ const Payment = (props) => {
       return
     }
     const billingDetails = {
-      prenom: prenom,
-      tel: tel,
       mailclient: mailclient,
     }
-    try {
-      const { clientSecret, error} = await fetchPaymentIntentClientSecret()
+    
+      const client_secret = await fetchPaymentIntentClientSecret()
+      const {paymentIntent, error} = await confirmPayment(client_secret, {
+        type: 'Card',
+        billingDetails,
+      });
+  
       if (error) {
-        console.log('Erreur du processus de paiement')
-      } else {
-        const { paymentItent, error } = await confirmPayment(
-          clientSecret, {
-            type: 'Card',
-            billingDetails: billingDetails
-          }
+        console.log('Payment confirmation error', error);
+      } else if (paymentIntent) {
+        //console.log('Success from promise', paymentIntent.status);
+        Alert.alert(
+          "Paiement validé",
+          ""
         )
-        if (error) {
-          Alert.alert(
-            "",
-            "Erreur de confirmation de paiement"
-          )
-        } else if (paymentItent) {
-          Alert.alert(
-            "Paiement validé",
-            ""
-          )
-        }
       }
+      // else {
+      //   const { paymentItent, error } = await confirmPayment(
+      //     clientSecret, {
+      //       type: 'Card',
+      //       billingDetails: billingDetails
+      //     }
+      //   )
+      //   if (error) {
+      //     Alert.alert(
+      //       "",
+      //       "Erreur de confirmation de paiement"
+      //     )
+      //   } else if (paymentItent) {
+      //     Alert.alert(
+      //       "Paiement validé",
+      //       ""
+      //     )
+      //   }
+      // }
       
-    } catch (error) {
-      console.log(error) 
-    }
+    
   }
   
   return (
@@ -82,7 +97,7 @@ const Payment = (props) => {
         placeholder={{
           number:'4242 4242 4242 4242',
         }}
-        onCardChange={cardDetails => {
+        onCardChange={(cardDetails) => {
           setCardDetails(cardDetails)
         }}
         onFocus={(focusedField) => {

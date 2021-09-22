@@ -12,23 +12,19 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
-import * as Permissions from "expo-permissions";
+//import * as Permissions from "expo-permissions";
 import * as Notifications from "expo-notifications";
 import * as Location from "expo-location";
 import { StatusBar } from "react-native";
 import * as IntentLauncher from "expo-intent-launcher";
-//import MapView from "react-native-maps";
 import { updateDate } from "../utils/functions";
-const jwtDecode = require("jwt-decode");
-
-import Header from "../components/Header";
-//import Payment from "../components/Payment";
-import foodact_animated from "../assets/foodact_fadein.gif";
 
 import RenderItem from "../components/RenderItem";
 import Favorites from "../containers/FavoritesContainer";
+import Header from "../components/Header";
+
+import foodact_animated from "../assets/foodact_fadein.gif";
 
 const initialState = {
   longitude: null,
@@ -224,25 +220,6 @@ export default function Home(props) {
     }
   };
 
-  // const loadProfie = async () => {
-  //   try {
-  //     const token = await AsyncStorage.getItem("token");
-  //     const tokenDecoded = jwtDecode(token);
-  //     console.log("username", tokenDecoded);
-  //     if (!token) {
-  //       return;
-  //     }
-  //     token && setIsLogged(true);
-  //     console.log("connecté ?", isLogged);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   setIsLogged;
-  // }, [isLogged]);
-
   const favoritesCategories =
     favorites.length > 0
       ? categories &&
@@ -367,11 +344,6 @@ export default function Home(props) {
       console.log("favfavfav", favorites);
       props.uploadFavorite(favorites);
     }
-    // if (favoritesDatas.indexOf(data) === -1) {
-    //   favoritesDatas.push(data);
-    //   console.log('favfavfavData', favoritesDatas)
-    //   props.uploadFavoriteData(favoritesDatas);
-    // }
   };
 
   const handleRemoveFavorites = (id) => {
@@ -471,21 +443,6 @@ export default function Home(props) {
           style={styles.field}
         /> */}
         <StatusBar style="auto" />
-        <View
-          style={{ flex: 1, justifyContent: "center", flexDirection: "row" }}
-        >
-          {/* <MapView
-            style={{height: 150, width: 250 }}
-            showsUserLocation
-            followsUserLocation
-            region={{
-              latitude: latitude,
-              longitude: longitude,
-              latitudeDelta: 0.005,
-              longitudeDelta: 0.025,
-            }}
-          /> */}
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
