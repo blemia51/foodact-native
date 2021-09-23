@@ -29,6 +29,7 @@ export function* getFournisseurs() {
             nom: fournisseur.nom,
             email: fournisseur.mailContact,
             adresse: fournisseur.adresse,
+            telFournisseur: fournisseur.tel,
             latitude: fournisseur.lat,
             longitude: fournisseur.lng,
             creneaux: fournisseur.expirationCreaneau,

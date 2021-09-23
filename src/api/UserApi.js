@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { API_URL } from "@env"
 const jwtDecode = require("jwt-decode");
 
 
@@ -31,7 +32,7 @@ export default function UserApi() {
   // }
 
   function logIn(login) {
-    return axios.post(`http://foodact.maresa.ma/api/login_check`, login)
+    return axios.post(`${API_URL}/login_check`, login)
       .then((response) => response.data)
       .catch(event => console.error(event))
   }
@@ -44,7 +45,7 @@ export default function UserApi() {
       data.append('mail', userProfile.mail)
       data.append('Password', userProfile.Password)
 
-    return axios.post('http://foodact.maresa.ma/api/inscription', data)
+    return axios.post(`${API_URL}/inscription`, data)
       .then((response) => response.data)
       .catch(event => console.error(event))
   }
@@ -52,7 +53,7 @@ export default function UserApi() {
   function fetchUserProfile(token) {
     
     const userId = jwtDecode(token).id
-    return axios.get(`http://foodact.maresa.ma/api/users/${userId}`)
+    return axios.get(`${API_URL}/users/${userId}`)
     //, {
       // headers: {
       //   Authorization: "Bearer " + token,
@@ -65,7 +66,7 @@ export default function UserApi() {
 
 
   function fetchClientProfile(clientId, token) {
-    return axios.get(`http://foodact.maresa.ma/api/clients/${clientId}`)
+    return axios.get(`${API_URL}/clients/${clientId}`)
     //, {
       // headers: {s
       //   Authorization: "Bearer " + token,
@@ -78,7 +79,7 @@ export default function UserApi() {
 }
 
 function fetchClientOrders() {
-  return axios.get('http://foodact.maresa.ma/api/commandes')
+  return axios.get(`${API_URL}/commandes`)
   //, {
     // headers: {s
     //   Authorization: "Bearer " + token,
@@ -99,7 +100,7 @@ function updateUserProfile(userProfile) {
       data.append('phone', userProfile.tel)
       
       console.log('userProfileapi', data)
-  return axios.post('http://foodact.maresa.ma/api/update_client', data)
+  return axios.post(`${API_URL}/update_client`, data)
   //, {
     // headers: {s
     //   Authorization: "Bearer " + token,

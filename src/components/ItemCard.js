@@ -27,7 +27,8 @@ const Item = ({
   navigation,
   fournisseur_id,
   panier_id,
-  email
+  email,
+  telFournisseur
 
 }) => { 
 
@@ -55,7 +56,8 @@ const Item = ({
             distance: distance,
             fournisseur_id: fournisseur_id,
             panier_id: panier_id,
-            mailfournisseur: email
+            mailfournisseur: email,
+            telFournisseur: telFournisseur
           })
         }}
       >

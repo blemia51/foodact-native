@@ -1,3 +1,4 @@
+import { API_URL } from "@env"
 export default function FournisseursApi() {
   return ({
     fetchFournisseurs,
@@ -6,7 +7,7 @@ export default function FournisseursApi() {
 
   async function fetchFournisseurs() {
     try {
-      const response = await fetch("http://foodact.maresa.ma/api/fournisseurs", {
+      const response = await fetch(`${API_URL}/fournisseurs`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -21,7 +22,7 @@ export default function FournisseursApi() {
 
   async function fetchCreneauxFournisseurs() {
     try {
-      const response = await fetch("http://foodact.maresa.ma/api/expiration_creaneaus", {
+      const response = await fetch(`${API_URL}/expiration_creaneaus`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

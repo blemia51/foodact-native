@@ -3,20 +3,19 @@ import { Text, StyleSheet, View, Alert } from 'react-native'
 
 import { CardField, useConfirmPayment } from "@stripe/stripe-react-native"
 import Button from "../components/Button";
+import { API_URL } from "@env"
 
 const Payment = (props) => {
 
-  const { prenom, tel, mailclient, mailfournisseur, commande_id, amount, qte } = props
+  const { prenom, tel, mailclient, mailfournisseur, telFournisseur, nomFournisseur, adresseFournisseur, commande_id, amount, qte, nomPanier } = props
   const [cardDetails, setCardDetails] = useState()
   const { confirmPayment, loading } = useConfirmPayment()
 
   console.log('props de paiement', props)
 
-  const API_URL= "https://foodact.maresa.ma/api/stripe"
-
   const fetchPaymentIntentClientSecret = async () => {
     try {
-      const response = await fetch(`${API_URL}`,
+      const response = await fetch(`${API_URL}/stripe`,
       {
         method: 'POST',
         headers: {
@@ -27,7 +26,14 @@ const Payment = (props) => {
           qte: qte,
           commande_id: commande_id,
           mailfournisseur: mailfournisseur,
-          mailclient: mailclient
+          mailclient: mailclient,
+          nomPanier: nomPanier,
+          nomFournisseur: nomFournisseur,
+          telFournisseur: telFournisseur,
+          adresseFournisseur: adresseFournisseur,
+          nomClient: prenom,
+          telClient: tel,
+          dateCommande: '',
         }),
       })
       const {client_secret} = await response.json()
@@ -47,7 +53,7 @@ const Payment = (props) => {
       return
     }
     const billingDetails = {
-      mailclient: mailclient,
+      email: mailclient,
     }
     
       const client_secret = await fetchPaymentIntentClientSecret()

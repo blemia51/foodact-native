@@ -1,3 +1,4 @@
+import { API_URL } from "@env"
 export default function PaniersApi() {
   return({
     fetchPaniers,
@@ -7,7 +8,7 @@ export default function PaniersApi() {
 
   async function fetchPaniers() {
     try {
-      const response = await fetch('http://foodact.maresa.ma/api/paniers?is_activated=true&fournisseur.is_enabled=true', {
+      const response = await fetch(`${API_URL}/paniers?is_activated=true&fournisseur.is_enabled=true`, {
       method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -22,7 +23,7 @@ export default function PaniersApi() {
 
   async function fetchPaniersPrice() {
     try {
-      const response = await fetch("http://foodact.maresa.ma/api/prix_paniers", {
+      const response = await fetch(`${API_URL}/prix_paniers`, {
         method: "GET",
         headers: {
           //Authorization: `Bearer ${token}`,
@@ -35,12 +36,10 @@ export default function PaniersApi() {
       console.error(error);
     }
   }
-    
-  
 
   async function fetchPaniersName() {
     try {
-      const response = await fetch("http://foodact.maresa.ma/api/panier_names", {
+      const response = await fetch(`${API_URL}/panier_names`, {
         method: "GET",
         headers: {
           //Authorization: `Bearer ${token}`,

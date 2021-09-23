@@ -107,7 +107,8 @@ export default class ProductDetail extends PureComponent {
       distance,
       fournisseur_id,
       panier_id,
-      mailfournisseur
+      mailfournisseur,
+      telFournisseur,
     } = route.params;
     console.log('state detail', this.state);
 
@@ -198,7 +199,8 @@ export default class ProductDetail extends PureComponent {
                     price: prix,
                     adresse: adresse,
                     amount: price,
-                    mailfournisseur: mailfournisseur
+                    mailfournisseur: mailfournisseur,
+                    telFournisseur: telFournisseur
                   }
               )}}
             />

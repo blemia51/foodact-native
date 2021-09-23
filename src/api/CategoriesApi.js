@@ -1,3 +1,4 @@
+import { API_URL } from "@env"
 export default function CategoriesApi() {
   return ({
     fetchCategories,
@@ -5,7 +6,7 @@ export default function CategoriesApi() {
 
   async function fetchCategories() {
     try {
-      const response = await fetch("http://foodact.maresa.ma/api/categories", {
+      const response = await fetch(`${API_URL}/categories`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

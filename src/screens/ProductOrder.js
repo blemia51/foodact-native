@@ -17,8 +17,8 @@ import Input from "../components/Input";
 import Payment from "../components/Payment";
 import { MaterialIcons } from "@expo/vector-icons";
 import { getTimeFromDate, getLongDate } from "../utils/functions";
-import { userProfileFailure } from "../redux/actions/user";
-import { or } from "react-native-reanimated";
+import { STRIPE_PUBLIC_KEY_TEST , STRIPE_PUBLIC_KEY_LIVE } from "@env"
+
 
 export default class ProductOrder extends Component {
   static defaultProps = {
@@ -63,12 +63,13 @@ export default class ProductOrder extends Component {
       creneaux,
       date,
       amount,
-      mailfournisseur
+      mailfournisseur,
+      telFournisseur,
     } = route.params;
     console.log("date", getTimeFromDate(parseInt(date)).toString());
     const { modalVisible, firstName, phoneNumber, mailclient } = this.state;
-    const STRIPE_PUBLIC_KEY_TEST = "pk_test_51GuNRlCg4UkzpRv9jw3LhFRJ4M77Z5CgbxtxWPlZuq8diUEe78JTzzV7dMGGKwQXKtsXTlnuJZXhIaPhRlu2PEWN00zFpRWeVI"
-    const STRIPE_PUBLIC_KEY_LIVE = "pk_live_51HlV34Cg8RcqQyrsT9VdMszf0mE6tIUo4eXGEBOfdfVov8T1iP35LzqaLWCEyr4wTFxKLTUHZxy5bdKtiZuxotzL00VXUupS63"
+    //const STRIPE_PUBLIC_KEY_TEST = "pk_test_51GuNRlCg4UkzpRv9jw3LhFRJ4M77Z5CgbxtxWPlZuq8diUEe78JTzzV7dMGGKwQXKtsXTlnuJZXhIaPhRlu2PEWN00zFpRWeVI"
+    //const STRIPE_PUBLIC_KEY_LIVE = "pk_live_51HlV34Cg8RcqQyrsT9VdMszf0mE6tIUo4eXGEBOfdfVov8T1iP35LzqaLWCEyr4wTFxKLTUHZxy5bdKtiZuxotzL00VXUupS63"
     const collectDays = Object.values(creneaux).reduce((acc, day) => {
       if (day !== "id") {
         acc.push(day);
@@ -149,15 +150,6 @@ export default class ProductOrder extends Component {
                     autoCapitalize="none"
                     onChangeText={this.onChangeText}
                   />
-                  {/* <PaymentCardTextField
-                    ref={ (ref) => {
-                      this.paymentCardInput = ref;
-                    }}
-                    style={styles.field}
-                    numberPlaceholder="XXXX XXXX XXXX XXXX"
-                    expirationPlaceholder="MM/YY"
-                    cvcPlaceholder="CVC"
-                  /> */}
                 </View>
               )}
 
@@ -182,6 +174,10 @@ export default class ProductOrder extends Component {
                     amount={amount}
                     qte={quantite}
                     mailfournisseur={mailfournisseur}
+                    telFournisseur={telFournisseur}
+                    adresseFournisseur={adresse}
+                    nomFournisseur={nom}
+                    nomPanier={paniername}
                   /> 
                 </StripeProvider>
               </View>
