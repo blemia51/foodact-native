@@ -34,9 +34,9 @@ export default class ProductOrder extends Component {
 
   state = {
     modalVisible: false,
-    firstName: "",
-    phoneNumber: "",
-    email: "",
+    nomclient: "",
+    telClient: "",
+    mailClient: "",
   };
 
   
@@ -67,7 +67,10 @@ export default class ProductOrder extends Component {
       telFournisseur,
     } = route.params;
     console.log("date", getTimeFromDate(parseInt(date)).toString());
-    const { modalVisible, firstName, phoneNumber, mailclient } = this.state;
+
+    
+    
+    const { modalVisible, nomclient, telClient, mailclient } = this.state;
     //const STRIPE_PUBLIC_KEY_TEST = "pk_test_51GuNRlCg4UkzpRv9jw3LhFRJ4M77Z5CgbxtxWPlZuq8diUEe78JTzzV7dMGGKwQXKtsXTlnuJZXhIaPhRlu2PEWN00zFpRWeVI"
     //const STRIPE_PUBLIC_KEY_LIVE = "pk_live_51HlV34Cg8RcqQyrsT9VdMszf0mE6tIUo4eXGEBOfdfVov8T1iP35LzqaLWCEyr4wTFxKLTUHZxy5bdKtiZuxotzL00VXUupS63"
     const collectDays = Object.values(creneaux).reduce((acc, day) => {
@@ -127,17 +130,17 @@ export default class ProductOrder extends Component {
               {!token && (
                 <View style={{ width: "85%" }}>
                   <Input
-                    value={firstName}
+                    value={nomclient}
                     label="Prénom"
-                    name="firstName"
+                    name="nomclient"
                     placeholder=""
                     autoCapitalize="none"
                     onChangeText={this.onChangeText}
                   />
                   <Input
-                    value={phoneNumber}
+                    value={telClient}
                     label="Téléphone"
-                    name="phoneNumber"
+                    name="telClient"
                     placeholder=""
                     autoCapitalize="none"
                     onChangeText={this.onChangeText}
@@ -167,8 +170,8 @@ export default class ProductOrder extends Component {
                 
                 <StripeProvider publishableKey={STRIPE_PUBLIC_KEY_TEST}>
                   <Payment 
-                    prenom={firstName|| userProfile && userProfile.nom}
-                    tel={phoneNumber || userProfile && userProfile.tel}
+                    nomclient={nomclient|| userProfile && userProfile.nom}
+                    telClient={telClient || userProfile && userProfile.tel}
                     mailclient={mailclient || userProfile && userProfile.email}
                     commande_id={order && order.id}
                     amount={amount}

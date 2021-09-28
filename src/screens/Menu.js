@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useFocusEffect } from '@react-navigation/native';
 import ModalAddAddress from '../screens/ModalAddAddress'
+import { modulo } from "react-native-reanimated";
 
 export default function Menu({ route, navigation, status, token, logOut, ...props }) {
 
@@ -85,7 +86,7 @@ export default function Menu({ route, navigation, status, token, logOut, ...prop
                 }}
               >
               <MaterialIcons name="event-note" color="lightgrey" size={30} />
-              <Text style={styles.textItems}>Mes Paniers</Text>
+              <Text style={styles.textItems}>Mes Paniers sauvés</Text>
               </TouchableOpacity>
             </View>
 
@@ -166,15 +167,15 @@ export default function Menu({ route, navigation, status, token, logOut, ...prop
         <TouchableOpacity
           style={styles.menuItems}
           onPress={() => {
-           
+           setIsModalVisible(!isModalVisible)
           }}
         >
           <MaterialIcons name="location-on" color="lightgrey" size={30} />
-          <Text style={styles.textItems}>Me Localiser</Text>
+          <Text style={styles.textItems}>Mon Adresse</Text>
         </TouchableOpacity>
       </View>
 
-      <ModalAddAddress modalVisible={isModalVisible}/>
+      <ModalAddAddress modalVisible={isModalVisible} navigation={navigation} setModalVisible={setModalVisible} />
 
       <View style={styles.menuItems}>
         <TouchableOpacity

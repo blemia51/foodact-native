@@ -28,7 +28,6 @@ export function* getUserProfile(token) {
   const userApi = new UserApi();
   try {      
     const userProfile = yield call(userApi.fetchUserProfile, token);
-    console.log('saga userProfile', userProfile)
     const { client } = userProfile
     const clientId = client.split('/')[3].toString('')*1
     const clientProfile = yield call(userApi.fetchClientProfile, clientId)
@@ -45,17 +44,12 @@ export function* getUserProfile(token) {
   }
 }
 
-export function* getClientOrders(clientId) {
+export function* getClientOrders(action) {
+  const { email } = action.payload;
   const userApi = new UserApi();
   try {      
-    const clientOrders = yield call(userApi.fetchClientOrders);
-    //const { client } = userProfile
-    yield put(fetchClientOrdersSuccess(
-      clientOrders
-        .filter((data) => data.client === `/api/clients/${clientId}`
-         && data.isPaid
-        )
-    ));
+    const clientOrders = yield call(userApi.fetchClientOrders, email);
+    yield put(fetchClientOrdersSuccess(clientOrders))
   } catch (e) {
     if (e.response) {
       yield put(clientOrdersFailure(e.response.data.code));

@@ -68,7 +68,7 @@ export default function UserApi() {
   function fetchClientProfile(clientId, token) {
     return axios.get(`${API_URL}/clients/${clientId}`)
     //, {
-      // headers: {s
+      // headers: {
       //   Authorization: "Bearer " + token,
       //  "Content-Type": "application/json",
       // }, 
@@ -78,8 +78,8 @@ export default function UserApi() {
   }
 }
 
-function fetchClientOrders() {
-  return axios.get(`${API_URL}/commandes`)
+function fetchClientOrders(email) {
+  return axios.get(`${API_URL}/commandes?email=${email}&is_paid=true`)
   //, {
     // headers: {s
     //   Authorization: "Bearer " + token,

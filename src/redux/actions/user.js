@@ -104,10 +104,10 @@ export const userProfileFailure = (error) => ({
   },
 });
 
-export const fetchClientOrders = () => ({
+export const fetchClientOrders = (email) => ({
   type: FETCH_CLIENT_ORDERS,
   payload: {
-    //userId,
+    email
     //token,
   },
 });

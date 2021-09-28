@@ -1,93 +1,88 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, ActivityIndicator } from "react-native";
+import { useFocusEffect } from '@react-navigation/native';
 
 import { getLongDate } from "../utils/functions";
-import foodact_animated from "../assets/foodact_fadein.gif";
 
 export default function UserOrders(props) {
-  const { navigation, clientOrders, paniersName, paniers } = props;
+  const { navigation, route, clientOrders, paniersName, paniers, userProfile, fetchClientOrders, orderStatus } = props;
   const [orders, setOrders] = useState([]);
-  const [panierName, setPanierName] = useState([])
+  const [isOrder, setIsOrder] = useState(false)
+  console.log("navigation", navigation);
+  console.log("route", route);
 
-  //console.log("paniers nom", paniers)
-
-  useEffect(() => {
-    //fetchClientOrders()
-  }, []);
-
-  const getPanierId = 
-    clientOrders &&
-    clientOrders.filter(data => data.paniers.length > 0)
-      .map(value => value.paniers.map(
-        (name) => name
-      )).flatMap(data => data).map(name => name.split('/')[3].toString(''))
-      .filter(data => paniers.find(val => val.id === parseInt(data)))
-      
-      console.log("id panier", getPanierId)
-
-  const getPanier =
-    getPanierId.map(data => paniers.find(val => val.id === parseInt(data)).paniername)
-
-    console.log("panier", getPanier)
-
-  const getPanierName =
-    getPanier.map(data => paniersName.find(val => `/api/panier_names/${val.id}` === data ).nom)
-
-    console.log("nom panier", getPanierName)
-
- 
-  
+  // useEffect(() => {
+  //   const email = userProfile.email
+  //   console.log('email', email)
+  //   fetchClientOrders(email)
+  //   setOrders(clientOrders)
+  //   console.log('props order status', orderStatus)
+  // }, []);
 
   useEffect(() => {
     setOrders(clientOrders);
-    
-    //console.log("client orders", clientOrders);
-  }, [clientOrders]);
+    setIsOrder(true)
+    console.log("client orders", clientOrders);
+    console.log("orders state", orders);
+  }, [clientOrders, orderStatus]);
 
-  //clientOrders && console.log(clientOrders);
+  useFocusEffect(
+    React.useCallback(() => {
+      // Do something when the screen is focused
+      console.log('status status', orderStatus)
+      const email = userProfile.email
+      console.log('email', email)
+      fetchClientOrders(email)
+      setOrders(clientOrders)
+      setIsOrder(true)
+      console.log('props order status', orderStatus)
 
-  // if (!clientOrders) {
-  //   return (
-  //     <View style={{
-  //       flex: 1,
-  //       }}>
-  //         {/* <Header /> */}
-  //         <View style={{
-  //           flex: 1,
-  //           alignItems: "center",
-  //           justifyContent: "center"
-  //         }}>
-  //         <Image source={foodact_animated} />
-  //       </View>
-  //     </View>
-  //   );
-  // }
-  if (clientOrders.length < 1 || getPanierId.length < 1) {
+      
+      return () => {
+        setIsOrder(false)
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+        console.log('bye bye', orders)
+        //navigation.popToTop()
+      };
+    }, [])
+  );
+
+if (orderStatus==='loading' || !isOrder) {
+  return (
+    <View style={styles.container}>
+      <ActivityIndicator  size="large" color="#16214b" />
+    </View>
+  )
+}
+
+  if (orderStatus==='success' && isOrder && orders.length < 1 ) {
     return (
       <View style={styles.container}>
         <Text>Vous n'avez pas encore commandé de panier </Text>
       </View>
     );
   }
-  //console.log("orders", orders);
-  return (
-    <View style={styles.container}>
-      {orders
-        .filter((data) => data.paniers.length > 0)
-        .map((order) => {
-          return (
-            <View key={order.id}>
-              <Text>
-                {`${getLongDate(order.dateCreation)} - ${order.prenom} - ${
-                  order.quantite
-                } - ${getPanierName} - ${order.prix} €`}
-              </Text>
-              <View style={styles.lineStyle} />
-            </View>
-          );
-        })}
-    </View>
-  );
+
+  if (isOrder && orderStatus==='success') {
+    return (
+      <View style={styles.container}>
+        {clientOrders && clientOrders
+          .filter((data) => data.paniers.length > 0)
+          .map((order) => {
+            return (
+              <View key={order.id}>
+                <Text>
+                  {`${getLongDate(order.dateinsertion)} - ${order.quantite
+                  } - ${order.paniers[0].paniername.nom} - ${order.fournisseur.nom} - ${order.prix} €`}
+                </Text>
+                <View style={styles.lineStyle} />
+              </View>
+            );
+          })}
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({

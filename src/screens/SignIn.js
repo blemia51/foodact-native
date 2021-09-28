@@ -23,7 +23,8 @@ class SignIn extends React.Component {
     },
     isFormValid: false,
     isEnabledRemeberMe: false,
-    isEnabledCgu: false
+    isEnabledCgu: false,
+    isLogged: false
   };
   
   toggleSwitchRememberMe = () => { 
@@ -51,7 +52,7 @@ class SignIn extends React.Component {
   onSubmit = (e) => {
     e.preventDefault();
     const { navigation, logIn, status, token } = this.props
-    const { login } = this.state
+    const { login, isLogged } = this.state
     logIn(login)
     //console.log('les props', this.props)
     // if (status !== 'error') {
@@ -91,7 +92,12 @@ class SignIn extends React.Component {
   //   } catch (error) {
   //     console.error("erreur de connexion", error);
   //   }
-   };
+    if (status==='success') {
+      this.setState({
+        isLogged: true
+      })
+    }
+  };
 
   onChangeText = (key, val) => {
     const { login } = this.state
@@ -101,10 +107,10 @@ class SignIn extends React.Component {
   };
 
   render() {
-    const { navigation, status } = this.props;
-    const { login: { username, password }, isFormValid, isEnabledRemeberMe, isEnabledCgu } = this.state;
-    //console.log("state", this.state);
-    //console.log('props' , this.props)
+    const { navigation, status, profilStatus } = this.props;
+    const { login: { username, password }, isFormValid, isEnabledRemeberMe, isEnabledCgu, isLogged } = this.state;
+    console.log("state", this.state);
+    console.log('props' , profilStatus)
     return (
       <ScrollView style={styles.container}>
         <View style={styles.signInContainer}>
@@ -168,6 +174,7 @@ class SignIn extends React.Component {
               onPress={(e) => {
                 this.onSubmit(e);
                 status==='success' && navigation.popToTop()
+                navigation.navigate('Home')
                 console.log('status', status)
                 //navigation.navigate('HomeConnected')
               }}

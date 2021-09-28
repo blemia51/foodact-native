@@ -26,6 +26,7 @@ const Stack = createStackNavigator();
 function HomeStackScreen() {
   return (
     <Stack.Navigator>
+      <Stack.Group>
       <Stack.Screen
         name="Home"
         component={Home}
@@ -61,6 +62,7 @@ function HomeStackScreen() {
           //headerShown: false,
         }}
       />
+      
       <Stack.Screen
         name="ProductDetail"
         component={ProductDetail}
@@ -78,6 +80,9 @@ function HomeStackScreen() {
           //headerShown: false,
         }}
       />
+      </Stack.Group>
+      
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
       <Stack.Screen
         name="ProductOrder"
         component={ProductOrder}
@@ -95,6 +100,7 @@ function HomeStackScreen() {
           headerShown: false,
         }}
       />
+      </Stack.Group>
       
     </Stack.Navigator>
   )
@@ -157,7 +163,7 @@ function MenuStackScreen() {
   return (
     <MenuStack.Navigator>
       <MenuStack.Screen
-        name="Menu" 
+        name="Menubase" 
         component={Menu}
         options={{
           title: 'Menu',
@@ -279,6 +285,7 @@ function Navigation() {
   return (
     <NavigationContainer>
       <BottomTabs.Navigator
+        detachInactiveScreens
         screenOptions={({ route }) => ({
           tabBarIcon: ({ color, size }) => {
             let iconName;
@@ -293,20 +300,20 @@ function Navigation() {
               iconName='explore'
             }
             return <MaterialIcons name={iconName} size={size} color={color} />;
-          }
-        })}
-        tabBarOptions={{
-          activeTintColor: '#16214b',
-          inactiveTintColor: 'lightgrey',
-          labelStyle: {
+          },
+          tabBarActiveTintColor: '#16214b',
+          tabBarInactiveTintColor: 'lightgrey',
+          tabBarLabelStyle: {
             fontSize: 12,
             paddingBottom: 6
           },
-          style: {
+          tabBarStyle: {
             height: 60,
             paddingVertical: 10
           },
-        }}
+          headerShown: false,
+        })}
+       
       >
         <BottomTabs.Screen
           name='Accueil'

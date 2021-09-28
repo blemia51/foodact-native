@@ -24,7 +24,7 @@ import RenderItem from "../components/RenderItem";
 import Favorites from "../containers/FavoritesContainer";
 import Header from "../components/Header";
 
-import foodact_animated from "../assets/foodact_fadein.gif";
+import foodact_animated from "../assets/foodact_anim.gif";
 
 const initialState = {
   longitude: null,
@@ -66,7 +66,7 @@ export default function Home(props) {
 
   const { latitude, longitude } = state;
 
-  console.log('userProfike Home', userProfile)
+  //console.log('userProfile Home', userProfile)
 
   useEffect(() => {
     loadRessources();

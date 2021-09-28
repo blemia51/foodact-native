@@ -10,10 +10,10 @@ export default connect(
       paniers: state.paniersState.paniers,
       //token: state.userState.token,
       //userID: state.userState.userID,
-      //status: state.userState.status,
+      orderStatus: state.userState.orderStatus,
     }),
     (dispatch) => ({
-      fetchClientOrders: () => dispatch(fetchClientOrders())
+      fetchClientOrders: (email) => dispatch(fetchClientOrders(email))
       //logOut: () => dispatch(logOut()),
       //saveToken: (token, userID) => dispatch(saveToken(token, userID)),
     })
