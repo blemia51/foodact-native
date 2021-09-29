@@ -21,6 +21,9 @@ import {
   LOG_IN_START,
   logInSuccess,
   logInFailure,
+  PUT_USER_PUSHTOKEN,
+  putUserPushTokenSuccess,
+  putUserPushTokenFailure
 } from "../actions/user";
 
 
@@ -82,6 +85,17 @@ export function* updateUserProfile(action) {
   }
 }
 
+export function* putUserPushToken(action) {
+  try { 
+    const { pushToken, userId } = action.payload;
+    console.log('saga userid pushToken', pushToken, userId)
+    const userApi = new UserApi();
+    const userPushTokenPosted = yield call(userApi.putUserPushToken, pushToken, userId);
+    yield put(updateUserProfileSuccess(userPushTokenPosted));
+  } catch (e) {
+    yield put(putUserPushTokenFailure(e.message));
+  }
+}
 
 export function* logIn(action) {
   try {
@@ -124,4 +138,5 @@ export default function* userSaga() {
   yield takeLatest(POST_USER_PROFILE, postUserProfile);
   yield takeLatest(UPDATE_USER_PROFILE, updateUserProfile);
   yield takeLatest(LOG_OUT, logOut);
+  yield takeLatest(PUT_USER_PUSHTOKEN, putUserPushToken)
 }

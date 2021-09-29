@@ -11,7 +11,9 @@ export default function UserApi() {
     updateUserProfile,
     fetchClientOrders,
     logIn,
+    putUserPushToken,
   });
+
 
   // function logIn(login) {
   
@@ -102,11 +104,26 @@ function updateUserProfile(userProfile) {
       console.log('userProfileapi', data)
   return axios.post(`${API_URL}/update_client`, data)
   //, {
-    // headers: {s
+    // headers: {
     //   Authorization: "Bearer " + token,
     //  "Content-Type": "application/json",
     // }, 
   //})
   .then((response) => console.log('response', response.data))
   .catch(event => console.error(event))
+}
+
+function putUserPushToken(pushToken, userId) {
+  return axios.put(`${API_URL}/users/${userId}`, pushToken)
+  //, {
+    // headers: {
+    //   Authorization: "Bearer " + token,
+    //  "Content-Type": "application/json",
+    // }, 
+  //})
+  .then((response) => {
+    response.data
+    console.log('putUserPushToken success ?', response.data)
+  })
+  .catch(event => console.error('erreur put pushToken', event))
 }

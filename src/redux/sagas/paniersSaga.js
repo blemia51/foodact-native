@@ -19,7 +19,9 @@ export function* getPaniers() {
   const paniersApi = new PaniersApi()
   try {      
     const paniers = yield call(paniersApi.fetchPaniers);
-    yield put(fetchPaniersSuccess(paniers));
+    yield put(fetchPaniersSuccess(
+      paniers.filter(panier => panier?.image)
+    ));
   } catch (e) {
     if (e.response) {
       yield put(fetchPaniersFailure(e.response.data.code));

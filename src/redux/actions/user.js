@@ -16,6 +16,32 @@ export const POST_USER_PROFILE_FAILURE = 'POST_USER_PROFILE_FAILURE';
 export const UPDATE_USER_PROFILE = 'UPDATE_USER_PROFILE';
 export const UPDATE_USER_PROFILE_SUCCESS = 'UPDATE_USER_PROFILE_SUCCESS';
 export const UPDATE_USER_PROFILE_FAILURE = 'UPDATE_USER_PROFILE_FAILURE';
+export const PUT_USER_PUSHTOKEN = 'PUT_USER_PUSHTOKEN';
+export const PUT_USER_PUSHTOKEN_SUCCESS = 'PUT_USER_PUSHTOKEN_SUCCESS';
+export const PUT_USER_PUSHTOKEN_FAILURE = 'PUT_USER_PUSHTOKEN_FAILURE';
+
+
+export const putUserPushToken = (userId, pushToken) => ({
+  type: PUT_USER_PUSHTOKEN,
+  payload: {
+    pushToken,
+    userId,
+  }
+});
+
+export const putUserPushTokenSuccess = (userProfile) => ({
+  type: PUT_USER_PUSHTOKEN_SUCCESS,
+  payload: {
+    userProfile
+  }
+});
+
+export const putUserPushTokenFailure = (error) => ({
+  type: PUT_USER_PUSHTOKEN_FAILURE,
+  payload: {
+    error
+  }
+});
 
 export const logIn = (login) => ({
   type: LOG_IN_START,

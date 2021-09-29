@@ -27,19 +27,6 @@ export default class ModalAddAddress extends Component {
     predictions: []
   };
 
-  search = async (url) => {
-    try {
-      const { data: { predictions }} = await axios.get(url)
-      this.setState(prevState => ({
-        ...prevState,
-        predictions
-      }))
-      
-    } catch (error) {
-      console.log('erreur de recherche', error)
-    }
-  }
-
   onPlaceSelect = (val) => {
     this.setState(
       () => ({ address: val })
@@ -52,9 +39,6 @@ export default class ModalAddAddress extends Component {
       () => ({ [key]: val }),
       () => console.log("state", this.state.address)
     );
-    const url = `${BASE_URL_API}/place/autocomplete/json?key=${API_KEY}&input=${val}&language=fr`
-    console.log('url', url)
-    this.search(url)
   };
 
   _attemptGeocodeAsync = async () => {
@@ -70,20 +54,6 @@ export default class ModalAddAddress extends Component {
     }
   };
 
-  renderPredictions = () => {
-    const { predictions } = this.state
-    return predictions.map(prediction => {
-      const { structured_formatting, id, place_id } = prediction
-      return (
-        <Prediction
-          main_text={structured_formatting.main_text}
-          secondary_text={structured_formatting.secondary_text}
-          key={place_id}
-          onPress={this.onPlaceSelect}
-        />
-      )
-    })
-  }
 
   render() {
     const { address, predictions } = this.state;
@@ -100,15 +70,7 @@ export default class ModalAddAddress extends Component {
           // Alert.alert("Modal has been closed.");
           this.setModalVisible(!modalVisible);
         }}
-        // style={[
-        //   //styles.modalView,
-        //   backgroundColor && {
-        //     backgroundColor: 'red'
-        //   }
-        // ]}
-        //style={{justifyContent: 'center', alignItems: 'center'}}
       >
-         
         <View style={styles.container}>  
           <Pressable style={{ position: "absolute", top: 18, right: 8 }}
             onPress={() => setModalVisible(!modalVisible)}

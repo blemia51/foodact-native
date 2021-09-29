@@ -6,7 +6,7 @@ import { uploadLocation, deleteLocation } from '../redux/actions/location'
 import { fetchPaniers, fetchPaniersName, fetchPaniersPrice } from '../redux/actions/paniers'
 import { fetchCategories } from '../redux/actions/categories'
 import { fetchFournisseurs, fetchCreneauxFournisseurs } from '../redux/actions/fournisseurs'
-import { fetchUserProfile, fetchClientOrders } from '../redux/actions/user'
+import { fetchUserProfile, fetchClientOrders, putUserPushToken } from '../redux/actions/user'
 import Home from "../screens/Home";
 
 export default connect(
@@ -37,5 +37,6 @@ export default connect(
       fetchCategories: () => dispatch(fetchCategories()),
       fetchFournisseurs: () => dispatch(fetchFournisseurs()),
       fetchCreneauxFournisseurs: () => dispatch(fetchCreneauxFournisseurs()),
+      putUserPushToken: (userId, pushToken) => dispatch(putUserPushToken(userId, pushToken))
     })
   )(Home);

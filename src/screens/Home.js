@@ -58,6 +58,7 @@ export default function Home(props) {
     favorites,
     favoritesDatas,
     uploadLocation,
+    putUserPushToken
   } = props;
 
   const [userLocation, setUserLocation] = useState(null);
@@ -66,7 +67,7 @@ export default function Home(props) {
 
   const { latitude, longitude } = state;
 
-  //console.log('userProfile Home', userProfile)
+  console.log('userProfile Home', userProfile)
 
   useEffect(() => {
     loadRessources();
@@ -202,10 +203,17 @@ export default function Home(props) {
         );
         return;
       }
-      const tokenNotificaion = (await Notifications.getExpoPushTokenAsync())
+      const tokenNotification = (await Notifications.getExpoPushTokenAsync())
         .data;
-      console.log("tokenNotificaion", tokenNotificaion);
-      //this.setState({ expoPushToken: token });
+      console.log("tokenNotification", tokenNotification);
+      //this.setState({ expoPushToken: tokenNotification });
+      if (userProfile && tokenNotification) {
+        const userId  = userProfile.user.split('/')[3].toString('')*1
+        const pushToken  = { pushToken: tokenNotification }
+        console.log('userId pour pushToken', userId, pushToken)
+        putUserPushToken(userId, pushToken)
+      }
+
     } else {
       alert("Must use physical device for Push Notifications");
     }
