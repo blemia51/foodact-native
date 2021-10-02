@@ -13,12 +13,13 @@ import SignIn from '../containers/SignInContainer'
 import SignUp from '../containers/SignUpContainer'
 import Menu from '../containers/MenuContainer'
 import FaqClient from '../screens/FaqClient'
+import Reciept from '../screens/Reciept';
 import ModalAddAddress from '../screens/ModalAddAddress'
 import MyFavorites from '../containers/MyFavoritesContainer'
 import UserProfile from '../containers/UserProfileContainer'
 import Explore from '../containers/ExploreContainer'
 import UserOrders from '../containers/UserOrdersContainer'
-import LogoHeader from '../components/LogoHeader'
+//import LogoHeader from '../components/LogoHeader'
 
 
 const Stack = createStackNavigator();
@@ -86,6 +87,23 @@ function HomeStackScreen() {
       <Stack.Screen
         name="ProductOrder"
         component={ProductOrder}
+        options={{
+          // cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          // title: 'Reservez',
+          // headerStyle: {
+          //   backgroundColor: '#16214b',
+          //   //height: 85
+          // },
+          // headerTintColor: '#fff',
+          // headerTitleStyle: {
+          //   fontWeight: 'bold',
+          // },
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Reciept"
+        component={Reciept}
         options={{
           // cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           // title: 'Reservez',
@@ -247,7 +265,7 @@ function MenuStackScreen() {
         component={UserOrders}
         options={{
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-          title: 'Mes Paniers',
+          title: 'Mes Paniers Sauvés',
           headerStyle: {
             backgroundColor: '#16214b',
           //   //height: 85

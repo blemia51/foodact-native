@@ -13,6 +13,6 @@ export default connect(
     }),
     (dispatch) => ({
       fetchUserProfile: (token, userId) => dispatch(fetchUserProfile(token, userId)),
-      updateUserProfile: (userProfile) => dispatch(updateUserProfile(userProfile))
+      updateUserProfile: (userProfile, token) => dispatch(updateUserProfile(userProfile, token))
     })
   )(UserProfile);

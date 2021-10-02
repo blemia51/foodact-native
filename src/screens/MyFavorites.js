@@ -196,6 +196,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     paddingHorizontal: 10,
+    paddingTop: 14,
+    paddingBottom: 4,
     color: "#16214b",
   },
   nofavoritesContainer: {

@@ -170,7 +170,7 @@ export default class SignUp extends PureComponent {
           <View style={{ width: "80%", marginBottom: 10 }}>
             <Input
               value={nom}
-              label="Nom"
+              label="Prenom"
               name="nom"
               placeholder=""
               autoCapitalize="none"

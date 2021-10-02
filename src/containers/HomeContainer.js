@@ -37,6 +37,6 @@ export default connect(
       fetchCategories: () => dispatch(fetchCategories()),
       fetchFournisseurs: () => dispatch(fetchFournisseurs()),
       fetchCreneauxFournisseurs: () => dispatch(fetchCreneauxFournisseurs()),
-      putUserPushToken: (userId, pushToken) => dispatch(putUserPushToken(userId, pushToken))
+      putUserPushToken: (userId, pushToken, token) => dispatch(putUserPushToken(userId, pushToken, token))
     })
   )(Home);

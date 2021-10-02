@@ -4,6 +4,7 @@ import { CardField, useConfirmPayment } from "@stripe/stripe-react-native";
 
 import Button from "../components/Button";
 import { API_URL } from "@env";
+import Navigation from "../stacks/Navigation";
 
 const Payment = (props) => {
   const {
@@ -18,7 +19,11 @@ const Payment = (props) => {
     amount,
     qte,
     nomPanier,
+    token,
+    price
   } = props;
+
+  const [codeCommande, setCode] = useState()
   const [cardDetails, setCardDetails] = useState();
   const { confirmPayment, loading } = useConfirmPayment();
 
@@ -26,9 +31,10 @@ const Payment = (props) => {
 
   const fetchPaymentIntentClientSecret = async () => {
     try {
-      const response = await fetch(`${API_URL}/stripe`, {
+      const response = await fetch(`${API_URL}/private/stripe`, {
         method: "POST",
         headers: {
+          Authorization: "Bearer " + token,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -45,15 +51,22 @@ const Payment = (props) => {
           telClient: telClient,
         }),
       });
-      const { client_secret } = await response.json();
-      return client_secret;
-    } catch (e) {
+      //const { client_secret, code } = await response.json();
+      const result = await response.json();
+
+      return {
+        client_secret: result.client_secret,
+        code: result.code
+      }
+    } catch (e) { 
       console.log("erreur", e);
     }
   };
 
   const handlePayPress = async () => {
+    const { navigation } = props
     console.log("detail carte", cardDetails);
+    
     if (!cardDetails?.complete || !mailclient) {
       Alert.alert(
         "",
@@ -65,16 +78,26 @@ const Payment = (props) => {
       email: mailclient,
     };
 
-    const client_secret = await fetchPaymentIntentClientSecret();
-    const { paymentIntent, error } = await confirmPayment(client_secret, {
+    const result = await fetchPaymentIntentClientSecret();
+    
+    const { paymentIntent, error } = await confirmPayment(result.client_secret, {
       type: "Card",
       billingDetails,
     });
     if (error) {
       console.log("Payment confirmation error", error);
     } else if (paymentIntent) {
-      //console.log('Success from promise', paymentIntent.status);
+      console.log('Success from promise', paymentIntent);
       Alert.alert("Paiement validé", "");
+      navigation.navigate("Reciept", {
+        code: result.code,
+        quantite: qte,
+        nompanier: nomPanier,
+        nomFournisseur: nomFournisseur,
+        adresseFournisseur: adresseFournisseur,
+        telFournisseur: telFournisseur,
+        price: price
+      })
     }
   };
 

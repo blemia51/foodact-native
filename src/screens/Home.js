@@ -47,7 +47,7 @@ export default function Home(props) {
     fetchCreneauxFournisseurs,
     fetchClientOrders,
     userProfile,
-    //token,
+    token,
     categories,
     fournisseurs,
     paniers,
@@ -67,7 +67,7 @@ export default function Home(props) {
 
   const { latitude, longitude } = state;
 
-  console.log('userProfile Home', userProfile)
+  //console.log('userProfile Home', userProfile)
 
   useEffect(() => {
     loadRessources();
@@ -101,7 +101,7 @@ export default function Home(props) {
     try {
       const result = await new Promise.all([
         Location.requestForegroundPermissionsAsync(),
-        //Permissions.askAsync(Permissions.LOCATION_FOREGROUND),
+        //Permissions.askAsync(Permissions.LOCATION),
         //Permissions.askAsync(Permissions.NOTIFICATIONS),
       ]);
       const status = result[0].status;
@@ -207,11 +207,11 @@ export default function Home(props) {
         .data;
       console.log("tokenNotification", tokenNotification);
       //this.setState({ expoPushToken: tokenNotification });
-      if (userProfile && tokenNotification) {
-        const userId  = userProfile.user.split('/')[3].toString('')*1
+      if (userProfile && tokenNotification && token) {
+        const userId  = userProfile.user.split('/')[4].toString('')*1
         const pushToken  = { pushToken: tokenNotification }
-        console.log('userId pour pushToken', userId, pushToken)
-        putUserPushToken(userId, pushToken)
+        //console.log('userId pour pushToken', userId, pushToken, token)
+        putUserPushToken(userId, pushToken, token)
       }
 
     } else {
@@ -325,7 +325,7 @@ export default function Home(props) {
             cat.paniers.categorie === `/api/categories/${id}` &&
             //cat.paniers.categorie === `/api/categories/3` &&
 
-            Date.parse(cat.paniers.DateExpirAffichage) - Date.parse(date) > 0 &&
+            //Date.parse(cat.paniers.DateExpirAffichage) - Date.parse(date) > 0 &&
             updateDate(cat.paniers.DateExpirAffichage, cat.creneaux) -
               Date.parse(date) >
               0 &&

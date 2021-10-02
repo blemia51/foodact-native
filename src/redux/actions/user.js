@@ -21,11 +21,12 @@ export const PUT_USER_PUSHTOKEN_SUCCESS = 'PUT_USER_PUSHTOKEN_SUCCESS';
 export const PUT_USER_PUSHTOKEN_FAILURE = 'PUT_USER_PUSHTOKEN_FAILURE';
 
 
-export const putUserPushToken = (userId, pushToken) => ({
+export const putUserPushToken = (userId, pushToken, token) => ({
   type: PUT_USER_PUSHTOKEN,
   payload: {
     pushToken,
     userId,
+    token
   }
 });
 
@@ -94,10 +95,11 @@ export const postUserProfileSuccess = (response) => ({
   },
 });
 
-export const updateUserProfile = (userProfile) => ({
+export const updateUserProfile = (userProfile, token) => ({
   type: UPDATE_USER_PROFILE,
   payload: {
-    userProfile
+    userProfile,
+    token
   }
 })
 
@@ -112,7 +114,7 @@ export const fetchUserProfile = (userId, token) => ({
   type: FETCH_USER_PROFILE,
   payload: {
     userId,
-    //token,
+    token,
   },
 });
 
@@ -134,14 +136,13 @@ export const fetchClientOrders = (email) => ({
   type: FETCH_CLIENT_ORDERS,
   payload: {
     email
-    //token,
   },
 });
 
 export const fetchClientOrdersSuccess = (clientOrders) => ({
   type: FETCH_CLIENT_ORDERS_SUCCESS,
   payload: {
-    clientOrders: clientOrders,
+    clientOrders
   },
 });
 

@@ -5,11 +5,11 @@ import { useFocusEffect } from '@react-navigation/native';
 import { getLongDate } from "../utils/functions";
 
 export default function UserOrders(props) {
-  const { navigation, route, clientOrders, paniersName, paniers, userProfile, fetchClientOrders, orderStatus } = props;
+  const { navigation, clientOrders, userProfile, fetchClientOrders, orderStatus } = props;
   const [orders, setOrders] = useState([]);
   const [isOrder, setIsOrder] = useState(false)
-  console.log("navigation", navigation);
-  console.log("route", route);
+  //console.log("navigation", navigation);
+  //console.log("props", props);
 
   // useEffect(() => {
   //   const email = userProfile.email
@@ -48,6 +48,10 @@ export default function UserOrders(props) {
     }, [])
   );
 
+if (!clientOrders) {
+  return null
+}
+
 if (orderStatus==='loading' || !isOrder) {
   return (
     <View style={styles.container}>
@@ -65,10 +69,13 @@ if (orderStatus==='loading' || !isOrder) {
   }
 
   if (isOrder && orderStatus==='success') {
+    const paniersSauves = clientOrders.length
     return (
       <View style={styles.container}>
+        <Text style={{fontWeight: 'bold', color: '#16214b', paddingBottom: 30}}>Vous avez sauvé<Text style={{color: '#ff6600'}}> {paniersSauves} paniers</Text> !</Text>
         {clientOrders && clientOrders
           .filter((data) => data.paniers.length > 0)
+          .slice(0, 5)
           .map((order) => {
             return (
               <View key={order.id}>
@@ -88,7 +95,7 @@ if (orderStatus==='loading' || !isOrder) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 50,
+    marginTop: 14,
     paddingHorizontal: 12,
   },
   lineStyle: {

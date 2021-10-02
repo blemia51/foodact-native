@@ -32,8 +32,10 @@ export function* getUserProfile(token) {
   try {      
     const userProfile = yield call(userApi.fetchUserProfile, token);
     const { client } = userProfile
-    const clientId = client.split('/')[3].toString('')*1
-    const clientProfile = yield call(userApi.fetchClientProfile, clientId)
+    const clientId = client.split('/')[4].toString('')*1
+    
+    const clientProfile = yield call(userApi.fetchClientProfile, clientId, token)
+    //console.log('saga clientprofile', clientProfile)
     yield put(fetchUserProfileSuccess(clientProfile));
     yield call(getUserProfile, clientId)
     //history.push('/accueil')
@@ -48,10 +50,11 @@ export function* getUserProfile(token) {
 }
 
 export function* getClientOrders(action) {
-  const { email } = action.payload;
-  const userApi = new UserApi();
+  const userApi = new UserApi()
+  const { email } = action.payload
   try {      
     const clientOrders = yield call(userApi.fetchClientOrders, email);
+    console.log('saga clientorders', clientOrders)
     yield put(fetchClientOrdersSuccess(clientOrders))
   } catch (e) {
     if (e.response) {
@@ -76,9 +79,9 @@ export function* postUserProfile(action) {
 
 export function* updateUserProfile(action) {
   try {
-    const { userProfile } = action.payload;
+    const { userProfile, token } = action.payload;
     const userApi = new UserApi();
-    const userProfileUpdated = yield call(userApi.updateUserProfile, userProfile);
+    const userProfileUpdated = yield call(userApi.updateUserProfile, userProfile, token);
     yield put(updateUserProfileSuccess(userProfileUpdated));
   } catch (e) {
     yield put(userProfileFailure(e.message));
@@ -87,10 +90,9 @@ export function* updateUserProfile(action) {
 
 export function* putUserPushToken(action) {
   try { 
-    const { pushToken, userId } = action.payload;
-    console.log('saga userid pushToken', pushToken, userId)
+    const { pushToken, userId, token } = action.payload;
     const userApi = new UserApi();
-    const userPushTokenPosted = yield call(userApi.putUserPushToken, pushToken, userId);
+    const userPushTokenPosted = yield call(userApi.putUserPushToken, pushToken, userId, token);
     yield put(updateUserProfileSuccess(userPushTokenPosted));
   } catch (e) {
     yield put(putUserPushTokenFailure(e.message));

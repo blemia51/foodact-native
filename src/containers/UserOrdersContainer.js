@@ -6,11 +6,9 @@ export default connect(
     (state) => ({
       userProfile: state.userState.userProfile,
       clientOrders: state.userState.clientOrders,
-      paniersName: state.paniersState.paniersName,
-      paniers: state.paniersState.paniers,
-      //token: state.userState.token,
-      //userID: state.userState.userID,
+      token: state.userState.token,
       orderStatus: state.userState.orderStatus,
+      clientOrders: state.userState.clientOrders
     }),
     (dispatch) => ({
       fetchClientOrders: (email) => dispatch(fetchClientOrders(email))

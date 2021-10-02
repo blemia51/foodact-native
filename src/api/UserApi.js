@@ -55,72 +55,63 @@ export default function UserApi() {
   function fetchUserProfile(token) {
     
     const userId = jwtDecode(token).id
-    return axios.get(`${API_URL}/users/${userId}`)
-    //, {
-      // headers: {
-      //   Authorization: "Bearer " + token,
-      //  "Content-Type": "application/json",
-      // }, 
-    //})
+    return axios.get(`${API_URL}/private/users/${userId}`, {
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
+      }, 
+    })
     .then((response) => response.data)
     .catch(event => console.error(event))
   }
 
 
   function fetchClientProfile(clientId, token) {
-    return axios.get(`${API_URL}/clients/${clientId}`)
-    //, {
-      // headers: {
-      //   Authorization: "Bearer " + token,
-      //  "Content-Type": "application/json",
-      // }, 
-    //})
+    console.log('api client',clientId, token )
+    return axios.get(`${API_URL}/private/clients/${clientId}`, {
+      headers: {
+        Authorization: "Bearer " + token,
+       "Content-Type": "application/json",
+      }, 
+    })
     .then((response) => response.data)
     .catch(event => console.error(event))
   }
 }
 
 function fetchClientOrders(email) {
-  return axios.get(`${API_URL}/commandes?email=${email}&is_paid=true`)
-  //, {
-    // headers: {s
-    //   Authorization: "Bearer " + token,
-    //  "Content-Type": "application/json",
-    // }, 
-  //})
+  return axios.get(`${API_URL}/commandes?email=${email}`, {
+    headers: {
+     "Content-Type": "application/json",
+    }, 
+  })
   .then((response) => response.data)
   .catch(event => console.error(event))
 }
   
-function updateUserProfile(userProfile) {
-  
-  let data = new FormData()
-      data.append('userid', userProfile.user.split('/')[3].toString('')*1)
-      data.append('nom', userProfile.nom)
-      data.append('adresse', userProfile.adresse)
-      data.append('email', userProfile.email)
-      data.append('phone', userProfile.tel)
-      
-      console.log('userProfileapi', data)
-  return axios.post(`${API_URL}/update_client`, data)
-  //, {
-    // headers: {
-    //   Authorization: "Bearer " + token,
-    //  "Content-Type": "application/json",
-    // }, 
-  //})
-  .then((response) => console.log('response', response.data))
+function updateUserProfile(userProfile, token) {
+  console.log('api userprofile', userProfile)
+  return axios.post(`${API_URL}/private/update_client`, userProfile, {
+    headers: {
+      Authorization: "Bearer " + token,
+     "Content-Type": "application/json",
+    }, 
+  })
+  .then((response) => {
+    response.data
+    console.log('response', response.data)
+    
+  })
   .catch(event => console.error(event))
 }
 
-function putUserPushToken(pushToken, userId) {
-  return axios.put(`${API_URL}/users/${userId}`, pushToken)
-  //, {
-    // headers: {
-    //   Authorization: "Bearer " + token,
-    //  "Content-Type": "application/json",
-    // }, 
-  //})
+function putUserPushToken(pushToken, userId, token) {
+  return axios.put(`${API_URL}/private/users/${userId}`, pushToken, {
+    headers: {
+      Authorization: "Bearer " + token,
+     "Content-Type": "application/json",
+    }, 
+  })
   .then((response) => {
     response.data
     console.log('putUserPushToken success ?', response.data)

@@ -18,6 +18,8 @@ import Payment from "../components/Payment";
 import { MaterialIcons } from "@expo/vector-icons";
 import { getTimeFromDate, getLongDate } from "../utils/functions";
 import { STRIPE_PUBLIC_KEY_TEST , STRIPE_PUBLIC_KEY_LIVE } from "@env"
+import { validateEmail, validatePhone} from "../utils/validatorUtils"
+import Reciept from "../screens/Reciept"
 
 
 export default class ProductOrder extends Component {
@@ -33,23 +35,61 @@ export default class ProductOrder extends Component {
   };
 
   state = {
-    modalVisible: false,
     nomclient: "",
     telClient: "",
     mailClient: "",
+    isFormValid: false,
+    errors: {
+      mailClient: '',
+      telClient: '',
+    }
+  }
+
+  onChangeText = (key, value) => {
+    const { errors } = this.state;
+    this.setState(() => ({ 
+      [key]: value.trim(), 
+      errors: {
+        ...errors,
+        [key] : '',
+      }
+    }), this.checkFormValidity);
   };
 
-  
-
-  setModalVisible = (visible) => {
-    this.setState({ modalVisible: visible });
+  checkFormValidity = () => {
+    const { nomclient, mailClient, telClient, isFormValid } = this.state;
+    let isValid = [nomclient, mailClient, telClient].every((value) => value.length > 0);
+    const emailError = validateEmail(mailClient);
+    const telError = validatePhone(telClient)
+    isValid = isValid ? emailError && telError: false;
+    console.log("isValid", isValid);
+    if (isValid !== isFormValid) {
+      this.setState(() => ({ isFormValid: isValid }));
+    }
   };
 
-  onChangeText = (key, val) => {
-    this.setState(() => ({ [key]: val.trim() }), this.checkFormValidity);
-    //this.setState(() => ({ [key]: val.trim() }),() => console.log("state", this.state))
-  };
-
+  handleBlur = () => {
+    const { mailClient, telClient, errors } = this.state
+    if (!validateEmail(mailClient) && mailClient !== '') {
+      this.setState({
+        errors: {
+          ...errors,
+          mailClient: 'Veuillez insérer un email valide'
+        }
+      })
+      return
+    }
+    
+    if (!validatePhone(telClient) && telClient !== '' || telClient.length > 0 && telClient.length !== 10) {
+      this.setState({
+        errors: {
+          ...errors,
+          telClient: 'Veuillez insérer un numéro de téléphone valide'
+        }
+      })
+      return
+    }
+  }
 
   render() {
     const { navigation, token, userProfile, order } = this.props;
@@ -66,13 +106,8 @@ export default class ProductOrder extends Component {
       mailfournisseur,
       telFournisseur,
     } = route.params;
-    console.log("date", getTimeFromDate(parseInt(date)).toString());
-
     
-    
-    const { modalVisible, nomclient, telClient, mailclient } = this.state;
-    //const STRIPE_PUBLIC_KEY_TEST = "pk_test_51GuNRlCg4UkzpRv9jw3LhFRJ4M77Z5CgbxtxWPlZuq8diUEe78JTzzV7dMGGKwQXKtsXTlnuJZXhIaPhRlu2PEWN00zFpRWeVI"
-    //const STRIPE_PUBLIC_KEY_LIVE = "pk_live_51HlV34Cg8RcqQyrsT9VdMszf0mE6tIUo4eXGEBOfdfVov8T1iP35LzqaLWCEyr4wTFxKLTUHZxy5bdKtiZuxotzL00VXUupS63"
+    const { nomclient, telClient, mailClient, errors } = this.state;
     const collectDays = Object.values(creneaux).reduce((acc, day) => {
       if (day !== "id") {
         acc.push(day);
@@ -144,14 +179,20 @@ export default class ProductOrder extends Component {
                     placeholder=""
                     autoCapitalize="none"
                     onChangeText={this.onChangeText}
+                    onBlur={this.handleBlur}
+                    errorMessage={errors["telClient"]}
+                    hasError={errors["telClient"] !== ''}
                   />
                   <Input
-                    value={mailclient}
+                    value={mailClient}
                     label="Email"
-                    name="mailclient"
+                    name="mailClient"
                     placeholder=""
                     autoCapitalize="none"
                     onChangeText={this.onChangeText}
+                    onBlur={this.handleBlur}
+                    errorMessage={errors["mailClient"]}
+                    hasError={errors["mailClient"] !== ''}
                   />
                 </View>
               )}
@@ -169,10 +210,11 @@ export default class ProductOrder extends Component {
               <View style={{ width: "85%", paddingBottom: 12 }}>
                 
                 <StripeProvider publishableKey={STRIPE_PUBLIC_KEY_TEST}>
-                  <Payment 
+                  <Payment
+                    navigation={navigation}
                     nomclient={nomclient|| userProfile && userProfile.nom}
                     telClient={telClient || userProfile && userProfile.tel}
-                    mailclient={mailclient || userProfile && userProfile.email}
+                    mailclient={mailClient || userProfile && userProfile.email}
                     commande_id={order && order.id}
                     amount={amount}
                     qte={quantite}
@@ -181,6 +223,8 @@ export default class ProductOrder extends Component {
                     adresseFournisseur={adresse}
                     nomFournisseur={nom}
                     nomPanier={paniername}
+                    token={token}
+                    price={price}
                   /> 
                 </StripeProvider>
               </View>
@@ -205,6 +249,7 @@ export default class ProductOrder extends Component {
                   ))}
               </View>
             </View>
+            
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -221,21 +266,8 @@ const styles = StyleSheet.create({
     //backgroundColor: 'rgba(0, 0, 0, 0.5)'
   },
   modalView: {
-    // margin: 20,
-    //width: '100%',
-    //backgroundColor: "white",
-    //borderRadius: 20,
-    //padding: 35,
     paddingTop: 20,
     alignItems: "center",
-    // shadowColor: "#000",
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 2,
-    // },
-    // shadowOpacity: 0.25,
-    // shadowRadius: 4,
-    // elevation: 5,
   },
   field: {
     width: 300,

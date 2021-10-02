@@ -3,8 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useFocusEffect } from '@react-navigation/native';
-import ModalAddAddress from '../screens/ModalAddAddress'
-import { modulo } from "react-native-reanimated";
+import ModalAddAddress from '../screens/ModalAddAddress';
 
 export default function Menu({ route, navigation, status, token, logOut, ...props }) {
 
@@ -184,6 +183,16 @@ export default function Menu({ route, navigation, status, token, logOut, ...prop
         >
           <MaterialIcons name="event-note" color="lightgrey" size={30} />
           <Text style={styles.textItems}>CGU</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.menuItems}>
+        <TouchableOpacity
+          style={styles.menuItems}
+          onPress={() => { }}
+          disabled
+        >
+          <MaterialIcons name="email" color="lightgrey" size={30} />
+          <Text style={styles.textItems}>sos@foodact.fr</Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -45,7 +45,7 @@ export default class ProductDetail extends PureComponent {
       order: {
         fournisseur: `api/fournisseurs/${fournisseur_id}`,
         paniers: [`api/paniers/${panier_id}`],
-        client: userProfile ? `api/clients/${userProfile.id})` : null,
+        client: userProfile ? `api/private/clients/${userProfile.id})` : null,
         prix: price,
         quantite: 1,
         prenom: userProfile ? userProfile.nom : null,
