@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import Constants from "expo-constants";
 //import * as Permissions from "expo-permissions";
+import * as Application from 'expo-application';
 import * as Notifications from "expo-notifications";
 import * as Location from "expo-location";
 import { StatusBar } from "react-native";
@@ -30,11 +31,6 @@ const initialState = {
   longitude: null,
   latitude: null,
 };
-
-// const token =
-//   "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2MTgxNzU3NTEsImV4cCI6MTYxODQzNDk1MSwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6IkZvb2RhY3RBZG1pbiJ9.FrI2VGRKNl0v801Q-cTAj24fH2ODD40G3B3EpbGflClmoqf7z6_OnPEKV67PWu3qUTwP80sGBeBJYAqUJZ9SuUYdKdQaxW9JrMt_bAkaxUPowMbjmgm-rcMo85fTuG3fHlczw6IhYDGmMdxrro0pqLR6DWJc5vmVL_QzoYOnFB2A4Al9-oMQMJaLmDEinrrGrt-meyWq-BwbVHyK27usAWWI3XGrSkMP2QFEHUwbFIe6tRm-gRUqdlEBL_r2nThptonuOKwNOzPTcmdXGpjGd3Gv1oGoskRzQ7GrjGdBzQAAnUmwtsVnKEAP1_jKk6lw39uNAN4Xdq392FeOj8HFzQm8ucmRGqzFwCjB_t3vEgMpQocJNkfanQaaFVZSVq8Z4gBBjX8Ke1x5D2Etwf2D4HCYei_usQh4ryT2y_Bb3bvZOXwNxwSMFLdfDdJI4FwFW926H8vWBdQJaWl-p35FIeK5OGHvcbtTChjst6zxBo61QBQ6ZKfW2NhvFl2RTpPUOmVL_os6h0Uz2956eRJR-SubbH1DvM6bseYXjcOl1QkHH3g_89XapLjni9bAFWnCrLsTY_e0tf8wNel_3u32gKEFB5qMwlFfSlr0QduI-N267kpgeTS124b3wU-zCAqOJ-L0jO2uxzpDlbbkD375VDgcXHFZTuQMvNRbJFpkdYo";
-
-export const StoreContext = React.createContext(null);
 
 export default function Home(props) {
   const {
@@ -120,12 +116,6 @@ export default function Home(props) {
       if (status === "granted") {
         getUserLocation();
       }
-
-      //getUserLocation();
-
-      // if (statusNotification !== "granted") {
-      //   Permissions.askAsync(Permissions.NOTIFICATIONS);
-      // }
     } catch (e) {
       console.error("problem loading ressources", e);
     }
@@ -173,44 +163,12 @@ export default function Home(props) {
     }
   };
 
-  // const getPushToken = async () => {
-  //   try {
-  //   const result = await fetch("https://foodact.maresa.ma/api/notifications", {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       })
-  //       const datas = await result.json();
-  //       return datas
-  //       //const pushToken  = { pushToken: tokenNotification }
-  //       //postPushToken(pushToken)
-  //     }
-  //     catch(e) {
-  //       console.error('error', e)
-  //     }
-  // }
-  
-
   const getTokenNotification = async () => {
-    //   try {
-    //     const { status } = await Notifications.getPermissionsAsync();
-    //     if (status !== 'granted') {
-    //       const { status } = await Notifications.requestPermissionsAsync();
-    //       console.log('statusssssssssssaaaaaaaaaaaaaaaaaa', status)
-    //     }
-
-    //     console.log('statusssssssssss', status)
-    //     let token = await Notifications.getExpoPushTokenAsync()
-    //     console.log(token)
-    //   } catch (e) {
-    //     console.error('token error', e)
-    //   }
-    // }
+    
     if (Constants.isDevice) {
       const pkg = Constants.manifest.releaseChannel
         ? Constants.manifest.android.package
-        : "host.exp.exponent";
+        : Application.applicationId;
 
         console.log('pkg', pkg)
       const { status: existingStatus } =
@@ -236,7 +194,7 @@ export default function Home(props) {
                   ? Linking.openURL("app-settings:")
                   : IntentLauncher.startActivityAsync(
                       IntentLauncher.ACTION_APPLICATION_DETAILS_SETTINGS,
-                      { data: `package: ${pkg}` }
+                      { data: `package:${pkg}` }
                     ),
             },
           ],
@@ -247,11 +205,9 @@ export default function Home(props) {
       const tokenNotification = (await Notifications.getExpoPushTokenAsync())
         .data;
       console.log("tokenNotification", tokenNotification);
-      //this.setState({ expoPushToken: tokenNotification });
       if (userProfile && tokenNotification && token) {
         const userId  = userProfile.user.split('/')[4].toString('')*1
         const pushToken  = { pushToken: tokenNotification }
-        //console.log('userId pour pushToken', userId, pushToken, token)
         putUserPushToken(userId, pushToken, token)
       }
       if (tokenNotification && !userProfile) {
@@ -445,7 +401,6 @@ export default function Home(props) {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
       <Header />
-      {/* <Payment /> */}
       <ScrollView style={styles.container}>
         {favoritesCategories &&
           favoritesCategories.map((categorie) => {
@@ -496,9 +451,6 @@ export default function Home(props) {
               </View>
             );
           })}
-        {/* <PaymentCardTextField
-          style={styles.field}
-        /> */}
         <StatusBar style="auto" />
       </ScrollView>
     </SafeAreaView>
