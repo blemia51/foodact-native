@@ -58,7 +58,10 @@ export default function Home(props) {
     favorites,
     favoritesDatas,
     uploadLocation,
-    putUserPushToken
+    putUserPushToken,
+    postPushToken,
+    getPushToken,
+    pushTokens,
   } = props;
 
   const [userLocation, setUserLocation] = useState(null);
@@ -72,18 +75,17 @@ export default function Home(props) {
   useEffect(() => {
     loadRessources();
     getTokenNotification();
-    //loadProfie();
     fetchCategories();
     fetchFournisseurs();
     fetchPaniers();
     fetchPaniersName();
     fetchPaniersPrice();
     fetchCreneauxFournisseurs();
+    getPushToken()
     //fetchClientOrders()
   }, []);
 
   useEffect(() => {
-    getUserLocation();
     setState((prevState) => ({
       ...prevState,
       latitude,
@@ -134,7 +136,12 @@ export default function Home(props) {
       const {
         coords,
         coords: { latitude, longitude },
-      } = await Location.getLastKnownPositionAsync({})
+      } = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.BestForNavigation,
+        LocationActivityType: Location.ActivityType.OtherNavigation,
+        maximumAge: 5000,
+        timeout: 15000,
+      })
       // await Location.getCurrentPositionAsync({ accuracy: 6 });
       console.log("userlocation", latitude, longitude);
       console.log("coords", coords);
@@ -146,10 +153,44 @@ export default function Home(props) {
         latitude,
         longitude,
       }));
-    } catch (e) {
-      console.error("error get userLocation", e);
+    } catch {
+      const {
+        coords,
+        coords: { latitude, longitude },
+      } = await Location.getLastKnownPositionAsync({
+        accuracy: Location.Accuracy.BestForNavigation,
+        LocationActivityType: Location.ActivityType.OtherNavigation,
+        maximumAge: 5000,
+        timeout: 15000,
+        });
+        uploadLocation({ latitude: latitude, longitude: longitude });
+
+      setState((prevState) => ({
+        ...prevState,
+        latitude,
+        longitude,
+      }));
     }
   };
+
+  // const getPushToken = async () => {
+  //   try {
+  //   const result = await fetch("https://foodact.maresa.ma/api/notifications", {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       })
+  //       const datas = await result.json();
+  //       return datas
+  //       //const pushToken  = { pushToken: tokenNotification }
+  //       //postPushToken(pushToken)
+  //     }
+  //     catch(e) {
+  //       console.error('error', e)
+  //     }
+  // }
+  
 
   const getTokenNotification = async () => {
     //   try {
@@ -212,6 +253,14 @@ export default function Home(props) {
         const pushToken  = { pushToken: tokenNotification }
         //console.log('userId pour pushToken', userId, pushToken, token)
         putUserPushToken(userId, pushToken, token)
+      }
+      if (tokenNotification && !userProfile) {
+        console.log('pushTokens', pushTokens)
+        const pushToken  = { pushToken: tokenNotification }
+        if (pushTokens.some(e => e.pushToken === tokenNotification)) {
+          return
+        }
+        postPushToken(pushToken)
       }
 
     } else {

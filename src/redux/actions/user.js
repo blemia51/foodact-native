@@ -19,7 +19,58 @@ export const UPDATE_USER_PROFILE_FAILURE = 'UPDATE_USER_PROFILE_FAILURE';
 export const PUT_USER_PUSHTOKEN = 'PUT_USER_PUSHTOKEN';
 export const PUT_USER_PUSHTOKEN_SUCCESS = 'PUT_USER_PUSHTOKEN_SUCCESS';
 export const PUT_USER_PUSHTOKEN_FAILURE = 'PUT_USER_PUSHTOKEN_FAILURE';
+export const POST_PASSWORD_FORGOTTEN = 'POST_PASSWORD_FORGOTTEN';
+export const POST_PASSWORD_FORGOTTEN_SUCCESS = 'POST_PASSWORD_FORGOTTEN_SUCCESS';
+export const POST_PASSWORD_FORGOTTEN_FAILURE = 'POST_PASSWORD_FORGOTTEN_FAILURE';
+export const POST_PUSHTOKEN = 'POST_PUSHTOKEN';
+export const POST_PUSHTOKEN_SUCCESS = 'POST_PUSHTOKEN_SUCCESS';
+export const POST_PUSHTOKEN_FAILURE = 'POST_PUSHTOKEN_FAILURE';
+export const GET_PUSHTOKEN = 'GET_PUSHTOKEN'
+export const GET_PUSHTOKEN_SUCCESS = 'GET_PUSHTOKEN_SUCCESS'
+export const GET_PUSHTOKEN_FAILURE = 'GET_PUSHTOKEN_FAILURE'
 
+
+
+export const getPushToken = () => ({
+  type: GET_PUSHTOKEN,
+  payload: {
+  }
+});
+
+export const getPushTokenSuccess = (pushTokens) => ({
+  type: GET_PUSHTOKEN_SUCCESS,
+  payload: {
+    pushTokens
+  }
+});
+
+export const getPushTokenFailure = (error) => ({
+  type: GET_PUSHTOKEN_FAILURE,
+  payload: {
+    error
+  }
+});
+
+export const postPushToken = (pushToken) => ({
+  type: POST_PUSHTOKEN,
+  payload: {
+    pushToken,
+  }
+});
+
+export const postPushTokenSuccess = (pushToken) => ({
+  type: POST_PUSHTOKEN_SUCCESS,
+  payload: {
+    pushToken
+  }
+});
+
+export const postPushTokenFailure = (error) => ({
+  type: POST_PUSHTOKEN_FAILURE,
+  payload: {
+    error
+  }
+});
 
 export const putUserPushToken = (userId, pushToken, token) => ({
   type: PUT_USER_PUSHTOKEN,
@@ -150,5 +201,26 @@ export const clientOrdersFailure = (error) => ({
   type: CLIENT_ORDERS_FAILURE,
   payload: {
     error,
+  },
+});
+
+export const postPasswordForgotten = (userEmail) => ({
+  type: POST_PASSWORD_FORGOTTEN,
+  payload: {
+    userEmail,
+  },
+});
+
+export const postPasswordForgottenSuccess = (passwordForgotten) => ({
+  type: POST_PASSWORD_FORGOTTEN_SUCCESS,
+  payload: {
+    passwordForgotten
+  },
+});
+
+export const postPasswordForgottenFailure = (error) => ({
+  type: POST_PASSWORD_FORGOTTEN_FAILURE,
+  payload: {
+    error
   },
 });

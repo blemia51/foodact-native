@@ -22,8 +22,17 @@ import {
   logInSuccess,
   logInFailure,
   PUT_USER_PUSHTOKEN,
-  putUserPushTokenSuccess,
-  putUserPushTokenFailure
+  //putUserPushTokenSuccess,
+  putUserPushTokenFailure,
+  POST_PASSWORD_FORGOTTEN,
+  postPasswordForgottenSuccess,
+  postPasswordForgottenFailure,
+  POST_PUSHTOKEN,
+  postPushTokenSuccess,
+  postPushTokenFailure,
+  GET_PUSHTOKEN,
+  getPushTokenSuccess,
+  getPushTokenFailure
 } from "../actions/user";
 
 
@@ -77,6 +86,18 @@ export function* postUserProfile(action) {
   }
 }
 
+export function* postPasswordForgotten(action) {
+  const { userEmail } = action.payload;
+  const userApi = new UserApi()
+  try {
+    const passwordForgotten = yield call(userApi.postPasswordForgotten, userEmail);
+    console.log('saga password', passwordForgotten)
+    yield put(postPasswordForgottenSuccess(passwordForgotten))
+  } catch (e) {
+    yield put(postPasswordForgottenFailure(e.message));
+  }
+}
+
 export function* updateUserProfile(action) {
   try {
     const { userProfile, token } = action.payload;
@@ -96,6 +117,28 @@ export function* putUserPushToken(action) {
     yield put(updateUserProfileSuccess(userPushTokenPosted));
   } catch (e) {
     yield put(putUserPushTokenFailure(e.message));
+  }
+}
+
+export function* postPushToken(action) {
+  try { 
+    const { pushToken } = action.payload;
+    const userApi = new UserApi();
+    const pushTokenPosted = yield call(userApi.postPushToken, pushToken);
+    yield put(postPushTokenSuccess(pushTokenPosted));
+  } catch (e) {
+    yield put(postPushTokenFailure(e.message));
+  }
+}
+
+export function* getPushToken() {
+  try {
+    const userApi = new UserApi()
+    const pushTokenFetched = yield call(userApi.getPushToken)
+    yield put(getPushTokenSuccess(pushTokenFetched))
+  } catch (e) {
+    yield put(getPushTokenFailure(e.message))
+    
   }
 }
 
@@ -141,4 +184,7 @@ export default function* userSaga() {
   yield takeLatest(UPDATE_USER_PROFILE, updateUserProfile);
   yield takeLatest(LOG_OUT, logOut);
   yield takeLatest(PUT_USER_PUSHTOKEN, putUserPushToken)
+  yield takeLatest(POST_PASSWORD_FORGOTTEN, postPasswordForgotten)
+  yield takeLatest(POST_PUSHTOKEN, postPushToken)
+  yield takeLatest(GET_PUSHTOKEN, getPushToken)
 }

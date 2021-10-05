@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react'
-import { Text, StyleSheet, View, ScrollView } from 'react-native'
+import { Text, StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native'
 
 import Input from '../components/Input';
 import Button from '../components/Button';
+import ModalChangePassword from '../containers/ModalChangePasswordContainer';
 
 export default class UserProfile extends PureComponent {
   constructor(props) {
@@ -48,7 +49,7 @@ export default class UserProfile extends PureComponent {
     if (stateNotHydrated) {
       return {
         profil: {
-          userid: id,
+          userid: user.split('/')[4].toString('')*1,
           nom: nom,
           adresse: adresse,
           email: email,
@@ -69,6 +70,14 @@ export default class UserProfile extends PureComponent {
     }))
   }
 
+  renderButton = (text, onPress) => (
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.button}>
+        <Text style={{paddingVertical: 15, fontSize: 12, color:"#16214b", textDecorationLine: 'underline'}}>{text}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+
   render() {
     const { userProfile, updateUserProfile, navigation, token } = this.props
     console.log('props user Profile', this.props)
@@ -77,6 +86,7 @@ export default class UserProfile extends PureComponent {
 
     return (
       <ScrollView style={styles.comtainer}>
+        
         <View style={styles.inputsContainer}>
           <View style={{width: '80%', marginBottom: 20}}>
             <Input
@@ -119,15 +129,16 @@ export default class UserProfile extends PureComponent {
             }}
             size="sm"
           />
-          <Button
-            title='Mot de passe oublié ?'
-            backgroundColor='red'
-            onPress={() => {
-              navigation.popToTop()
-            }}
-            size="sm"
+          {/* <TouchableOpacity onPress={() => {}} style={{ paddingTop: 20}}>
+            <Text style={{fontSize: 12, color:"#16214b", textDecorationLine: 'underline'}} >Changer de mot de passe ?</Text>
+          </TouchableOpacity> */}
+          <ModalChangePassword 
+            renderButton={this.renderButton} 
+            title='Changer de mot de passe ?' 
+            token={token} 
           />
-        </View>
+          
+        </View> 
       </ScrollView>
     )
   }

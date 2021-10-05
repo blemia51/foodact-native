@@ -12,6 +12,9 @@ export default function UserApi() {
     fetchClientOrders,
     logIn,
     putUserPushToken,
+    postPasswordForgotten,
+    postPushToken,
+    getPushToken
   });
 
 
@@ -117,4 +120,27 @@ function putUserPushToken(pushToken, userId, token) {
     console.log('putUserPushToken success ?', response.data)
   })
   .catch(event => console.error('erreur put pushToken', event))
+}
+
+function postPushToken(pushToken) {
+  return axios.post(`${API_URL}/notifications`, pushToken)
+  .then(response => response.data)
+  .catch(event => console.error('errur de post token', event))
+}
+
+function getPushToken() {
+  return axios.get(`${API_URL}/notifications`)
+  .then(response => response.data)
+  .catch(event => console.error('erreur get pushToken', event))
+}
+
+function postPasswordForgotten(userEmail, token) {
+  return axios.post(`${API_URL}/mot-passe-oublier`, userEmail, {
+    headers: {
+      //Authorization: "Bearer " + token,
+     "Content-Type": "application/json",
+    },
+  })
+  .then((response) => response.data)
+  .catch(event => console.error('erreur mot de passe', event))
 }

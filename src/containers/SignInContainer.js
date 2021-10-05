@@ -13,5 +13,6 @@ export default connect(
     }),
     (dispatch) => ({
       logIn: (login) => dispatch(logIn(login)),
+      postPasswordForgotten: (email, token) => dispatch(postPasswordForgotten(email, token))
     })
   )(SignIn);

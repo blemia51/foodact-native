@@ -11,7 +11,13 @@ import {
   FETCH_CLIENT_ORDERS,
   FETCH_CLIENT_ORDERS_SUCCESS,
   CLIENT_ORDERS_FAILURE,
-  POST_USER_PROFILE_SUCCESS
+  POST_USER_PROFILE_SUCCESS,
+  POST_PASSWORD_FORGOTTEN,
+  POST_PASSWORD_FORGOTTEN_SUCCESS,
+  POST_PASSWORD_FORGOTTEN_FAILURE,
+  GET_PUSHTOKEN,
+  GET_PUSHTOKEN_SUCCESS,
+  GET_PUSHTOKEN_FAILURE
 } from '../actions/user'
 import { STATUS_LOADING, STATUS_FAILURE, STATUS_SUCCESS } from '../../constants/statusConstants';
 
@@ -93,6 +99,38 @@ export default function (state = {}, action) {
             ...state,
             orderStatus: STATUS_FAILURE,
           };
+        case POST_PASSWORD_FORGOTTEN:
+          return {
+            ...state,
+            passwordStatus: STATUS_LOADING
+          };
+        case POST_PASSWORD_FORGOTTEN_SUCCESS:
+          return {
+            ...state,
+            passwordForgotten: action.payload.passwordForgotten,
+            passwordStatus: STATUS_SUCCESS
+          };
+        case POST_PASSWORD_FORGOTTEN_FAILURE:
+          return {
+            ...state,
+            passwordStatus: STATUS_FAILURE
+          };
+        case GET_PUSHTOKEN:
+          return {
+            ...state,
+            pushTokenStatus: STATUS_LOADING
+          };
+        case GET_PUSHTOKEN_SUCCESS:
+          return {
+            ...state,
+            pushTokens: action.payload.pushTokens,
+            pushTokenStatus: STATUS_SUCCESS
+          }
+        case GET_PUSHTOKEN_FAILURE:
+          return {
+            ...state,
+            pushTokenStatus: STATUS_FAILURE
+          }
       default:
         return state;
   }

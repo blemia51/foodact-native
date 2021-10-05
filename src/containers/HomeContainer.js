@@ -6,7 +6,7 @@ import { uploadLocation, deleteLocation } from '../redux/actions/location'
 import { fetchPaniers, fetchPaniersName, fetchPaniersPrice } from '../redux/actions/paniers'
 import { fetchCategories } from '../redux/actions/categories'
 import { fetchFournisseurs, fetchCreneauxFournisseurs } from '../redux/actions/fournisseurs'
-import { fetchUserProfile, fetchClientOrders, putUserPushToken } from '../redux/actions/user'
+import { fetchUserProfile, fetchClientOrders, putUserPushToken, postPushToken, getPushToken } from '../redux/actions/user'
 import Home from "../screens/Home";
 
 export default connect(
@@ -22,6 +22,7 @@ export default connect(
       creneauxFournisseurs: state.fournisseursState.creneauxFournisseurs,
       orderStatus: state.userState.orderStatus,
       userProfile: state.userState.userProfile,
+      pushTokens: state.userState.pushTokens
     }),
     (dispatch) => ({
       fetchClientOrders: () => dispatch(fetchClientOrders()),
@@ -37,6 +38,10 @@ export default connect(
       fetchCategories: () => dispatch(fetchCategories()),
       fetchFournisseurs: () => dispatch(fetchFournisseurs()),
       fetchCreneauxFournisseurs: () => dispatch(fetchCreneauxFournisseurs()),
-      putUserPushToken: (userId, pushToken, token) => dispatch(putUserPushToken(userId, pushToken, token))
+      putUserPushToken: (userId, pushToken, token) => dispatch(putUserPushToken(userId, pushToken, token)),
+      postPushToken: (pushToken) => dispatch(postPushToken(pushToken)),
+      getPushToken: () => dispatch(getPushToken())
+
+
     })
   )(Home);

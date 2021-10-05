@@ -7,13 +7,14 @@ import {
   Text,
   TouchableOpacity,
   Switch,
-  Alert
+  Pressable
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 //import CheckBox from '@react-native-community/checkbox';
 import Input from "../components/Input";
 import Button from "../components/Button";
+import ModalChangePassword from "../components/ModalChangePassword";
 
 class SignIn extends React.Component {
   state = {
@@ -106,8 +107,16 @@ class SignIn extends React.Component {
       () => ({ login: { ...login, [key]: val.trim() } }), this.checkFormValidity)
   };
 
+  renderButton = (text, onPress) => (
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.button}>
+        <Text style={{paddingVertical: 15, fontSize: 12, color:"#ff6000", textDecorationLine: 'underline'}}>{text}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+
   render() {
-    const { navigation, status, profilStatus } = this.props;
+    const { navigation, status, profilStatus, postPasswordForgotten } = this.props;
     const { login: { username, password }, isFormValid, isEnabledRemeberMe, isEnabledCgu, isLogged } = this.state;
     console.log("state", this.state);
     console.log('props' , profilStatus)
@@ -139,7 +148,14 @@ class SignIn extends React.Component {
             />
           </View>
           <View>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+            {/* <TouchableOpacity onPress={() => {} } style={{ position: "absolute", left: 90,top:4, paddingBottom: 20}}>
+              <Text style={{fontSize: 12, color:"#ff6600", textDecorationLine: 'underline'}} >Mot de passe oublié ?</Text>
+            </TouchableOpacity> */}
+            <View style={{ position: "absolute", left: 90, top: -10, paddingBottom: 20}}>
+
+            <ModalChangePassword renderButton={this.renderButton} title='Mot de passe oublié ?' postPasswordForgotten={postPasswordForgotten} />
+            </View>
+            <View style={{ flexDirection: "row", alignItems: "center", marginTop: 32 }}>
               {/* <CheckBox
                 tintColors={{ true: '#ff6600', false: 'lightgrey'}}
                 style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}

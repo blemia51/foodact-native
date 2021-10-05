@@ -21,11 +21,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['favoritesState', 'userState']
+  whitelist: ['favoritesState', 'userState', 'locationState']
 }
 
+const userPersistConfig = {
+  key: 'userState',
+  storage: AsyncStorage,
+  blacklist: ['passwordForgotten']
+};
+
 const rootReducers = combineReducers({
-  userState: user,
+  userState: (user),
   favoritesState: favorites,
   favoritesDatasState: favoritesDatas,
   paniersState: paniers,
