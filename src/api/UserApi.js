@@ -2,6 +2,10 @@ import axios from 'axios';
 import { API_URL } from "@env"
 const jwtDecode = require("jwt-decode");
 
+// const httpsAgent = new https.Agent({
+//   rejectUnauthorized: false,
+// })
+// axios.defaults.options = httpsAgent
 
 export default function UserApi() {
   return ({
@@ -17,6 +21,7 @@ export default function UserApi() {
     getPushToken
   });
 
+  
 
   // function logIn(login) {
   

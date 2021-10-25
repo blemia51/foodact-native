@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity, SafeAreaView } from "react-native";
-import MapView, { Marker, Callout } from "react-native-maps";
+import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
 import ExplorerCategories from "../containers/ExplorerCategoriesContainer";
 import { paniersAndFournisseur } from "../utils/dataToRenderFunctions";
 import { updateDate } from "../utils/functions";
@@ -95,6 +95,7 @@ export default function Explore(props) {
         mapPadding={{ top: 1, bottom: 10, rigth:50 }}
         region={location.region}
         //onRegionChangeComplete={onRegionChange}
+        provider={PROVIDER_GOOGLE}
       >
         {paniersFournisseur &&
           paniersFournisseur

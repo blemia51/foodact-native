@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   StyleSheet,
   Text,
@@ -19,6 +19,8 @@ import * as Notifications from "expo-notifications";
 import * as Location from "expo-location";
 import { StatusBar } from "react-native";
 import * as IntentLauncher from "expo-intent-launcher";
+import * as SplashScreen from 'expo-splash-screen';
+import AppLoading from "expo-app-loading";
 import { updateDate } from "../utils/functions";
 
 import RenderItem from "../components/RenderItem";
@@ -63,21 +65,49 @@ export default function Home(props) {
   const [userLocation, setUserLocation] = useState(null);
   const [state, setState] = useState(initialState);
   const [isLogged, setIsLogged] = useState(false);
+  const [appIsReady, setAppIsReady] = useState(false);
 
   const { latitude, longitude } = state;
 
   //console.log('userProfile Home', userProfile)
 
   useEffect(() => {
-    loadRessources();
-    getTokenNotification();
-    fetchCategories();
-    fetchFournisseurs();
-    fetchPaniers();
-    fetchPaniersName();
-    fetchPaniersPrice();
-    fetchCreneauxFournisseurs();
-    getPushToken()
+    async function prepare() {
+      try {
+        // Keep the splash screen visible while we fetch resources
+        await SplashScreen.preventAutoHideAsync();
+        // Pre-load fonts, make any API calls you need to do here
+        //await Font.loadAsync(Entypo.font);
+        // Artificially delay for two seconds to simulate a slow loading
+        // experience. Please remove this if you copy and paste the code!
+        loadRessources();
+        getTokenNotification();
+        fetchCategories();
+        fetchFournisseurs();
+        fetchPaniers();
+        fetchPaniersName();
+        fetchPaniersPrice();
+        fetchCreneauxFournisseurs();
+        getPushToken()
+        await new Promise(resolve => setTimeout(resolve, 4000));
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        // Tell the application to render
+        setAppIsReady(true);
+      }
+    }
+
+    prepare();
+    // loadRessources();
+    // getTokenNotification();
+    // fetchCategories();
+    // fetchFournisseurs();
+    // fetchPaniers();
+    // fetchPaniersName();
+    // fetchPaniersPrice();
+    // fetchCreneauxFournisseurs();
+    // getPushToken()
     //fetchClientOrders()
   }, []);
 
@@ -367,35 +397,96 @@ export default function Home(props) {
     }
   };
 
-  if (
-    !latitude ||
-    !longitude ||
-    !categories ||
-    !fournisseurs ||
-    !paniers ||
-    !paniersPrice ||
-    !paniersName ||
-    !creneauxFournisseurs
-  ) {
+
+function AnimatedAppLoader({ children, image }) {
+  const [isSplashReady, setSplashReady] = React.useState(false);
+
+  const startAsync = React.useMemo(
+    // If you use a local image with require(...), use `Asset.fromModule
+    () => () => Asset.fromModule(image).downloadAsync(),
+    [image]
+  );
+
+  const onFinish = React.useMemo(() => setSplashReady(true), []);
+
+  if (!isSplashReady) {
     return (
-      <View
-        style={{
-          flex: 1,
-        }}
-      >
-        {/* <Header /> */}
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Image source={foodact_animated} />
-        </View>
-      </View>
+      <AppLoading
+        // Instruct SplashScreen not to hide yet, we want to do this manually
+        autoHideSplash={false}
+        startAsync={startAsync}
+        onError={console.error}
+        onFinish={onFinish}
+      />
     );
   }
+
+  return <AnimatedSplashScreen image={image}>{children}</AnimatedSplashScreen>;
+}
+
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      // This tells the splash screen to hide immediately! If we call this after
+      // `setAppIsReady`, then we may see a blank screen while the app is
+      // loading its initial state and rendering its first pixels. So instead,
+      // we hide the splash screen once we know the root view has already
+      // performed layout.
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+   if (!appIsReady) {
+    return (
+      <View
+        style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+         onLayout={onLayoutRootView}>
+  {/* //       <Text>SplashScreen Demo! 👋</Text> */}
+        <Image source={foodact_animated} />
+      </View>
+     );
+   } 
+  // else {
+  //   return (
+  //     <View
+  //       style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+  //       onLayout={onLayoutRootView}>
+  //       <Text>SplashScreen Demo! 👋</Text>
+  //     </View>
+  //   );
+  // }
+
+  
+
+
+  // if (
+  //   !latitude ||
+  //   !longitude ||
+  //   !categories ||
+  //   !fournisseurs ||
+  //   !paniers ||
+  //   !paniersPrice ||
+  //   !paniersName ||
+  //   !creneauxFournisseurs
+  // ) {
+  //   return (
+  //     <View
+  //       style={{
+  //         flex: 1,
+  //       }}
+  //     >
+  //       {/* <Header /> */}
+  //       <View
+  //         style={{
+  //           flex: 1,
+  //           alignItems: "center",
+  //           justifyContent: "center",
+  //         }}
+  //       >
+  //         <Image source={foodact_animated} />
+  //       </View>
+  //     </View>
+  //   );
+  // }
 
   return (
     <SafeAreaView style={styles.container}>

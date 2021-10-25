@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#16214b",
     paddingTop: 10,
     paddingBottom: 15,
+    height: 85,
     //borderBottomColor: "#ffffff",
     //borderBottomWidth: 1,
     alignItems: "center",

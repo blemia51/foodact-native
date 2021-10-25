@@ -46,7 +46,7 @@ export function* getUserProfile(token) {
     const clientProfile = yield call(userApi.fetchClientProfile, clientId, token)
     //console.log('saga clientprofile', clientProfile)
     yield put(fetchUserProfileSuccess(clientProfile));
-    yield call(getUserProfile, clientId)
+    //yield call(getUserProfile, clientId)
     //history.push('/accueil')
     //console.log('history', history);
   } catch (e) {

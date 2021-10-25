@@ -1,8 +1,13 @@
 {
   "expo": {
-    "name": "foodAct",
-    "slug": "foodAct",
-    "version": "1.0.0",
+    "name": "Foodact",
+    "slug": "Foodct",
+    "privacy": "public",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -25,16 +30,33 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "fr.foodact.foodact",
+      "buildNumber": "2.0.0",
+      "config": {
+        "googleMapsApiKey": "AIzaSyCHuibRw11EFZcbb24k84m5KpEt_gMKtiU"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundImage": "./assets/background.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "permissions": [
+        "NOTIFICATIONS",
+        "ACCES_FINE_LOCATION"
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCHuibRw11EFZcbb24k84m5KpEt_gMKtiU"
+        }
+      },
+      "versionCode": 5,
+      "package": "fr.foodact.foodact"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/icon.png"
     },
     "description": ""
   }

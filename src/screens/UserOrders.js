@@ -5,20 +5,10 @@ import { useFocusEffect } from '@react-navigation/native';
 import { getLongDate } from "../utils/functions";
 
 export default function UserOrders(props) {
-  const { navigation, clientOrders, userProfile, fetchClientOrders, orderStatus } = props;
+  const { clientOrders, userProfile, fetchClientOrders, orderStatus } = props;
   const [orders, setOrders] = useState([]);
   const [isOrder, setIsOrder] = useState(false)
-  //console.log("navigation", navigation);
-  //console.log("props", props);
-
-  // useEffect(() => {
-  //   const email = userProfile.email
-  //   console.log('email', email)
-  //   fetchClientOrders(email)
-  //   setOrders(clientOrders)
-  //   console.log('props order status', orderStatus)
-  // }, []);
-
+  
   useEffect(() => {
     setOrders(clientOrders);
     setIsOrder(true)
@@ -37,7 +27,6 @@ export default function UserOrders(props) {
       setIsOrder(true)
       console.log('props order status', orderStatus)
 
-      
       return () => {
         setIsOrder(false)
         // Do something when the screen is unfocused
@@ -48,17 +37,17 @@ export default function UserOrders(props) {
     }, [])
   );
 
-if (!clientOrders) {
-  return null
-}
+  if (!clientOrders) {
+    return null
+  }
 
-if (orderStatus==='loading' || !isOrder) {
-  return (
-    <View style={styles.container}>
-      <ActivityIndicator  size="large" color="#16214b" />
-    </View>
-  )
-}
+  if (orderStatus==='loading' || !isOrder) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator  size="large" color="#16214b" />
+      </View>
+    )
+  }
 
   if (orderStatus==='success' && isOrder && orders.length < 1 ) {
     return (

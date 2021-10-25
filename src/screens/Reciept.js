@@ -110,7 +110,6 @@ export default class Reciept extends Component {
               <View style={styles.lineStyle} />
               <Text style={{ fontWeight: "bold" }}>Numéros d'urgence : 07.50.50.61.27</Text>
               
-
             </View>
           </View>
         </ScrollView>
