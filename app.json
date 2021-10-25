@@ -34,7 +34,7 @@
       "bundleIdentifier": "fr.foodact.foodact",
       "buildNumber": "2.0.0",
       "config": {
-        "googleMapsApiKey": "AIzaSyCHuibRw11EFZcbb24k84m5KpEt_gMKtiU"
+        "googleMapsApiKey": ""
       }
     },
     "android": {
@@ -49,7 +49,7 @@
       ],
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyCHuibRw11EFZcbb24k84m5KpEt_gMKtiU"
+          "apiKey": ""
         }
       },
       "versionCode": 5,
