@@ -27,7 +27,8 @@ import RenderItem from "../components/RenderItem";
 import Favorites from "../containers/FavoritesContainer";
 import Header from "../components/Header";
 
-import foodact_animated from "../assets/foodact_anim.gif";
+//import foodact_animated from "../assets/foodact_anim.gif";
+import foodact_icon from "../assets/icon.png";
 
 const initialState = {
   longitude: null,
@@ -398,31 +399,31 @@ export default function Home(props) {
   };
 
 
-function AnimatedAppLoader({ children, image }) {
-  const [isSplashReady, setSplashReady] = React.useState(false);
+// function AnimatedAppLoader({ children, image }) {
+//   const [isSplashReady, setSplashReady] = React.useState(false);
 
-  const startAsync = React.useMemo(
-    // If you use a local image with require(...), use `Asset.fromModule
-    () => () => Asset.fromModule(image).downloadAsync(),
-    [image]
-  );
+//   const startAsync = React.useMemo(
+//     // If you use a local image with require(...), use `Asset.fromModule
+//     () => () => Asset.fromModule(image).downloadAsync(),
+//     [image]
+//   );
 
-  const onFinish = React.useMemo(() => setSplashReady(true), []);
+//   const onFinish = React.useMemo(() => setSplashReady(true), []);
 
-  if (!isSplashReady) {
-    return (
-      <AppLoading
-        // Instruct SplashScreen not to hide yet, we want to do this manually
-        autoHideSplash={false}
-        startAsync={startAsync}
-        onError={console.error}
-        onFinish={onFinish}
-      />
-    );
-  }
+//   if (!isSplashReady) {
+//     return (
+//       <AppLoading
+//         // Instruct SplashScreen not to hide yet, we want to do this manually
+//         autoHideSplash={false}
+//         startAsync={startAsync}
+//         onError={console.error}
+//         onFinish={onFinish}
+//       />
+//     );
+//   }
 
-  return <AnimatedSplashScreen image={image}>{children}</AnimatedSplashScreen>;
-}
+//   return <AnimatedSplashScreen image={image}>{children}</AnimatedSplashScreen>;
+// }
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
@@ -435,16 +436,16 @@ function AnimatedAppLoader({ children, image }) {
     }
   }, [appIsReady]);
 
-   if (!appIsReady) {
-    return (
-      <View
-        style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-         onLayout={onLayoutRootView}>
-  {/* //       <Text>SplashScreen Demo! 👋</Text> */}
-        <Image source={foodact_animated} />
-      </View>
-     );
-   } 
+  //  if (!appIsReady) {
+  //   return (
+  //     <View
+  //       style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+  //        onLayout={onLayoutRootView}>
+  // {/* //       <Text>SplashScreen Demo! 👋</Text> */}
+  //       <Image source={foodact_icon} />
+  //     </View>
+  //    );
+  //} 
   // else {
   //   return (
   //     <View
