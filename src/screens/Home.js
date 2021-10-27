@@ -367,35 +367,35 @@ export default function Home(props) {
     }
   };
 
-  if (
-    !latitude ||
-    !longitude ||
-    !categories ||
-    !fournisseurs ||
-    !paniers ||
-    !paniersPrice ||
-    !paniersName ||
-    !creneauxFournisseurs
-  ) {
-    return (
-      <View
-        style={{
-          flex: 1,
-        }}
-      >
-        {/* <Header /> */}
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Image source={foodact_animated} />
-        </View>
-      </View>
-    );
-  }
+  // if (
+  //   !latitude ||
+  //   !longitude ||
+  //   !categories ||
+  //   !fournisseurs ||
+  //   !paniers ||
+  //   !paniersPrice ||
+  //   !paniersName ||
+  //   !creneauxFournisseurs
+  // ) {
+  //   return (
+  //     <View
+  //       style={{
+  //         flex: 1,
+  //       }}
+  //     >
+  //       {/* <Header /> */}
+  //       <View
+  //         style={{
+  //           flex: 1,
+  //           alignItems: "center",
+  //           justifyContent: "center",
+  //         }}
+  //       >
+  //         <Image source={foodact_animated} />
+  //       </View>
+  //     </View>
+  //   );
+  // }
 
   return (
     <SafeAreaView style={styles.container}>
