@@ -209,7 +209,7 @@ export default class ProductOrder extends Component {
               </View>
               <View style={{ width: "85%", paddingBottom: 12 }}>
                 
-                <StripeProvider publishableKey={STRIPE_PUBLIC_KEY_TEST}>
+                <StripeProvider publishableKey={STRIPE_PUBLIC_KEY_LIVE}>
                   <Payment
                     navigation={navigation}
                     nomclient={nomclient|| userProfile && userProfile.nom}
