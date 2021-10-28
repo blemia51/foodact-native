@@ -28,7 +28,7 @@
       "supportsTablet": true,
       "buildNumber": "2.0.7",
       "config": {
-        "googleMapsApiKey": "AIzaSyCHuibRw11EFZcbb24k84m5KpEt_gMKtiU"
+        "googleMapsApiKey": ""
       }
     },
     "android": {
@@ -38,7 +38,7 @@
       },
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyCHuibRw11EFZcbb24k84m5KpEt_gMKtiU"
+          "apiKey": ""
         }
       },
       "versionCode": 1555386080,
