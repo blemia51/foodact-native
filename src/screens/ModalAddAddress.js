@@ -4,20 +4,14 @@ import {
   StyleSheet,
   View,
   Modal,
-  Pressable,
-  ScrollView,
-  DevSettings,
-  ActionSheetIOS,
+  Pressable
 } from "react-native";
-import axios from "axios";
 import * as Location from "expo-location";
 import { MaterialIcons } from "@expo/vector-icons";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
-import Prediction from "../components/Prediction";
 import Button from "../components/Button";
-import Input from "../components/Input";
-import { BASE_URL_API, API_KEY } from "@env"
+import { API_KEY } from "@env"
 
 
 export default class ModalAddAddress extends Component {
