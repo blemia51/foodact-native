@@ -2,7 +2,7 @@
   "expo": {
     "name": "FoodAct",
     "slug": "FoodAct",
-    "version": "2.0.8",
+    "version": "2.0.9",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -26,7 +26,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "2.0.7",
+      "buildNumber": "2.0.9",
+      "bundleIdentifier": "com.omavapps.foodact2",
       "config": {
         "googleMapsApiKey": "AIzaSyCHuibRw11EFZcbb24k84m5KpEt_gMKtiU"
       }

@@ -82,12 +82,14 @@ export default function Home(props) {
   }, []);
 
   useEffect(() => {
-    setState((prevState) => ({
-      ...prevState,
-      latitude,
-      longitude,
-    }));
-    uploadLocation({ latitude: latitude, longitude: longitude });
+    if (latitude && longitude) {
+      setState((prevState) => ({
+        ...prevState,
+        latitude,
+        longitude,
+      }));
+      uploadLocation({ latitude: latitude, longitude: longitude });
+    }
   }, [latitude, longitude]);
 
   //console.log("orderstatus", orderStatus);
@@ -143,23 +145,24 @@ export default function Home(props) {
         latitude,
         longitude,
       }));
-    } catch {
-      const {
-        coords,
-        coords: { latitude, longitude },
-      } = await Location.getLastKnownPositionAsync({
-        accuracy: Location.Accuracy.BestForNavigation,
-        LocationActivityType: Location.ActivityType.OtherNavigation,
-        maximumAge: 5000,
-        timeout: 15000,
-        });
-        uploadLocation({ latitude: latitude, longitude: longitude });
+    } catch (e) {
+      // const {
+      //   coords,
+      //   coords: { latitude, longitude },
+      // } = await Location.getLastKnownPositionAsync({
+      //   accuracy: Location.Accuracy.BestForNavigation,
+      //   LocationActivityType: Location.ActivityType.OtherNavigation,
+      //   maximumAge: 5000,
+      //   timeout: 15000,
+      //   });
+      //   uploadLocation({ latitude: latitude, longitude: longitude });
 
-      setState((prevState) => ({
-        ...prevState,
-        latitude,
-        longitude,
-      }));
+      // setState((prevState) => ({
+      //   ...prevState,
+      //   latitude,
+      //   longitude,
+      // }));
+      console.error(e)
     }
   };
 
