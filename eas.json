@@ -9,7 +9,7 @@
     },
     "production": {
       "android": {
-        "autoIncrement": true
+        "autoIncrement": ["version", true]
       }
     }
   },

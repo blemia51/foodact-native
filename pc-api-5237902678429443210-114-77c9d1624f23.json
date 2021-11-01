@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "pc-api-5237902678429443210-114",
+  "private_key_id": "77c9d1624f23672b7576e30398b4b199528a0c07",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCpKepY9cRNVKZA\nxlTXE26lndW5tRIN+c5Y04c9Hf3Q+OUrXUsuxexny66O9ZbRvkVXLTxXiwmvn7aJ\nGgM9mYu7x4E8/c9zDw9I8nj3B579Zd6QtapIyYSSLmUWa46VR8T+kJcugEqW3DbB\nNacTbX4HzN9hu4BmAxrHmUfscvcInOXm36A1SJDebbn2J3OVyOf4XmMUXZ2JdSzo\naiKsjGkKIpNbe8giQiLXi8KgNf6xG0OaKfoBhUhgAcx1Du106SraPOcoPSIL0EPh\nh81L02vPWrhDxmo3HO/AL6O7kPeLkv9epHm+zRCkHGsYsTz++XULP9AchdpsMcKl\nI13jaZn9AgMBAAECggEACa0e3U9TlvvOVbqyjCntpJYSbWC842VEZyLUY8vVIrC2\nBSS9QfPq2aYWOlG0epNoanvpLXXDzFK1sYJ2KH4httBK5Xb8OI/mNy09e53pO4Pp\n9vuZPbgfN/Bk8mMdIQ9dppUVPMD0Y0w96o/b2nnjIWWX6oJ77fnj/IJZUZ5i4JBn\nJNemlzTi9y04ymxceDGB+Q/tOzaoc+DgUmV0NlyodP4AbRdOB+NcsLW6YvGu4Co8\nMhzHvNRHi5QO/1ZJMmjQLpM8qy0CsnwdHCTt1LEP3Gs20s+HO5zGkLFKXEoVoAZO\ngWtv1vCuj2e4FFPRXaUg/ZVASX1g6r3CiZXcK84OyQKBgQDazahn8/d7723y4ae4\nTDIUQ4IDBGf4xixq4emb3Zde5PwGI8hDfgzyoqN0nC2Epv8iAfHulfdawM8fwC/+\nge+ELWfCj8izDBQpvEfnUz0ZlQD5rB0SbBa4mna9Ng/pR+12/aFBJpLlleMuwVyV\nLuZByZejuaRZN7TSjCx6ed/OGQKBgQDF6+/PhqYs+/YZkFTaaBlZ0nieVS2uSWY2\nDC91qcytBbBmQIvITZcGTmKNplXTqaS8ln8KrbVod5mdo4XmE0IiUh2ZNKeXTp85\n7wZvOXyOL/cm9Dzp1mTV2qo7UH+KyFZvN0ZMOBu+xteQ2JwOVbfAXLM6Yt6b2MfD\nmbbMWnKfhQKBgF41kr8/ol2wl8yuMIL/+8gR0RbvfLz2xwU2RFmiLZzkR0d1fLLi\nwTxvnqWE4WxuYwgHgl3SIHDo98WaAJA67iAhVL3HHwlIuB3IPcVyZ6puJ79YxiO6\neoX9rAaIEo3FNI+5YQcmTrWftfPZub1aNjY5UJtkQUlQ3QCS7kvF0gFxAoGAI9/j\nJOOMJWU6M2IE712lErHiqRhZYljtjOhihdpUPhxk3/PdIl5l/H+iv3gh4G7EbGZ+\n+omH8zqSfo9QSua8uwnVUZrIsdVPaSnZKbnqyL8K9mWY0O3KczTiXEP4CkjL2fbT\n6CbXaJoUIq4Qg0yoNNbYqcGYBfmiI+Mtzhaq5h0CgYA0xwPybHrP7V2BHpSrc/5S\n5zd42OLt0Wh5dnU/YZrT4TvwjK+VY3y5I/Dxi1Nz39jIrNfxpwbLSnlyZnQ29I/A\nltvuvFuUMT9VHlKtfykaIzCPoWW9DOBUr0ARIHsvXoRRvDpMH83qZk4OS0pl1NAl\nLahOgK+BaT6VILk8K0VguQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "foodact-app-128@pc-api-5237902678429443210-114.iam.gserviceaccount.com",
+  "client_id": "101882874778034408774",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/foodact-app-128%40pc-api-5237902678429443210-114.iam.gserviceaccount.com"
+}
