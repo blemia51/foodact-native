@@ -29,7 +29,7 @@
       "buildNumber": "2.0.9",
       "bundleIdentifier": "com.omavapps.foodact2",
       "config": {
-        "googleMapsApiKey": "AIzaSyCHuibRw11EFZcbb24k84m5KpEt_gMKtiU"
+        "googleMapsApiKey": ""
       }
     },
     "android": {
@@ -39,7 +39,7 @@
       },
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyCHuibRw11EFZcbb24k84m5KpEt_gMKtiU"
+          "apiKey": ""
         }
       },
       "versionCode": 1555386083,
